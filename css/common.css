@@ -1,0 +1,91 @@
+
+body {
+    font-family: sans-serif;
+    margin-top: 50px;
+}
+
+
+#navbar {
+    /* Use two colors from the monochrome GB palette, but avoid it for the whole page - it's pretty ugly. */
+    background-color: #9bbc0f;
+    color: #0f380f;
+
+    padding: 10px;
+    font-size: 18px;
+
+    position: fixed;
+    top: 0;
+    height: 23px;
+    width: 100%;
+}
+
+#navbar a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#navbar a:hover {
+    text-decoration: underline;
+}
+
+#site-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+main {
+    position: relative;
+    padding: 0 20px;
+
+    display: flex;
+    flex-flow: row-reverse nowrap;
+}
+
+@media screen and (max-width: 500px) {
+    main {
+        flex-flow: column-reverse nowrap;
+    }
+}
+
+main article {
+    flex-grow: 10;
+}
+
+#tutorial-index {
+    flex-grow: 1;
+
+    position: -webkit-sticky;
+    position: sticky;
+    top: 50px;
+
+    border: 1px solid black;
+    margin-right: 30px;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+#index-title {
+    font-size: 18px;
+}
+
+#tutorial-index > ol {
+    list-style-type: upper-roman;
+}
+
+#tutorial-index > ol > li > ol {
+    list-style-type: decimal;
+
+    /* Use visibility instead of display: none to avoid the box resizing horizontally when the sub-list pops up */
+    visibility: hidden;
+    height: 0;
+    opacity: 0;
+    transition: visibility 0.5s step-end, height 0.5s step-end, opacity 0.5s ease-in;
+}
+
+#tutorial-index > ol > li:hover > ol {
+    visibility: visible;
+    height: 100%;
+    opacity: 1;
+    transition: visibility 0.5s step-start, height 0.5s step-start, opacity 0.5s ease-out;
+}

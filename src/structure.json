@@ -1,0 +1,26 @@
+{
+    "leaf": false,
+    "index": { "leaf": true, "id": "index", "title": "Landing page" },
+    "subpages": [
+        {
+            "leaf": false,
+            "index": { "leaf": true, "id": "introduction", "title": "Introduction" },
+            "subpages": [
+                { "leaf": true, "id": "what_is_gb", "title": "What is Game Boy?" },
+                { "leaf": true, "id": "concepts", "title": "Basic concepts" },
+                { "leaf": true, "id": "tools", "title": "Tools"}
+            ]
+        },
+        {
+            "leaf": false,
+            "index": { "leaf": true, "id": "basics", "title": "Basics" },
+            "subpages": [
+                { "leaf": true, "id": "registers", "title": "Registers" },
+                { "leaf": true, "id": "memory", "title": "Memory" }
+            ]
+        }
+    ],
+    "special_pages": [
+        { "leaf": "true", "id": "404", "title": "Resource not found" }
+    ]
+}
