@@ -5,13 +5,13 @@ import re
 
 
 # Read the tutorial's structure 
-with open("src/structure.json", "rt") as f:
+with open("structure.json", "rt") as f:
     site_structure = json.load(f)
 
 
 # Perform common operations
 
-with open("src/template.html", "rt") as template_file:
+with open("template.html", "rt") as template_file:
     template = template_file.readlines()
 
 include_re = re.compile("(?P<whitespace>\s+)#include\s+(?P<id>\w+)", re.IGNORECASE)
@@ -86,7 +86,7 @@ def generate_page(structure):
             else:
                 out_lines.append(line)
 
-        with open("{}.html".format(structure["id"]), "wt") as out_file:
+        with open("docs/{}.html".format(structure["id"]), "wt") as out_file:
             out_file.writelines(out_lines)
 
 print("Generating pages...")
