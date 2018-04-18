@@ -58,14 +58,31 @@ def generate_navigation(structure, current_id):
 
 # Generate the pages
 
-def generate_page(structure):
+def build_links(structure, links = {}, prev = None):
+    if structure["leaf"]:
+        this_id = structure["id"]
+        if prev != None:
+            links[prev]["next"] = this_id
+            links[this_id] = {"prev": prev}
+        else:
+            links[this_id] = {}
+        prev = this_id
+    
+    else:
+        links, prev = build_links(structure["index"], links, prev)
+        for sub_struct in structure["subpages"]:
+            links, prev = build_links(sub_struct, links, prev)
+
+    return links, prev
+
+def generate_page(structure, links):
     global site_structure
     global include_re
 
     if not structure["leaf"]:
-        generate_page(structure["index"])
+        generate_page(structure["index"], links)
         for sub_struct in structure["subpages"] + structure.get("special_pages", []):
-            generate_page(sub_struct)
+            generate_page(sub_struct, links)
     
     else:
         print("Generating page {}.html, \"{}\"...".format(structure["id"], structure["title"]))
@@ -73,6 +90,9 @@ def generate_page(structure):
         HTML_snips = {}
         HTML_snips["navigation"] = generate_navigation(site_structure, structure["id"])[1]
         HTML_snips["title"] = [ structure["title"] ]
+        page_links = links.get(structure["id"])
+        if page_links != None:
+            HTML_snips["prev_next"] = [ "<link rel=\"{}\" href=\"{}.html\" />".format(*pair) for pair in links[structure["id"]].items() ]
         with open("src/{}.html".format(structure["id"]), "rt") as content_file:
             HTML_snips["content"] = content_file.readlines()
 
@@ -80,7 +100,7 @@ def generate_page(structure):
         for line in template:
             match = include_re.match(line)
             if match:
-                for line in HTML_snips[match.group("id")]:
+                for line in HTML_snips.get(match.group("id"), []):
                     out_lines.append(match.group("whitespace") + line)
             
             else:
@@ -89,5 +109,8 @@ def generate_page(structure):
         with open("docs/{}.html".format(structure["id"]), "wt") as out_file:
             out_file.writelines(out_lines)
 
+print("Building links...")
+links = build_links(site_structure)[0]
+
 print("Generating pages...")
-generate_page(site_structure)
+generate_page(site_structure, links)
