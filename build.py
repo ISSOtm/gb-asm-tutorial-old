@@ -30,28 +30,28 @@ def generate_navigation(structure, current_id):
             is_current = True
             opening_class = " class=\"current\""
         
-        lines = ["<a href=\"{}.html\"{}>{}</a>".format(structure["id"], opening_class, structure["title"])]
+        lines = ["<a href=\"{}.html\"{}>{}</a>\n".format(structure["id"], opening_class, structure["title"])]
     
     else:
         is_current, lines = generate_navigation(structure["index"], current_id)
 
         sub_lines = []
         for sub_struct in structure["subpages"]:
-            sub_lines.append("<li>")
+            sub_lines.append("<li>\n")
 
             _is_current, _sub_lines = generate_navigation(sub_struct, current_id)
             is_current |= _is_current
 
-            sub_lines.extend(_sub_lines)
-            sub_lines.append("</li>")
+            sub_lines.extend([ "    " + line for line in _sub_lines ])
+            sub_lines.append("</li>\n")
         
         if is_current:
-            lines.append("<ol class=\"current\">")
+            lines.append("<ol class=\"current\">\n")
         else:
-            lines.append("<ol>")
+            lines.append("<ol>\n")
         
-        lines.extend(sub_lines)
-        lines.append("</ol>")
+        lines.extend([ "    " + line for line in sub_lines ])
+        lines.append("</ol>\n")
     
     return is_current, lines
 
