@@ -75,6 +75,25 @@ def build_links(structure, links = {}, prev = None):
 
     return links, prev
 
+def get_structure(page_id, structure=site_structure):
+    if structure["leaf"]:
+        if structure["id"] == page_id:
+            return structure
+        else:
+            return None
+    
+    else:
+        struct = get_structure(page_id, structure["index"])
+        if struct != None:
+            return struct
+        
+        for sub_struct in structure["subpages"]:
+            struct = get_structure(page_id, sub_struct)
+            if struct != None:
+                return struct
+        
+        return None
+
 def generate_page(structure, links):
     global site_structure
     global include_re
@@ -95,7 +114,7 @@ def generate_page(structure, links):
         if page_links != None:
             HTML_snips["prev_next"] = [ "<link rel=\"{}\" href=\"{}.html\" />".format(*pair) for pair in links[structure["id"]].items() ]
             previous_next = {"prev": "Previous", "next": "Next"}
-            HTML_snips["previous_next_pages"] = ["<br />"] + [ "<a href=\"{}.html\">{}: {}</a>".format(pair[0], previous_next[pair[0]], pair[1]) for pair in links[structure["id"]].items() ]
+            HTML_snips["previous_next_pages"] = [ "<br /><a href=\"{}.html\">{}: {}</a>".format(pair[1], previous_next[pair[0]], get_structure(pair[1])["title"]) for pair in links[structure["id"]].items() ]
         else:
             HTML_snips["prev_next"] = []
             HTML_snips["previous_next_pages"] = []
