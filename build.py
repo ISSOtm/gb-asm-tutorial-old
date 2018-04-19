@@ -78,6 +78,7 @@ def build_links(structure, links = {}, prev = None):
 def generate_page(structure, links):
     global site_structure
     global include_re
+    global template
 
     if not structure["leaf"]:
         generate_page(structure["index"], links)
