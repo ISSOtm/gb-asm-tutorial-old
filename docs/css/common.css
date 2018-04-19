@@ -65,6 +65,13 @@ main article {
     padding: 10px;
 }
 
+@media print {
+    /* Hide the index if printing the page */
+    #tutorial-index {
+        display: none;
+    }
+}
+
 #index-title {
     font-size: 18px;
 }
