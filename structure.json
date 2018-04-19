@@ -18,9 +18,16 @@
                 { "leaf": true, "id": "registers", "title": "Registers" },
                 { "leaf": true, "id": "memory", "title": "Memory" }
             ]
+        },
+        {
+            "leaf": false,
+            "index": { "leaf": true, "id": "extras", "title": "Extras"},
+            "subpages": [
+                { "leaf": true, "id": "resources", "title": "External resources" }
+            ]
         }
     ],
     "special_pages": [
-        { "leaf": "true", "id": "404", "title": "Resource not found" }
+        { "leaf": true, "id": "404", "title": "Resource not found" }
     ]
 }
