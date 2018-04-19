@@ -118,7 +118,7 @@ def generate_page(structure, links):
         else:
             HTML_snips["prev_next"] = []
             HTML_snips["previous_next_pages"] = []
-        with open("src/{}.html".format(structure["id"]), "rt") as content_file:
+        with open("src/{}.html".format(structure["id"]), "rt", encoding = "utf8") as content_file:
             HTML_snips["content"] = content_file.readlines()
 
         out_lines = []
@@ -136,7 +136,7 @@ def generate_page(structure, links):
             else:
                 out_lines.append(line)
 
-        with open("docs/{}.html".format(structure["id"]), "wt") as out_file:
+        with open("docs/{}.html".format(structure["id"]), "wt", encoding = "utf8") as out_file:
             out_file.writelines(out_lines)
 
 print("Building links...")
