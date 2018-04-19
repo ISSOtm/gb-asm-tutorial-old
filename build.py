@@ -129,8 +129,17 @@ def generate_page(structure, links):
                 if snip == None:
                     raise IndexError("Unknown snippet name: {}".format(match.group("id")))
 
+                pre_mode = False
                 for line in snip:
-                    out_lines.append(match.group("whitespace") + line)
+                    if re.match("\s*</pre>", line, re.IGNORECASE):
+                        pre_mode = False
+
+                    if not pre_mode:
+                        if re.match("\s*<pre>", line, re.IGNORECASE):
+                            pre_mode = True
+                        line = match.group("whitespace") + line
+
+                    out_lines.append(line)
                 out_lines.append("\n") # The snip doesn't have a trailing newline, enforce it
             
             else:
