@@ -5,13 +5,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>
-            Landing page        </title>
+            GB ASM Programming
+        </title>
 
         <meta name="author" content="Eldred Habert" />
         <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://issotm.github.io" />
         <link rel="next" href="introduction.html" />
+
         <link rel="stylesheet" href="css/normalize.css" />
         <link rel="stylesheet" href="css/common.css" />
     </head>
@@ -19,18 +21,95 @@
         <main>
             <article>
                 <h1>
-                    Landing page                </h1>
+                    GB ASM Programming
+                </h1>
                 
-                <p>This page is empty for now. Don't worry, it will be filled in eventually!</p>            </article>
+                <p>
+                    <b>Welcome to Game Boy Assembly programming!</b> These pages contain a tutorial on how to program for the Game Boy, and information about the Game Boy's inner workings.
+                    <br />
+                    The goal is to be helpful to both newcomers that want to make a Game Boy game, and provide more detailed info to already experienced GB programmers. You may also enjoy this peek at the console's inner workings if you're just a passionate, too!
+                    <br />
+                    <br />
+                    To get started, click here to begin with the <a href="introduction.html">introduction</a>!
+                </p>
+                
+                <hr>
+                
+                <h2>GBDK users</h2>
+                <p>
+                    If you're a GBDK user, let it be known that I'm not a fan of GBDK. But, before you leave thinking I'm just a purist that hates C, that's not the grudge I have against GBDK. C is useful because it abstracts a lot of implementation tidbits that ASM requires, and I use C a lot on my computer.
+                </p>
+                <p>
+                    The problem with GBDK is that it's extremely inefficient due to an awful C compiler, and a thoroughly unoptimized stdlib. But even worse is that it attempts to abstract the way the hardware works, but ultimately fails at doing so. It's basically impossible to abstract such a small, constrained hardware. I have seen a lot of people who were having problems that they couldn't comprehend, but that were obvious (some of them almost trivial) to me because I <i>knew</i> what the hardware was doing.
+                </p>
+                <p>
+                    Besides, another big bummer (but this one is related to C on the Game Boy more than GBDK) is, there are no C debuggers for the Game Boy. All there is is BGB, which provides ASM debugging. (I don't think there's going to be a C debugger for the GB, either, because it would be way too complex). Thus, I recommend at least having enough ASM knowledge - even if you don't end up programming in ASM! - to be able to use BGB to debug your C programs.
+                </p>
+                <p>
+                    Finally, I'd like to address the fear that some people have about ASM. Over at the <a href="https://discord.gg/gpBxq85">GBDev Discord server</a>, I asked someone what was their opinion on ASM. He has started with a project in GBDK (a graphing calculator), and at that time, was very reluctant about ASM. At the time I'm typing these lines, he's now programming his own game in ASM. Here's what he replied to my enquiry:
+                    <br />
+                    <br />
+                    <q>My opinion was that it's too complicated, takes too long to get anything to work etc. But now I actually quite enjoy working in ASM, and I feel like I'm learning a lot</q>
+                    <br />
+                    <br />
+                    To prove I'm not making things up or taking a sentence out of context, you can check out a <a href="img/robbi_discord_screenshot.png">screenshot</a> of the conversation (I scrolled up to provide a little bit of context). The relevant sentence is highlighted in yellow near the bottom.
+                </p>
+                <p>
+                    By the way, I have made a <a href="https://gist.github.com/ISSOtm/4f4d335c3fd258ad0dfc7d4d615409fd">write-up</a> about the benefits and drawbacks of using C or ASM on the Game Boy. I definitely recommend checking it out.
+                </p>
+                
+                <h2>Contributing</h2>
+                <p>
+                    This website is published on GitHub Pages, which means that anyone can contribute to it. The source repo is <a href="https://github.com/ISSOtm/gb-asm-tutorial/">here</a>, so any HTML-savvy people can send me a pull request. If you have a request, want to point out a mistake, but can't do any HTML, can simply <a href="https://github.com/ISSOtm/gb-asm-tutorial/issues">open an issue</a>, for which I usually recieve a notification e-mail.
+                </p>
+            </article>
 
             <aside>
                 <nav id="tutorial-index">
                     <b id="index-title">Navigation</b>
-                    <br />
-                    <small>Hover over section names to expand</small>
+                    <br /><a href="introduction.html">Next: Introduction</a>
                     <br /><br />
+                    <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
+                    <br />
 
-                    <a href="index.html" class="current">Landing page</a>                    <ol class="current">                    <li>                    <a href="introduction.html">Introduction</a>                    <ol>                    <li>                    <a href="what_is_gb.html">What is Game Boy?</a>                    </li>                    <li>                    <a href="concepts.html">Basic concepts</a>                    </li>                    <li>                    <a href="tools.html">Tools</a>                    </li>                    </ol>                    </li>                    <li>                    <a href="basics.html">Basics</a>                    <ol>                    <li>                    <a href="registers.html">Registers</a>                    </li>                    <li>                    <a href="memory.html">Memory</a>                    </li>                    </ol>                    </li>                    </ol>                </nav>
+                    <a href="index.html" class="current">GB ASM Programming</a>
+                    <ol class="current">
+                        <li>
+                            <a href="introduction.html">Introduction</a>
+                            <ol>
+                                <li>
+                                    <a href="what_is_gb.html">What is Game Boy?</a>
+                                </li>
+                                <li>
+                                    <a href="concepts.html">Basic concepts</a>
+                                </li>
+                                <li>
+                                    <a href="tools.html">Tools</a>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="basics.html">Basics</a>
+                            <ol>
+                                <li>
+                                    <a href="registers.html">Registers</a>
+                                </li>
+                                <li>
+                                    <a href="memory.html">Memory</a>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="extras.html">Extras</a>
+                            <ol>
+                                <li>
+                                    <a href="resources.html">External resources</a>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+
+                </nav>
             </aside>
         </main>
 

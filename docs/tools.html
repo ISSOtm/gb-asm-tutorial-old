@@ -5,13 +5,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>
-            Tools        </title>
+            Tools
+        </title>
 
         <meta name="author" content="Eldred Habert" />
         <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://issotm.github.io" />
         <link rel="prev" href="concepts.html" />        <link rel="next" href="basics.html" />
+
         <link rel="stylesheet" href="css/normalize.css" />
         <link rel="stylesheet" href="css/common.css" />
     </head>
@@ -19,18 +21,104 @@
         <main>
             <article>
                 <h1>
-                    Tools                </h1>
+                    Tools
+                </h1>
                 
-                <p>This page is empty for now. Don't worry, it will be filled in eventually!</p>            </article>
+                <h2>Writing code</h2>
+                <p>
+                    First and foremost is a text editor, or better, an IDE. Your IDE/text editor <a href="https://github.com/avivace/awesome-gbdev/#syntax-highlighting-packages" target="_blank">might have GBz80 ASM highlighting support</a>! (I personally use VS Code on Linux.)
+                </p>
+                <p>
+                    Then comes the compilator (in the case of ASM, compilators are also called "assemblers", but you can use both). I use and recommend <a href="https://github.com/rednex/rgbds" target="_blank">RGBDS</a>, but some prefer <a href="https://github.com/vhelin/wla-dx">wla-dx</a>. I will be using RGBDS throughout this tutorial, but if for some reason you want to use wla, you will be able to follow (although you will have to make some adjustments).
+                </p>
+                
+                <h2>Running code</h2>
+                <p>
+                    You have three options to run your code:
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th>Manipulations to run your code</th>
+                            <th>Debugging</th>
+                            <th>Platform accuracy</th>
+                            <th>Cost</th>
+                            <th>Notes</th>
+                        </tr>
+                        <tr>
+                            <td>Emulator</td>
+                            <td>Basically none</td>
+                            <td>Depends if the emulator supports it</td>
+                            <td>Usually good but not perfect</td>
+                            <td>Free</td>
+                            <td>This is heavily depending on the emulator</td>
+                        </tr>
+                        <tr>
+                            <td>Console (with flashcart)</td>
+                            <td>Can be tedious</td>
+                            <td>No</td>
+                            <td>Perfect</td>
+                            <td>Up to €/$200, depending on what you have and want</td>
+                            <td>This is only recommended to complement emulator testing</td>
+                        </tr>
+                        <tr>
+                            <td>Official devkit (IS-CGB-DEBUGGER)</td>
+                            <td>Not much</td>
+                            <td>Yes</td>
+                            <td>Perfect</td>
+                            <td>At <em>least</em> $1000</td>
+                            <td>This isn't the best solution, but some devkits are circulating on eBay.<br />Also, this requires you to use ISAS, the official assembler -- which is worse than RGBDS and wla</td>
+                        </tr>
+                    </table>
+                </p>
+
+            </article>
 
             <aside>
                 <nav id="tutorial-index">
                     <b id="index-title">Navigation</b>
-                    <br />
-                    <small>Hover over section names to expand</small>
+                    <br /><a href="concepts.html">Previous: Basic concepts</a>                    <br /><a href="basics.html">Next: Basics</a>
                     <br /><br />
+                    <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
+                    <br />
 
-                    <a href="index.html">Landing page</a>                    <ol class="current">                    <li>                    <a href="introduction.html">Introduction</a>                    <ol class="current">                    <li>                    <a href="what_is_gb.html">What is Game Boy?</a>                    </li>                    <li>                    <a href="concepts.html">Basic concepts</a>                    </li>                    <li>                    <a href="tools.html" class="current">Tools</a>                    </li>                    </ol>                    </li>                    <li>                    <a href="basics.html">Basics</a>                    <ol>                    <li>                    <a href="registers.html">Registers</a>                    </li>                    <li>                    <a href="memory.html">Memory</a>                    </li>                    </ol>                    </li>                    </ol>                </nav>
+                    <a href="index.html">GB ASM Programming</a>
+                    <ol class="current">
+                        <li>
+                            <a href="introduction.html">Introduction</a>
+                            <ol class="current">
+                                <li>
+                                    <a href="what_is_gb.html">What is Game Boy?</a>
+                                </li>
+                                <li>
+                                    <a href="concepts.html">Basic concepts</a>
+                                </li>
+                                <li>
+                                    <a href="tools.html" class="current">Tools</a>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="basics.html">Basics</a>
+                            <ol>
+                                <li>
+                                    <a href="registers.html">Registers</a>
+                                </li>
+                                <li>
+                                    <a href="memory.html">Memory</a>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="extras.html">Extras</a>
+                            <ol>
+                                <li>
+                                    <a href="resources.html">External resources</a>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+
+                </nav>
             </aside>
         </main>
 

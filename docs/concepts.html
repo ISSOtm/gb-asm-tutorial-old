@@ -5,13 +5,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>
-            Basic concepts        </title>
+            Basic concepts
+        </title>
 
         <meta name="author" content="Eldred Habert" />
         <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://issotm.github.io" />
         <link rel="prev" href="what_is_gb.html" />        <link rel="next" href="tools.html" />
+
         <link rel="stylesheet" href="css/normalize.css" />
         <link rel="stylesheet" href="css/common.css" />
     </head>
@@ -19,18 +21,237 @@
         <main>
             <article>
                 <h1>
-                    Basic concepts                </h1>
+                    Basic concepts
+                </h1>
                 
-                <p>This page is empty for now. Don't worry, it will be filled in eventually!</p>            </article>
+                <p>
+                    You may know some (or all!) of the concepts explained in this page. If that's the case, feel free to skip them. I recommend reading anyways, I might say things you actually didn't know about.
+                </p>
+                
+                <h2>Binary and hexadecimal</h2>
+                <p>
+                    All data in a computer, this includes the Game Boy and the device you're using to read this very sentence (...I'm already hearing some snarky remarks about printing this page); only one type of data exists: numbers. More precisely, integers. Other data types are built using numbers (eg. non-integers are stored as int1*10^int2, etc.).
+                    <br />
+                    However, computers don't work with decimal numbers; as you may already know, computers work with binary: 0 and 1. This means, in a way, that they only work with these two digits. It's still possible to represent the number 2, just in a different way.
+                    <br />
+                    Binary is otherwise known as "base 2"; the base we're using, decimal, is called "base 10". The reason is, when I write 1337, it's decoded as follows:
+                </p>
+                <pre>
+                      1 * 10^3 + 3 * 10^2 + 3 * 10^1 + 7 * 10^0
+                    = 1 * 1000 + 3 * 100  + 3 * 10   + 7 * 1
+                    = 1000 + 300 + 30 + 7
+                    = 1337
+                </pre>
+                <p>
+                    Simple enough. Now, in binary (base 2), if I write 10100111001, it's decoded like this:
+                </p>
+                <pre>
+                      1 * 2^10 + 0 * 2^9  + 1 * 2^8  + 0 * 2^7  + 0 * 2^6  + 1 * 2^5  + 1 * 2^4  + 1 * 2^3  + 0 * 2^2  + 0 * 2^1  + 1 * 2^0
+                    = 1 * 1024 + 0 * 512  + 1 * 256  + 0 * 128  + 0 * 64   + 1 * 32   + 1 * 16   + 1 * 8    + 0 * 4    + 0 * 2    + 1 * 1
+                    = 1024 + 256 + 32 + 16 + 8 + 1
+                    = 1337
+                </pre>
+                <p>
+                    So, base 10 1337 = base 2 10100111001, huh? But then, how do we know what in what base "101" is? That's why there are conventions to note the base. By default, a number by itself is decimal. However, if the number has the "0b" or "%" prefix, it's a binary number. (Note that "%2" is just invalid, as much as saying "123#56" is a number). So, remember that "1337" and "%10100111001" are <strong>exactly</strong> the same thing.
+                </p>
+                <p>
+                    However, binary quickly becomes extremely cumbersome to work with: there are a lot of digits, and only zeros and ones, which makes it very error-prone. As such, programmers tend to use hexadecimal, or base 16 (since there are more than 10 symbols, after 9 comes A, then B, etc. up to F, which has value 15). Here's why: 16 = 2^4. To explain, here's yet another base conversion, from hexadecimal "539":
+                </p>
+                <pre>
+                      5 * 16^2 + 3 * 16^1 + 9 * 16^0
+                    = 5 * 256  + 3 * 16   + 9 * 1
+                    = 1280 + 48 + 9
+                    = 1337
+                </pre>
+                <p>
+                    Similarly, hexadecimal's prefixes are "0x" or "$", so <em>1337 = %10100111001 = $539</em>. But, you may ask, why is hex (abbreviation of hexadecimal) more convenient than binary? Well, as I said before, 16 = 2^4. Here's a conversion table from hex to bin:
+                </p>
+                <pre>
+                    Hex | Bin
+                    ----+----
+                    0   |    0
+                    1   |    1
+                    2   |   10
+                    3   |   11
+                    4   |  100
+                    5   |  101
+                    6   |  110
+                    7   |  111
+                    8   | 1000
+                    9   | 1001
+                    A   | 1010
+                    B   | 1011
+                    C   | 1100
+                    D   | 1101
+                    E   | 1110
+                    F   | 1111
+                </pre>
+                <p>
+                    As you can see, <em>one hexadecimal character (a "nibble") replaces exactly 4 binary characters (bits)</em>! This is why hex is so convenient: it's trivial to convert to binary, uses only 6 extra symbols, and is four times as compact as binary. This is why you will barely see any binary, and mostly hex and decimal.
+                    <br />
+                    By the way, the letters used for hex are case-insensitive.
+                </p>
+                
+                <h2>Storage limitations</h2>
+                <p>
+                    You may have already heard the term "byte". A byte is a data unit (it's not a type!), it's simply a storage unit that can contain eight bits (= 2 nibbles, if you've been following). Using a small shortcut, "byte" is also used to designate any number (integer) that can fit into such an unit. Example: 42 is a byte, since 42 = 0x2A, 2 nibbles = OK.
+                    <br />
+                    Using some logic, we can determine that a byte can contain the integers $00 = 0 through $FF = 255.
+                </p>
+                <p>
+                    The CPU (and most components within the Game Boy, actually) can only manipulate one byte at a time. So, by default, the CPU can only manipulate the integers between 0 and 255. If you're picky, you may ask "What happens if I do 255 + 1?", and to answer that question, we're going to do some more binary.
+                    <br />
+                    Remember how you perform addition ? Let's do 293 + 12:
+                </p>
+                <pre>
+                     293
+                    + 12
+                
+                    Add the low digits
+                     293
+                    + 12
+                    ----
+                       5
+                
+                    Keep adding
+                     293
+                    + 12
+                    ----
+                      05
+                    
+                    "10" is more than one digit, so we'll add an extra 1 to the next sum
+                     293
+                    + 12
+                    ----
+                     305
+                </pre>
+                <p>
+                    Thing is, the same logic can be applied to binary.
+                </p>
+                <pre>
+                    Add the low digits
+                     1010
+                    +  11
+                    -----
+                        1
+                    
+                    Keep adding
+                     1010 
+                    +  11
+                    -----
+                       01
+                    
+                    "10" is more than one bit, so we'll add an extra 1 to the next sum
+                     1010
+                    +  11
+                    -----
+                      101
+                    
+                    Add some more
+                     1010 (10)
+                    +  11 (3)
+                    -----
+                     1101 (13)
+                </pre>
+                <p>
+                    Now, let's consider what happens when doing 255 + 1:
+                </p>
+                <pre>
+                       1111 1111 (Spaces added to help understanding)
+                    +          1
+                    ------------
+                               0
+                    
+                       1111 1111
+                    +          1
+                    ------------
+                              00
+                    
+                       1111 1111
+                    +          1
+                    ------------
+                             000
+                    
+                    (Skipping ahead a bit)
+                
+                    
+                       1111 1111
+                    +          1
+                    ------------
+                        000 0000
+                    
+                    
+                       1111 1111
+                    +          1
+                    ------------
+                       0000 0000
+                    
+                       1111 1111
+                    +          1
+                    ------------
+                     1 0000 0000
+                </pre>
+                <p>
+                    As you can see, we have a ninth bit (which is the carry from the last bit addition). But, as we said, we're working with units that can contain only 8 bits, so we have to drop that ninth bit. This is called <strong>overflow</strong> -- 256 = 0. It sounds weird, it is weird, but that's how computers work. You can even leverage overflow, sometimes.
+                    <br />
+                    You might be wondering how your computer is able to present the correct result when asked "255 + 1". It's simple, it uses more bytes. First, it adds the bytes together, which yields 0, plus the carry bit. Thus, it knows that it must add 1 to the second byte. ($00FF + $0001 = $0000 + $0100, if you follow my lead)
+                </p>
+                
+                <h2>Data is Code (and vice-versa)</h2>
+                <p>
+                    As I said, everything is numbers, to a computer. Nothing has a special significance (ever wondered why you can coerce a text editor into opening a JPEG?). This includes the very code you are about to learn how to write. For example, the simple instruction <code>xor a</code> (we'll see later what it means) is exactly the same as $AF, or 175. This has the implication that you can't distinguish data and code. It has benefits, but also one drawback.
+                </p>
+                <p>
+                    Here's how it works: first, you write your ASM code using a text format. Then you run it through a program known as a compiler, that turns the text into data. Then, the Game Boy's CPU will read the data, and interpret some bytes as code, and others as data. Some bytes might even end up being interpreted as both! We'll talk about this later.
+                </p>
+            </article>
 
             <aside>
                 <nav id="tutorial-index">
                     <b id="index-title">Navigation</b>
-                    <br />
-                    <small>Hover over section names to expand</small>
+                    <br /><a href="what_is_gb.html">Previous: What is Game Boy?</a>                    <br /><a href="tools.html">Next: Tools</a>
                     <br /><br />
+                    <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
+                    <br />
 
-                    <a href="index.html">Landing page</a>                    <ol class="current">                    <li>                    <a href="introduction.html">Introduction</a>                    <ol class="current">                    <li>                    <a href="what_is_gb.html">What is Game Boy?</a>                    </li>                    <li>                    <a href="concepts.html" class="current">Basic concepts</a>                    </li>                    <li>                    <a href="tools.html">Tools</a>                    </li>                    </ol>                    </li>                    <li>                    <a href="basics.html">Basics</a>                    <ol>                    <li>                    <a href="registers.html">Registers</a>                    </li>                    <li>                    <a href="memory.html">Memory</a>                    </li>                    </ol>                    </li>                    </ol>                </nav>
+                    <a href="index.html">GB ASM Programming</a>
+                    <ol class="current">
+                        <li>
+                            <a href="introduction.html">Introduction</a>
+                            <ol class="current">
+                                <li>
+                                    <a href="what_is_gb.html">What is Game Boy?</a>
+                                </li>
+                                <li>
+                                    <a href="concepts.html" class="current">Basic concepts</a>
+                                </li>
+                                <li>
+                                    <a href="tools.html">Tools</a>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="basics.html">Basics</a>
+                            <ol>
+                                <li>
+                                    <a href="registers.html">Registers</a>
+                                </li>
+                                <li>
+                                    <a href="memory.html">Memory</a>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="extras.html">Extras</a>
+                            <ol>
+                                <li>
+                                    <a href="resources.html">External resources</a>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+
+                </nav>
             </aside>
         </main>
 

@@ -5,13 +5,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>
-            What is Game Boy?        </title>
+            What is Game Boy?
+        </title>
 
         <meta name="author" content="Eldred Habert" />
         <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://issotm.github.io" />
         <link rel="prev" href="introduction.html" />        <link rel="next" href="concepts.html" />
+
         <link rel="stylesheet" href="css/normalize.css" />
         <link rel="stylesheet" href="css/common.css" />
     </head>
@@ -19,18 +21,129 @@
         <main>
             <article>
                 <h1>
-                    What is Game Boy?                </h1>
+                    What is Game Boy?
+                </h1>
                 
-                <p>This page is empty for now. Don't worry, it will be filled in eventually!</p>            </article>
+                <h2>Different models</h2>
+                <p>
+                    There are a few different models of the Game Boy, this section offers details about them. It's a good idea to at least grasp the difference between Game Boy, Color, and Advance.
+                </p>
+                
+                <h3>A brief history</h3>
+                <p>
+                    In 1989, Nintendo released the original Game Boy. It featured a tiny screen (144 pixels vertically, 160 horizontally), a directional pad plus four buttons, and four green-ish colors. Some re-designs were launched later: the Game Boy Pocket (1996) and Game Boy Light in Japan only (1998).
+                    <br />
+                    A SNES peripheral, called the Super Game Boy, was released in 1994 to allow playing Game Boy games on a TV screen.
+                    <br />
+                    The Game Boy Color, launched in 1998, mainly adds color to the screen.
+                    <br />
+                    These consoles's successor is the Game Boy Advance, launched in 2001.
+                    <br />
+                    Released in 2003, the Game Boy Player allowed playing Game Boy, Color, and Advance games on a GameCube.
+                </p>
+                
+                <h3>What is what?</h3>
+                <p>
+                    The Game Boy Pocket and Light are internally exactly the same as the Game Boy. For this reason, they are usually referred to as a whole as <b>DMG</b> systems.
+                    <br />
+                    The Game Boy and Game Boy Color are quite the same console, with the Color bringing a few additional features (most prominently, color, what else!), but also better capabilities that aren't obvious to the end user (besides the games being able to perform more and better). However, the Game Boy Advance is a <em>completely different system</em>! These documents only give information related to the Game Boy, Pocket, Light and Color models. If you're looking for Game Boy Advance information, this isn't the right place to look.
+                </p>
+                
+                <h3>And the rest</h3>
+                <p>
+                    The Game Boy Player is essentially a GBA that communicates with the GameCube, so it allows playing games just like on a GBA. GB(C) games don't have access to the GBP's special features (rumble).
+                    <br />
+                    The games Pokémon Stadium 1 and 2 for the N64 feature a Game Boy Tower that allows playing Pokémon games on the N64. It's actually an emulator (a bit specific, at that: it enables Game Boy Color mode even though it displays the Game Boy boot-up animation), nothing special there.
+                    <br />
+                    The 3DS got some Game Boy "Virtual Console" releases; the GB VC is actually an emulator (and a terrible one, at that), which actually patches a few games to run correctly. For example, the Pokémon game's trade code is present but never called, instead the VC emulator pops up an interface tailored for trading. And homebrew games can't access that interface: the VC locks out that interface to all games that aren't Pokémon. So, again, nothing special here.
+                </p>
+                
+                <h3>Abbreviations</h3>
+                <p>
+                    The abbreviations below are common abbreviations that will be used throughout the rest of this tutorial.
+                </p>
+                <p>
+                    As stated above, the monchrome Game Boy systems are usually referred to collectively under the name DMG (the Game Boy's original codename, which can be found in its product code DMG-001). The Super Game Boy 1 and 2 (Japan exclusive) are referred to as SGB, since again, there is very little difference. The Game Boy Color is either referred to as the GBC (its common abbreviation) or the CGB (its product code). The Game Boy Advance is similarly either GBA or AGB, and the Advance SP either GBASP (or sometimes just SP) or AGS.
+                </p>
+                <p>
+                    Different models usually have a lot of similarities, so conventions exist to designate groups of similar models.
+                    <br />
+                    When used with Game Boy cartridges, the GBA and SP basically act as a GBC, with very few differences. For this reason, GBC/CGB is sometimes used to refer to the GBC, GBA and SP as a whole.
+                    <br />
+                    Since the SGB are very close to DMG models, <i>sometimes</i>, DMG is used to refer to both DMG and SGB models, though this is usually used when an opposition is made against CGB models.
+                </p>
+                
+                
+                <h2>Technical details</h2>
+                <p>
+                    The details in this section are only a brief overview of the system, it's not necessary to remember any of these.
+                </p>
+                <p>
+                    The Game Boy has a custom Sharp LR35902 CPU, which is either a stripped-down Z80, or a slightly upgraded 8080, depending on how you view it. It runs at a whopping 4MHz, though it can be simplified to a 1MHz, since (except in a few extremely edge-y cases) everything take a multiple of 4 cycles. Game Boy Color software can ask the console to double its CPU speed.
+                    <br />
+                    The DMG has 8 kB of video RAM, doubled by the GBC, and 8 kB of work RAM, which the GBC multiplies by <em>four</em>.
+                    <br />
+                    Video-wise, all models have a 144h x 160w screen, with up to 40 sprites, either 8x8 or 8x16 pixels. The DMG has 4 colors (basically greyscale), whereas the GBC has a whopping 32,768 colors. The screen has a 59.73 Hz refresh rate <em>for all regions</em> (and no zoning, either, making development significantly easier).
+                    <br />
+                    Sound-wise, the Game Boy has four channels (two square channels, one voluntary wave channel, and one noise channel)
+                </p>
+                <p>
+                    When programming for the Game Boy, the programmer writes code for the CPU, and it's the only thing that can be directly controlled.
+                    <br />
+                    The other components are the PPU (Picture/Pixel Processing Unit) / LCD, and the APU (Audio Processing Unit). There are some minor components, but they only matter in a handful of situations.
+                </p>
+                
+                <p>
+                    If you have digested all of this, please use the "Next" link in the navigation box.
+                </p>
+            </article>
 
             <aside>
                 <nav id="tutorial-index">
                     <b id="index-title">Navigation</b>
-                    <br />
-                    <small>Hover over section names to expand</small>
+                    <br /><a href="introduction.html">Previous: Introduction</a>                    <br /><a href="concepts.html">Next: Basic concepts</a>
                     <br /><br />
+                    <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
+                    <br />
 
-                    <a href="index.html">Landing page</a>                    <ol class="current">                    <li>                    <a href="introduction.html">Introduction</a>                    <ol class="current">                    <li>                    <a href="what_is_gb.html" class="current">What is Game Boy?</a>                    </li>                    <li>                    <a href="concepts.html">Basic concepts</a>                    </li>                    <li>                    <a href="tools.html">Tools</a>                    </li>                    </ol>                    </li>                    <li>                    <a href="basics.html">Basics</a>                    <ol>                    <li>                    <a href="registers.html">Registers</a>                    </li>                    <li>                    <a href="memory.html">Memory</a>                    </li>                    </ol>                    </li>                    </ol>                </nav>
+                    <a href="index.html">GB ASM Programming</a>
+                    <ol class="current">
+                        <li>
+                            <a href="introduction.html">Introduction</a>
+                            <ol class="current">
+                                <li>
+                                    <a href="what_is_gb.html" class="current">What is Game Boy?</a>
+                                </li>
+                                <li>
+                                    <a href="concepts.html">Basic concepts</a>
+                                </li>
+                                <li>
+                                    <a href="tools.html">Tools</a>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="basics.html">Basics</a>
+                            <ol>
+                                <li>
+                                    <a href="registers.html">Registers</a>
+                                </li>
+                                <li>
+                                    <a href="memory.html">Memory</a>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="extras.html">Extras</a>
+                            <ol>
+                                <li>
+                                    <a href="resources.html">External resources</a>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+
+                </nav>
             </aside>
         </main>
 
