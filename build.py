@@ -94,6 +94,11 @@ def generate_page(structure, links):
         page_links = links.get(structure["id"])
         if page_links != None:
             HTML_snips["prev_next"] = [ "<link rel=\"{}\" href=\"{}.html\" />".format(*pair) for pair in links[structure["id"]].items() ]
+            previous_next = {"prev": "Previous", "next": "Next"}
+            HTML_snips["previous_next_pages"] = ["<br />"] + [ "<a href=\"{}.html\">{}: {}</a>".format(pair[0], previous_next[pair[0]], pair[1]) for pair in links[structure["id"]].items() ]
+        else:
+            HTML_snips["prev_next"] = []
+            HTML_snips["previous_next_pages"] = []
         with open("src/{}.html".format(structure["id"]), "rt") as content_file:
             HTML_snips["content"] = content_file.readlines()
 
@@ -101,7 +106,11 @@ def generate_page(structure, links):
         for line in template:
             match = include_re.match(line)
             if match:
-                for line in HTML_snips.get(match.group("id"), []):
+                snip = HTML_snips.get(match.group("id"), None)
+                if snip == None:
+                    raise IndexError("Unknown snippet name: {}".format(match.group("id")))
+
+                for line in snip:
                     out_lines.append(match.group("whitespace") + line)
                 out_lines.append("\n") # The snip doesn't have a trailing newline, enforce it
             
