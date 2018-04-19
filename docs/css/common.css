@@ -52,6 +52,29 @@ main article {
     flex-grow: 10;
 }
 
+
+table {
+    border-collapse: collapse;
+}
+
+tr:nth-child(2n) td {
+    background-color: #9bbc0f80;
+}
+
+tr:nth-child(2n+1) td {
+    background-color: #30623080;
+}
+
+th {
+    background-color: #0f380f80;
+}
+
+td {
+    border-top: 1px solid black;
+    padding: 5px;
+}
+
+
 #tutorial-index {
     flex-grow: 1;
 
