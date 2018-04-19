@@ -50,6 +50,8 @@ main {
 
 main article {
     flex-grow: 10;
+    /* Somehow this fixes horizontal overflow issues. Thanks @uki ! */
+    min-width: 0;
 }
 
 
