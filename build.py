@@ -103,6 +103,7 @@ def generate_page(structure, links):
             if match:
                 for line in HTML_snips.get(match.group("id"), []):
                     out_lines.append(match.group("whitespace") + line)
+                out_lines.append("\n") # The snip doesn't have a trailing newline, enforce it
             
             else:
                 out_lines.append(line)
