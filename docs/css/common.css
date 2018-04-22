@@ -121,6 +121,10 @@ td {
     transition: visibility 0.5s step-end, height 0.5s step-end, opacity 0.5s ease-in;
 }
 
+#tutorial-index > ol > li > ol > li > ol {
+    list-style-type: lower-alpha;
+}
+
 #tutorial-index > ol > li:hover > ol, #tutorial-index > ol > li > ol.current {
     visibility: visible;
     height: 100%;
