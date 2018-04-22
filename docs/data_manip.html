@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>
+            Data manipulation
+        </title>
+
+        <meta name="author" content="Eldred Habert" />
+        <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
+        <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
+        <link rel="author" href="https://issotm.github.io" />
+        <link rel="prev" href="instructions.html" />
+
+        <link rel="stylesheet" href="css/normalize.css" />
+        <link rel="stylesheet" href="css/common.css" />
+    </head>
+    <body>
+        <main>
+            <article>
+                <h1>
+                    Data manipulation
+                </h1>
+                
+                <h2 id="ld"><code>ld</code></h2>
+                <table class="invert-stripes">
+                    <tr>
+                        <th rowspan="2">Syntax</th><th rowspan="2">Effect</th><th rowspan="2">Size</th><th rowspan="2">M-Cycles</th><th colspan="4">Flags</th>
+                    </tr>
+                    <tr>
+                        <th>C</th><th>Z</th><th>H</th><th>N</th>
+                    </tr>
+                    <tr>
+                        <td><code>ld reg8, op8</code></td><td rowspan="5">Copies the value from the right operand into the left operand.</td><td>1, +1 if immediate value</td><td>1, +1 if immediate value.</td><td rowspan="9">-</td><td rowspan="9">-</td><td rowspan="9">-</td><td rowspan="9">-</td>
+                    </tr>
+                    <tr>
+                        <td><code>ld reg16, imm16<br />ld sp, imm16</code></td><td>3</td><td>3</td>
+                    </tr>
+                    <tr>
+                        <td><code>ld a, [bc/de/mem16]</code></td><td>3</td><td>4</td>
+                    </tr>
+                    <tr>
+                        <td><code>ld [bc/de/mem16], a</code></td><td>3</td><td>4</td>
+                    </tr>
+                    <tr>
+                        <td><code>ld sp, hl</code></td><td>1</td><td>2</td>
+                    </tr>
+                    <tr>
+                        <td><code>ld hl, sp+imm8</code></td><td>Adds a <strong>signed</strong> offset to <code>sp</code>, and copies that to <code>hl</code>. <strong>Does not modify <code>sp</code>!</strong></td><td>2</td><td>Not sure</td>
+                    </tr>
+                    <tr>
+                        <td><code>ld [mem16], sp</code></td><td>Writes the current value of <code>sp</code> at <code>mem16</code> (and <code>mem16 + 1</code>, in little-endian order)</td><td>3</td><td>5</td>
+                    </tr>
+                    <tr>
+                        <td><code>ld a, [c]</code></td><td>Copies the value at <code>$FF00 + c</code> into <code>a</code>.</td><td rowspan="2">1</td><td rowspan="2">2</td>
+                    </tr>
+                    <tr>
+                        <td><code>ld [c], a</code></td><td>Copies the value of <code>a</code> into <code>[$FF00 + c]</code>.</td>
+                    </tr>
+                </table>
+                
+                <h2 id="ldh"><code>ldh</code></h2>
+                <table class="invert-stripes">
+                    <tr>
+                        <th rowspan="2">Syntax</th><th rowspan="2">Effect</th><th rowspan="2">Size</th><th rowspan="2">M-Cycles</th><th colspan="4">Flags</th>
+                    </tr>
+                    <tr>
+                        <th>C</th><th>Z</th><th>H</th><th>N</th>
+                    </tr>
+                    <tr>
+                        <td><code>ldh a, [mem16]</code></td><td>Copies the value at <code>mem16</code> into <code>a</code>. Can only be compiled if <code>mem16</code>'s high byte is $FF.</td><td rowspan="2">2</td><td rowspan="2">3</td><td rowspan="2">-</td><td rowspan="2">-</td><td rowspan="2">-</td><td rowspan="2">-</td>
+                    </tr>
+                    <tr>
+                        <td><code>ldh [mem16], a</code></td><td>Copies the value of <code>a</code> into <code>[mem16]</code>. Can only be compiled if <code>mem16</code>'s high byte is $FF</td>
+                    </tr>
+                </table>
+                
+                <h2 id="ldi_ldd"><code>ldi, ldd</code></h2>
+                <table class="invert-stripes">
+                    <tr>
+                        <th rowspan="2">Syntax</th><th rowspan="2">Effect</th><th rowspan="2">Size</th><th rowspan="2">M-Cycles</th><th colspan="4">Flags</th>
+                    </tr>
+                    <tr>
+                        <th>C</th><th>Z</th><th>H</th><th>N</th>
+                    </tr>
+                    <tr>
+                        <td><code>ldi a, [hl]<br />ld a, [hli]<br />ld a, [hl+]</code></td><td>Copies the value at <code>hl</code> into <code>a</code>, <em>then</em> increments <code>hl</code>.</td><td rowspan="4">1 byte</td><td rowspan="4">2</td><td rowspan="4">-</td><td rowspan="4">-</td><td rowspan="4">-</td><td rowspan="4">-</td>
+                    </tr>
+                    <tr>
+                        <td><code>ldi [hl], a<br />ld [hli], a<br />ld [hl+], a</code></td><td>Copies the value in <code>a</code> into <code>[hl]</code>, <em>then</em> increments <code>hl</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><code>ldd a, [hl]<br />ld a, [hld]<br />ld a, [hl-]</code></td><td>Copies the value at <code>hl</code> into <code>a</code>, <em>then</em> decrements <code>hl</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><code>ldd [hl], a<br />ld [hld], a<br />ld [hl-], a</code></td><td>Copies the value in <code>a</code> into <code>[hl]</code>, <em>then</em> decrements <code>hl</code>.</td>
+                    </tr>
+                </table>
+                
+                <h2 id="push_pop">push, pop</h2>
+                <table class="invert-stripes">
+                    <tr>
+                        <th rowspan="2">Syntax</th><th rowspan="2">Effect</th><th rowspan="2">Size</th><th rowspan="2">M-Cycles</th><th colspan="4">Flags</th>
+                    </tr>
+                    <tr>
+                        <th>C</th><th>Z</th><th>H</th><th>N</th>
+                    </tr>
+                    <tr>
+                        <td><code>push reg16<br />push af</code></td><td>Decrements <code>sp</code>, writes the high byte of <code>reg16</code>, decrements <code>sp</code>, and writes the low byte of <code>reg16</code>.</td><td>1</td><td>4</td><td colspan="4" rowspan="2">All preserved, unless written to by <code>pop af</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><code>pop reg16<br />pop af</code></td><td>Reads the low byte of <code>reg16</code>, increments <code>sp</code>, reads the high byte of <code>reg16</code>, and increments <code>sp</code>.</td><td>1</td><td>3</td>
+                    </tr>
+                </table>
+            </article>
+
+            <aside>
+                <nav id="tutorial-index">
+                    <b id="index-title">Navigation</b>
+                    <br /><a href="instructions.html">Previous: Instruction cheat sheet</a>
+
+                    <br /><br />
+                    <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
+                    <br />
+
+                    <a href="index.html">GB ASM Programming</a>
+                    <ol class="current">
+                        <li>
+                            <a href="introduction.html">Introduction</a>
+                            <ol>
+                                <li>
+                                    <a href="what_is_gb.html">What is Game Boy?</a>
+                                </li>
+                                <li>
+                                    <a href="concepts.html">Basic concepts</a>
+                                </li>
+                                <li>
+                                    <a href="tools.html">Tools</a>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="basics.html">Basics</a>
+                            <ol>
+                                <li>
+                                    <a href="registers.html">Registers</a>
+                                </li>
+                                <li>
+                                    <a href="memory.html">Memory</a>
+                                </li>
+                                <li>
+                                    <a href="arithmetics.html">Arithmetics</a>
+                                </li>
+                                <li>
+                                    <a href="flags.html">Flags</a>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="extras.html">Extras</a>
+                            <ol class="current">
+                                <li>
+                                    <a href="resources.html">External resources</a>
+                                </li>
+                                <li>
+                                    <a href="instructions.html">Instruction cheat sheet</a>
+                                    <ol class="current">
+                                        <li>
+                                            <a href="data_manip.html" class="current">Data manipulation</a>
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+
+
+                    <hr>
+
+                    <a href="https://github.com/ISSOtm/gb-asm-tutorial/issues">Report issue</a>
+                </nav>
+            </aside>
+        </main>
+
+        <nav id="navbar">
+            <a href="/" id="site-name">ISSOtm's</a> -- <a href="index.html">GB programming</a>
+            <a id="to-top" href="#">Back to top</a>
+        </nav>
+    </body>
+</html>

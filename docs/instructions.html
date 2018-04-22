@@ -5,15 +5,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>
-            Introduction
+            Instruction cheat sheet
         </title>
 
         <meta name="author" content="Eldred Habert" />
         <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://issotm.github.io" />
-        <link rel="prev" href="index.html" />
-        <link rel="next" href="what_is_gb.html" />
+        <link rel="prev" href="resources.html" />
+        <link rel="next" href="data_manip.html" />
 
         <link rel="stylesheet" href="css/normalize.css" />
         <link rel="stylesheet" href="css/common.css" />
@@ -22,26 +22,54 @@
         <main>
             <article>
                 <h1>
-                    Introduction
+                    Instruction cheat sheet
                 </h1>
                 
-                <h2>A word of warning</h2>
                 <p>
-                    <strong>If you have never programmed before, I don't recommend starting with ASM.</strong>
+                    You can check the effects, flag results, cycle counts etc. of all GBz80 instructions here.
                     <br />
-                    ASM is a very unique kind of language, so starting with it makes it much more difficult to grasp. You can give it a go anyways, but this tutorial is primarily intended for people who have some programming experience. If you're OK with learning another language before ASM, I recommend C.
-                    <br />
-                    If you only ever did object-oriented programming, ASM may take you by surprise quite a bit. ASM is the CPU's language, and CPUs are fundamentally imperative - thus, ASM is an imperative language. I think there exist some C++ solutions for the Game Boy, but given how difficult it is to make a game run smoothly using ASM (let alone C), I <b>strongly</b> don't recommend using C++ on the Game Boy. And it's not a mixed opinion like with C.
+                    Notes:
                 </p>
+                <ul>
+                    <li><code>immX</code> means a X-bit immediate value.</li>
+                    <li><code>regX</code> means a X-bit register. (Note: <code>af</code> isn't part of the <code>reg16</code> group)</li>
+                    <li><code>opX</code> means either a <code>regX</code>, or an <code>immX</code>.</li>
+                    <li><code>mem16</code> means a 16-bit immediate value, that is used to address memory.</li>
+                    <li>M-Cycles are 1MHz cycles, not the 4MHz clock cycles.</li>
+                    <li>Flag alterations are noted as such: <code>-</code> means "unaffected", <code>0</code> or <code>1</code> means the flag is set to that value, and anything else describes what value the flag is set to.</li>
+                </ul>
                 
-                <p>If you're still here, <a href="what_is_gb.html">let's get going</a>!</p>
+                <h2>Data manipulation</h2>
+                <ul>
+                    <li><a href="data_manip.html#ld">Load: <code>ld</code></a></li>
+                    <li><a href="data_manip.html#ldh">IO load: <code>ldh</code></a></li>
+                    <li><a href="data_manip.html#ldi_ldd">Block load: <code>ldi, ldd</code></a></li>
+                    <li><a href="data_manip.html#push_pop">Stack: <code>push, pop</code></a></li>
+                </ul>
+                
+                <!--
+                Table for one instruction:
+                
+                <table class="invert-stripes">
+                    <tr>
+                        <th rowspan="2">Syntax</th><th rowspan="2">Effect</th><th rowspan="2">Size</th><th rowspan="2">M-Cycles</th><th colspan="4">Flags</th>
+                    </tr>
+                    <tr>
+                        <th>C</th><th>Z</th><th>H</th><th>N</th>
+                    </tr>
+                    <tr>
+                        <td><code>Syntax</code></td><td>Effect</td><td>Bytes</td><td>Cycles</td><td>C</td><td>Z</td><td>H</td><td>N</td>
+                    </tr>
+                </table>
+                
+                -->
             </article>
 
             <aside>
                 <nav id="tutorial-index">
                     <b id="index-title">Navigation</b>
-                    <br /><a href="index.html">Previous: GB ASM Programming</a>
-                    <br /><a href="what_is_gb.html">Next: What is Game Boy?</a>
+                    <br /><a href="resources.html">Previous: External resources</a>
+                    <br /><a href="data_manip.html">Next: Data manipulation</a>
 
                     <br /><br />
                     <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
@@ -50,8 +78,8 @@
                     <a href="index.html">GB ASM Programming</a>
                     <ol class="current">
                         <li>
-                            <a href="introduction.html" class="current">Introduction</a>
-                            <ol class="current">
+                            <a href="introduction.html">Introduction</a>
+                            <ol>
                                 <li>
                                     <a href="what_is_gb.html">What is Game Boy?</a>
                                 </li>
@@ -82,13 +110,13 @@
                         </li>
                         <li>
                             <a href="extras.html">Extras</a>
-                            <ol>
+                            <ol class="current">
                                 <li>
                                     <a href="resources.html">External resources</a>
                                 </li>
                                 <li>
-                                    <a href="instructions.html">Instruction cheat sheet</a>
-                                    <ol>
+                                    <a href="instructions.html" class="current">Instruction cheat sheet</a>
+                                    <ol class="current">
                                         <li>
                                             <a href="data_manip.html">Data manipulation</a>
                                         </li>

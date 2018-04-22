@@ -34,6 +34,21 @@
                     <br />
                     All of these registers are 1 byte, which, if you remember, means they can hold each an integer between either 0 and 255, or -128 and 127. Also, all of them <em>besides <code>f</code></em> are "general-purpose", meaning they can roughly be freely swapped (we'll see that <code>a</code> is a bit special). <code>f</code>, on the other hand, cannot be used at all directly (except in one case explained much later). <code>f</code> will be discussed more in the <a href="flags.html">Flags</a> lesson.
                 </p>
+                
+                <h2>Our first instruction: <code>ld</code></h2>
+                <p>
+                    Here comes our first ASM instruction! Get hyped for <code>ld</code>!
+                    <br />
+                    Like all ASM instructions, <code>ld</code> stands for something else: in this case, it's LoaD. <code>ld</code> loads a value into a register.
+                </p>
+                
+                <h2>Yeah! Teamwork!</h2>
+                <p>
+                    While 7 registers is a nice amount, them only being able to hold 8-bit numbers is kinda limiting. However, the GBz80 has a trick up its sleeves: these registers can be <em>paired together</em> to form 16-bit registers! Values are thus in range 0 - 65,535, or -32,768 - 32,767. Registers <code>b</code> and <code>c</code> form register pair <code>bc</code>, <code>d</code> and <code>e</code> form <code>de</code>, and <code>h</code> and <code>l</code> form <code>hl</code>. <code>a</code> is paired with <code>f</code> in exactly one case, which is specific enough that <code>a</code> should be considered a standalone register.
+                </p>
+                <p>
+                    When paired up, the individual registers can still be accessed. What's interesting is, the value held by the pair is simply a combination of the values held by each register.
+                </p>
             </article>
 
             <aside>
@@ -84,6 +99,14 @@
                             <ol>
                                 <li>
                                     <a href="resources.html">External resources</a>
+                                </li>
+                                <li>
+                                    <a href="instructions.html">Instruction cheat sheet</a>
+                                    <ol>
+                                        <li>
+                                            <a href="data_manip.html">Data manipulation</a>
+                                        </li>
+                                    </ol>
                                 </li>
                             </ol>
                         </li>

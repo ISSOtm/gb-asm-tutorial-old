@@ -25,7 +25,14 @@
             "leaf": false,
             "index": { "leaf": true, "id": "extras", "title": "Extras"},
             "subpages": [
-                { "leaf": true, "id": "resources", "title": "External resources" }
+                { "leaf": true, "id": "resources", "title": "External resources" },
+                {
+                    "leaf": false,
+                    "index": { "leaf": true, "id": "instructions", "title": "Instruction cheat sheet" },
+                    "subpages": [
+                        { "leaf": true, "id": "data_manip", "title": "Data manipulation" }
+                    ]
+                }
             ]
         }
     ],

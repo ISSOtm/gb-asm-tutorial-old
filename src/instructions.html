@@ -1,0 +1,38 @@
+<p>
+    You can check the effects, flag results, cycle counts etc. of all GBz80 instructions here.
+    <br />
+    Notes:
+</p>
+<ul>
+    <li><code>immX</code> means a X-bit immediate value.</li>
+    <li><code>regX</code> means a X-bit register. (Note: <code>af</code> isn't part of the <code>reg16</code> group)</li>
+    <li><code>opX</code> means either a <code>regX</code>, or an <code>immX</code>.</li>
+    <li><code>mem16</code> means a 16-bit immediate value, that is used to address memory.</li>
+    <li>M-Cycles are 1MHz cycles, not the 4MHz clock cycles.</li>
+    <li>Flag alterations are noted as such: <code>-</code> means "unaffected", <code>0</code> or <code>1</code> means the flag is set to that value, and anything else describes what value the flag is set to.</li>
+</ul>
+
+<h2>Data manipulation</h2>
+<ul>
+    <li><a href="data_manip.html#ld">Load: <code>ld</code></a></li>
+    <li><a href="data_manip.html#ldh">IO load: <code>ldh</code></a></li>
+    <li><a href="data_manip.html#ldi_ldd">Block load: <code>ldi, ldd</code></a></li>
+    <li><a href="data_manip.html#push_pop">Stack: <code>push, pop</code></a></li>
+</ul>
+
+<!--
+Table for one instruction:
+
+<table class="invert-stripes">
+    <tr>
+        <th rowspan="2">Syntax</th><th rowspan="2">Effect</th><th rowspan="2">Size</th><th rowspan="2">M-Cycles</th><th colspan="4">Flags</th>
+    </tr>
+    <tr>
+        <th>C</th><th>Z</th><th>H</th><th>N</th>
+    </tr>
+    <tr>
+        <td><code>Syntax</code></td><td>Effect</td><td>Bytes</td><td>Cycles</td><td>C</td><td>Z</td><td>H</td><td>N</td>
+    </tr>
+</table>
+
+-->
