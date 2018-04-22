@@ -33,6 +33,12 @@ body {
     font-weight: bold;
 }
 
+#to-top {
+    float: right;
+    background-color: #9bbc0f;
+    margin-right: 10px;
+}
+
 
 main {
     position: relative;
