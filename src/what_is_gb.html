@@ -5,22 +5,22 @@
 
 <h3>A brief history</h3>
 <p>
-    In 1989, Nintendo released the original Game Boy. It featured a tiny screen (144 pixels vertically, 160 horizontally), a directional pad plus four buttons, and four green-ish colors. Some re-designs were launched later: the Game Boy Pocket (1996) and Game Boy Light in Japan only (1998).
+    In 1989, Nintendo released the original Game Boy. It featured a tiny screen (144 pixels vertically, 160 horizontally), a directional pad plus four buttons, and four green-ish colors. Some re-designs were launched later: the Game Boy Pocket in 1996 and Game Boy Light in 1998, only in Japan.
     <br />
     A SNES peripheral, called the Super Game Boy, was released in 1994 to allow playing Game Boy games on a TV screen.
     <br />
     The Game Boy Color, launched in 1998, mainly adds color to the screen.
     <br />
-    These consoles's successor is the Game Boy Advance, launched in 2001.
+    The successor to all of these is the Game Boy Advance, launched in 2001.
     <br />
     Released in 2003, the Game Boy Player allowed playing Game Boy, Color, and Advance games on a GameCube.
 </p>
 
-<h3>What is what?</h3>
+<h3>The differences</h3>
 <p>
     The Game Boy Pocket and Light are internally exactly the same as the Game Boy. For this reason, they are usually referred to as a whole as <b>DMG</b> systems.
     <br />
-    The Game Boy and Game Boy Color are quite the same console, with the Color bringing a few additional features (most prominently, color, what else!), but also better capabilities that aren't obvious to the end user (besides the games being able to perform more and better). However, the Game Boy Advance is a <em>completely different system</em>! These documents only give information related to the Game Boy, Pocket, Light and Color models. If you're looking for Game Boy Advance information, this isn't the right place to look.
+    The Game Boy and Game Boy Color are quite the same console, with the Color bringing a few additional features (most prominently, color, what else!), but also better capabilities that aren't obvious to the end user, besides the games being able to perform more and better. However, the Game Boy Advance is a <em>completely different system</em>! These documents only give information related to the Game Boy, Pocket, Light and Color models. If you're looking for Game Boy Advance information, this isn't the right place to look.
 </p>
 
 <h3>And the rest</h3>
@@ -37,7 +37,7 @@
     The abbreviations below are common abbreviations that will be used throughout the rest of this tutorial.
 </p>
 <p>
-    As stated above, the monchrome Game Boy systems are usually referred to collectively under the name DMG (the Game Boy's original codename, which can be found in its product code DMG-001). The Super Game Boy 1 and 2 (Japan exclusive) are referred to as SGB, since again, there is very little difference. The Game Boy Color is either referred to as the GBC (its common abbreviation) or the CGB (its product code). The Game Boy Advance is similarly either GBA or AGB, and the Advance SP either GBASP (or sometimes just SP) or AGS.
+    As stated above, the monchrome Game Boy systems are usually referred to collectively under the name DMG, the Game Boy's original codename, which can be found in its product code DMG-001. The Super Game Boy 1 and 2, the latter a Japan exclusive, are referred to as SGB, since again, there is very little difference. The Game Boy Color is either referred to as the GBC, its common abbreviation, or the CGB, its product code. The Game Boy Advance is similarly either GBA or AGB, and the Advance SP either GBASP, sometimes just SP, or AGS.
 </p>
 <p>
     Different models usually have a lot of similarities, so conventions exist to designate groups of similar models.
@@ -53,13 +53,13 @@
     The details in this section are only a brief overview of the system, it's not necessary to remember any of these.
 </p>
 <p>
-    The Game Boy has a custom Sharp LR35902 CPU, which is either a stripped-down Z80, or a slightly upgraded 8080, depending on how you view it. It runs at a whopping 4MHz, though it can be simplified to a 1MHz, since (except in a few extremely edge-y cases) everything take a multiple of 4 cycles. Game Boy Color software can ask the console to double its CPU speed.
+    The Game Boy has a custom Sharp LR35902 CPU, which is either a stripped-down Z80, or a slightly upgraded 8080, depending on how you view it. It runs at a whopping 4MHz, though it can be simplified to a 1MHz, since, except in a few extremely edge-y cases, everything take a multiple of 4 cycles. Game Boy Color software can ask the console to double its CPU speed.
     <br />
     The DMG has 8 kB of video RAM, doubled by the GBC, and 8 kB of work RAM, which the GBC multiplies by <em>four</em>.
     <br />
     Video-wise, all models have a 144h x 160w screen, with up to 40 sprites, either 8x8 or 8x16 pixels. The DMG has 4 colors (basically greyscale), whereas the GBC has a whopping 32,768 colors. The screen has a 59.73 Hz refresh rate <em>for all regions</em> (and no zoning, either, making development significantly easier).
     <br />
-    Sound-wise, the Game Boy has four channels (two square channels, one voluntary wave channel, and one noise channel)
+    Sound-wise, the Game Boy has four channels: two square channels, one voluntary (semi-flexible) wave channel, and one noise channel.
 </p>
 <p>
     When programming for the Game Boy, the programmer writes code for the CPU, and it's the only thing that can be directly controlled.
