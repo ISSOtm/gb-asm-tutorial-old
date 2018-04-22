@@ -135,7 +135,7 @@ def generate_page(structure, links):
                         pre_mode = False
 
                     if not pre_mode:
-                        if re.match("\s*<pre>", line, re.IGNORECASE):
+                        if re.match("\s*<pre>", line, re.IGNORECASE) and not re.match("</pre>", line, re.IGNORECASE):
                             pre_mode = True
                         line = match.group("whitespace") + line
 
