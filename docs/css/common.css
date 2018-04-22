@@ -76,6 +76,7 @@ tr:nth-child(2n+1) td, .invert-stripes > tbody > tr:nth-child(2n) td {
 
 th {
     background-color: #0f380f80;
+    padding: 5px;
 }
 
 td {
