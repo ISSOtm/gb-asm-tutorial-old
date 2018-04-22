@@ -12,7 +12,8 @@
         <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://issotm.github.io" />
-        <link rel="prev" href="basics.html" />        <link rel="next" href="memory.html" />
+        <link rel="prev" href="basics.html" />
+        <link rel="next" href="memory.html" />
 
         <link rel="stylesheet" href="css/normalize.css" />
         <link rel="stylesheet" href="css/common.css" />
@@ -24,13 +25,23 @@
                     Registers
                 </h1>
                 
-                <p>This page is empty for now. Don't worry, it will be filled in eventually!</p>
+                <h2>What is a register?</h2>
+                <p>
+                    The CPU has to work with some memory, otherwise not much can be achieved. However, <em>external</em> memory is rather slow to access (as we'll see later), thus, the CPU has a tiny amount of memory embedded within it. Tiny as in, a handful of bytes. This memory is split in units called <strong>registers</strong>.
+                </p>
+                <p>
+                    The GBz80 has eight registers: <code>a</code>, <code>f</code>, <code>b</code>, <code>c</code>, <code>d</code>, <code>e</code>, <code>h</code>, and <code>l</code> (plus some others we'll discuss later). The odd ordering I might have given isn't random, it'll be explained below.
+                    <br />
+                    All of these registers are 1 byte, which, if you remember, means they can hold each an integer between either 0 and 255, or -128 and 127. Also, all of them <em>besides <code>f</code></em> are "general-purpose", meaning they can roughly be freely swapped (we'll see that <code>a</code> is a bit special). <code>f</code>, on the other hand, cannot be used at all directly (except in one case explained much later). <code>f</code> will be discussed more in the <a href="flags.html">Flags</a> lesson.
+                </p>
             </article>
 
             <aside>
                 <nav id="tutorial-index">
                     <b id="index-title">Navigation</b>
-                    <br /><a href="basics.html">Previous: Basics</a>                    <br /><a href="memory.html">Next: Memory</a>
+                    <br /><a href="basics.html">Previous: Basics</a>
+                    <br /><a href="memory.html">Next: Memory</a>
+
                     <br /><br />
                     <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
                     <br />
@@ -59,6 +70,12 @@
                                 </li>
                                 <li>
                                     <a href="memory.html">Memory</a>
+                                </li>
+                                <li>
+                                    <a href="arithmetics.html">Arithmetics</a>
+                                </li>
+                                <li>
+                                    <a href="flags.html">Flags</a>
                                 </li>
                             </ol>
                         </li>

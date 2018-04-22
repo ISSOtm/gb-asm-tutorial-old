@@ -112,9 +112,9 @@ def generate_page(structure, links):
         HTML_snips["title"] = [ structure["title"] ]
         page_links = links.get(structure["id"])
         if page_links != None:
-            HTML_snips["prev_next"] = [ "<link rel=\"{}\" href=\"{}.html\" />".format(*pair) for pair in links[structure["id"]].items() ]
+            HTML_snips["prev_next"] = [ "<link rel=\"{}\" href=\"{}.html\" />\n".format(*pair) for pair in links[structure["id"]].items() ]
             previous_next = {"prev": "Previous", "next": "Next"}
-            HTML_snips["previous_next_pages"] = [ "<br /><a href=\"{}.html\">{}: {}</a>".format(pair[1], previous_next[pair[0]], get_structure(pair[1])["title"]) for pair in links[structure["id"]].items() ]
+            HTML_snips["previous_next_pages"] = [ "<br /><a href=\"{}.html\">{}: {}</a>\n".format(pair[1], previous_next[pair[0]], get_structure(pair[1])["title"]) for pair in links[structure["id"]].items() ]
         else:
             HTML_snips["prev_next"] = []
             HTML_snips["previous_next_pages"] = []
