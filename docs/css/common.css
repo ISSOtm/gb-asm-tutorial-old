@@ -65,11 +65,11 @@ table {
     border-collapse: collapse;
 }
 
-tr:nth-child(2n) td {
+tr:nth-child(2n) td, .invert-stripes > tbody > tr:nth-child(2n+1) td {
     background-color: #9bbc0f80;
 }
 
-tr:nth-child(2n+1) td {
+tr:nth-child(2n+1) td, .invert-stripes > tbody > tr:nth-child(2n) td {
     background-color: #30623080;
 }
 
