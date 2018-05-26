@@ -131,12 +131,13 @@ def generate_page(structure, links):
 
                 pre_mode = False
                 for line in snip:
-                    if re.match("\s*</pre>", line, re.IGNORECASE):
-                        pre_mode = False
-
-                    if not pre_mode:
-                        if re.match("\s*<pre>", line, re.IGNORECASE) and not re.match("</pre>", line, re.IGNORECASE):
-                            pre_mode = True
+                    last_line = False
+                    if len(re.findall("(<pre>|</pre>)", line, re.IGNORECASE)) % 2 == 1:
+                        pre_mode = not pre_mode
+                        if not pre_mode:
+                            last_line = True
+                    
+                    if not pre_mode and not last_line:
                         line = match.group("whitespace") + line
 
                     out_lines.append(line)
