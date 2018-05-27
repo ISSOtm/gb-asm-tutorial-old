@@ -15,6 +15,7 @@
             "leaf": false,
             "index": { "leaf": true, "id": "basics", "title": "Basics" },
             "subpages": [
+                { "leaf": true, "id": "syntax", "title": "ASM syntax" },
                 { "leaf": true, "id": "registers", "title": "Registers" },
                 { "leaf": true, "id": "memory", "title": "Memory" },
                 { "leaf": true, "id": "arithmetics", "title": "Arithmetics"},

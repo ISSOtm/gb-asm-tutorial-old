@@ -197,10 +197,13 @@
     This way of using negative numbers is called two's complement. It has the advantage that there's no conversion between signed and unsigned interpretations (-1 and 255 are encoded exactly the same way: $FF). This is how the CPU implements subtraction, too.
 </p>
 
-<h2>Data is Code (and vice-versa)</h2>
+<h2>Data is Code (and vice-versa), or About Compilation</h2>
 <p>
     As I said, everything is numbers, to a computer. Nothing has a special significance (ever wondered why you can coerce a text editor into opening a JPEG?). This includes the very code you are about to learn how to write. For example, the simple instruction <code>xor a</code> (we'll see later what it means) is exactly the same as $AF, or 175. This has the implication that you can't distinguish data and code, which has benefits, but also one drawback. This is discussed in a later section.
 </p>
 <p>
     Here's how it works: first, you write your ASM code using a text format. Then you run it through a program known as a compiler, that turns the text into data. Then, the Game Boy's CPU will read the data, and interpret some bytes as code, and others as data. Some bytes might even end up being interpreted as both! We'll talk about this later.
+</p>
+<p>
+    The process of turning the ASM text into data is known as <strong>compilation</strong>, or, in the case of ASM, <em>assembling</em> / <em>assembly</em>.
 </p>
