@@ -1,1 +1,50 @@
-<p>This page is empty for now. Don't worry, it will be filled in eventually!</p>
+<h2>What is <s aria-hidden="true">love</s> memory?</h2>
+<p>
+    Memory is pretty straightforward: it's a field of bytes. Each byte has an <strong>address</strong>, which is used to access it. Addresses are coded using 16 bits, so the CPU can "see" 65536 bytes at once ($0000-$FFFF). Alert readers will have noticed that this is exactly the same size as a register pair, and will be proven correct further below.
+</p>
+<p>
+    To access memory, we will use our trusty <code>ld</code>. How do we denote "memory access"? Simple: using square brackets! While <code>$C000</code> represents the number $C000, <code>[$C000]</code> represents <em>the byte at address $C000</em>.
+</p>
+<p>
+    So, you may be tempted to write stuff like <code>ld d, [$1DEA]</code>. But there's a pretty big catch: this only works with <code>a</code>!
+</p>
+<pre>
+    ; This is ok
+    ld [$ABAD], a
+    ld a, [$1DEA]
+
+    ; This is not
+    ld [$DEAD], l
+    ld bc, [$BEEF]
+</pre>
+
+<h2>Pairs, rock out!!</h2>
+<p>
+    Let's take the bracketing a little further. While <code>[[$C000]]</code> would have been nice (I can already hear a 6502 mob booing), we have something else. Remember how "<code>[$C000]</code> represents the byte at address $C000"? Well, <code>[hl]</code> represents the byte at address <code>hl</code>. Thus, if <code>hl</code> = $C000, then <code>[hl]</code> represents the same byte as <code>[$C000]</code> does.
+</p>
+<p>
+    Now, you have to use <code>a</code> with <code>[bc]</code> and <code>[de]</code>, but <code>[hl]</code> saves the day by being usable with <em>all 8-bit registers</em>! Actually, for almost all purposes, <code>[hl]</code> can be considered an 8-bit register. Neat!
+</p>
+<pre>
+    ; Ok
+    ld a, [de]
+    ld [bc], a
+
+    ; Not ok
+    ld c, [de]
+    ld [de], hl
+
+    ; Ok
+    ld a, [hl]
+    ld l, [hl]
+    ld [hl], c
+
+    ; Not ok
+    ld bc, [hl]
+    ld [hl], [hl]
+</pre>
+<p>
+    <small>This paragraph is fairly technical for this part of the tutorial, and is useless trivia anyways. You can skip it without danger.</small>
+    <br />
+    <code>ld [hl], [hl]</code> is not a valid instruction. If you're clever enough to figure out how the <code>ld reg8, reg8</code> instructions are encoded, you will figure out that <code>ld [hl], [hl]</code> should be encoded by the value $76. Thing is, $76 maps to the <code>halt</code> instruction, so <code>ld [hl], [hl]</code> really doesn't exist.
+</p>
