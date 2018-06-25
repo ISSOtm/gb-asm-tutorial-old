@@ -3,22 +3,37 @@
     The CPU has to work with some memory, otherwise not much can be achieved. However, <em>external</em> memory is rather slow to access (as we'll see later), thus, the CPU has a tiny amount of memory embedded within it. Tiny as in, a handful of bytes. This memory is split in units called <strong>registers</strong>.
 </p>
 <p>
-    The GBz80 has eight registers: <code>a</code>, <code>f</code>, <code>b</code>, <code>c</code>, <code>d</code>, <code>e</code>, <code>h</code>, and <code>l</code> (plus some others we'll discuss later). The odd ordering I might have given isn't random, it'll be explained below.
-    <br />
+    The GBz80 has eight <strong>general-purpose</strong> registers: <code>a</code>, <code>f</code>, <code>b</code>, <code>c</code>, <code>d</code>, <code>e</code>, <code>h</code>, and <code>l</code> (plus some others we'll discuss later). The odd ordering I might have given isn't random, it'll be explained below. "General-purpose" means that any register can be used for anything (although <code>a</code> is kind of special).
+</p>
+<p>
     All of these registers are 1 byte, which, if you remember, means they can hold each an integer between either 0 and 255, or -128 and 127. Also, all of them <em>besides <code>f</code></em> are "general-purpose", meaning they can roughly be freely swapped (we'll see that <code>a</code> is a bit special). <code>f</code>, on the other hand, cannot be used at all directly (except in one case explained much later). <code>f</code> will be discussed more in the <a href="flags.html">Flags</a> lesson.
 </p>
 
 <h2>Our first instruction: <code>ld</code></h2>
 <p>
-    Here comes our first ASM instruction! Get hyped for <code>ld</code>!
-    <br />
-    Like all ASM instructions, <code>ld</code> stands for something else: in this case, it's LoaD. <code>ld</code> loads a value into a register.
+    Here comes our first ASM instruction! Get hyped for <code>ld</code>! Like all ASM instructions, <code>ld</code> stands for something else: in this case, it's LoaD. <code>ld</code> loads a value into a register. Here's the syntax: <code>ld dest, source</code>.
 </p>
+<p>
+    As described above, <code>f</code> cannot be used as the source or destination. Other than that, <code>dest</code> can be any register, and <code>source</code> can be any register <em>or</em> an <strong>immediate value</strong>. An immediate value is simply a number that is provided directly.
+</p>
+<pre>
+    ld l, a ; Copy the value in A into L. A's value is preserved.
+    ld h, 0 ; Put 0 into H ("0" is an immediate value, here)
+    ld c, $2A ; Put 42 into C ("$2A" is also an immediate)
+</pre>
 
 <h2>Yeah! Teamwork!</h2>
 <p>
-    While 7 registers is a nice amount, them only being able to hold 8-bit numbers is kinda limiting. However, the GBz80 has a trick up its sleeves: these registers can be <em>paired together</em> to form 16-bit registers! Values are thus in range 0 - 65,535, or -32,768 - 32,767. Registers <code>b</code> and <code>c</code> form register pair <code>bc</code>, <code>d</code> and <code>e</code> form <code>de</code>, and <code>h</code> and <code>l</code> form <code>hl</code>. <code>a</code> is paired with <code>f</code> in exactly one case, which is specific enough that <code>a</code> should be considered a standalone register.
+    While 7 registers is a nice amount, only being able to hold 8-bit numbers is kinda limiting. However, the GBz80 has a trick up its sleeves: these registers can be <em>paired together</em> to form 16-bit registers! Values are thus in range 0 - 65,535, or -32,768 - 32,767. Registers <code>b</code> and <code>c</code> form register pair <code>bc</code>, <code>d</code> and <code>e</code> form <code>de</code>, and <code>h</code> and <code>l</code> form <code>hl</code>. <code>a</code> is paired with <code>f</code> in exactly one case, which is specific enough that we will consider <code>a</code> a standalone register.
 </p>
 <p>
     When paired up, the individual registers can still be accessed. What's interesting is, the value held by the pair is simply a combination of the values held by each register.
 </p>
+<pre>
+    ld hl, $1245
+    ld l, $34 ; HL = $1234 now
+    
+    ld c, $FE
+    ld b, $CA
+    ; BC = $CAFE now
+</pre>
