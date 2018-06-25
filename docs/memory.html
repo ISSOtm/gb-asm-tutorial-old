@@ -13,7 +13,7 @@
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://issotm.github.io" />
         <link rel="prev" href="registers.html" />
-        <link rel="next" href="arithmetics.html" />
+        <link rel="next" href="flags.html" />
 
         <link rel="stylesheet" href="css/normalize.css" />
         <link rel="stylesheet" href="css/common.css" />
@@ -71,9 +71,9 @@
     ld [hl], [hl]
 </pre>
                 <p>
-                    <small>This paragraph is fairly technical for this part of the tutorial, and is useless trivia anyways. You can skip if without danger.</small>
+                    <small>This paragraph is fairly technical for this part of the tutorial, and is useless trivia anyways. You can skip it without danger.</small>
                     <br />
-                    <code>ld [hl], [hl]</code> is not a valid instruction. If you're clever enough to figure out how the <code>ld reg8, reg8</code> instructions are encoded, you will figure out that <code>ld [hl], [hl]</code> should be encoded by the valie $76. Thing is, $76 maps to the <code>halt</code> instruction, so <code>ld [hl], [hl]</code> really doesn't exist.
+                    <code>ld [hl], [hl]</code> is not a valid instruction. If you're clever enough to figure out how the <code>ld reg8, reg8</code> instructions are encoded, you will figure out that <code>ld [hl], [hl]</code> should be encoded by the value $76. Thing is, $76 maps to the <code>halt</code> instruction, so <code>ld [hl], [hl]</code> really doesn't exist.
                 </p>
 
             </article>
@@ -82,7 +82,7 @@
                 <nav id="tutorial-index">
                     <b id="index-title">Navigation</b>
                     <br /><a href="registers.html">Previous: Registers</a>
-                    <br /><a href="arithmetics.html">Next: Arithmetics</a>
+                    <br /><a href="flags.html">Next: Flags</a>
 
                     <br /><br />
                     <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
@@ -117,10 +117,10 @@
                                     <a href="memory.html" class="current">Memory</a>
                                 </li>
                                 <li>
-                                    <a href="arithmetics.html">Arithmetics</a>
+                                    <a href="flags.html">Flags</a>
                                 </li>
                                 <li>
-                                    <a href="flags.html">Flags</a>
+                                    <a href="arithmetics.html">Arithmetics</a>
                                 </li>
                             </ol>
                         </li>
