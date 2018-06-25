@@ -5,9 +5,15 @@
     ASM is not <em>a</em> language, but a class of languages; rather, there is one ASM language per CPU in existence. The reason is that, for example, GBz80 ASM is the ASM language understood by the GB's CPU, the GBz80. Similarly, x86 ASM is the ASM understood by the x86 family of CPUs.
 </p>
 <p>
-    ASM really feels like a list, in a way. Here's a sample of ASM, to give you a preview:
+    From now on, though, "ASM" will refer to "GB ASM", "GBz80 ASM", "LR35902 ASM" and any other synonym.
+</p>
+<p>
+    Here is a snippet of ASM, just to give you a taste.
 </p>
 <pre>
+Start:
+    di
+
     cp a, $11 ; Compare value left by boot ROM
     jr nz, .notGBC
     ld a, 1
@@ -30,13 +36,14 @@
     bit 7, c
     jr nz, .clearHRAM</pre>
 <p>
-    If you're familiar with C, this snippet is more or less this:
+    If you're familiar with C, this snippet is more or less this: (NB: I am aware that C does not have a <code>do { ... } while();</code> structure, but pretend it does, alright?)
 </p>
 <pre>
-    hConsoleType = a == 0x11 ? 1 : 0;
+    a = a == 0x11 ? 1 : 0;
+    *hConsoleType = a;
 
     a = 0;
-    LCDC = a;
+    *LCDC = a;
 
     c = 0xFD;
     do {
@@ -55,4 +62,99 @@
 </p>
 <p>
     A comment can be anything, and is ignored by the compiler (and thus aren't included in the final ROM): the point is to provide context to some code. Comments are optional, and can also be alone on their line.
+</p>
+<p>
+    Let's take a closer look at the instruction: <code>cp a, $11</code>. The first part, <code>cp</code>, is the instruction proper. The second part, <code>a, $11</code> is a comma-separated list of operands. Thus, the two operands here are <code>a</code> and <code>$11</code>. Some instructions don't take any operands (<code>di</code>), some may take a different number of them (<code>jr nz, .notGBC</code> versus <code>jr .gotConsoleType</code>).
+</p>
+<p>
+    We will learn instructions as we discover some concepts. For now, you don't need to know what the instructions below do -- in fact, the programs are nonsensical, they're just here as <em>syntax</em> examples.
+</p>
+
+<h2>Labels</h2>
+<p>
+    You may have noticed that some lines deviate from this rule: <code>Start:</code> and <code>.notGBC</code>, for example. These are <strong>labels</strong>. A label simply designates a memory address, the one where the following instruction is located. Labels can be on the same line as an instruction and/or a comment. Labels may optionally be followed by a colon. I <em>really</em> recommend putting a colon always, it helps with readability.
+</p>
+<pre>
+; These 3 labels are the same. Useful for aliasing, for example.
+Label:; You don't have to separate with spaces. Cool!
+OtherLabel
+
+Eh: db $FE ; You can have all three on the same line!
+
+
+Label: ; RGBDS will complain that you defined this twice
+</pre>
+<p>
+    It's of course invalid to create two labels with the same name. It's actually fairly annoying when it happens, because RGBDS tends to not give you line numbers when it happens. Cue heavy Ctrl+F and/or <code>grep</code> in your project files.
+</p>
+<p>
+    But then what about these other labels starting with a dot? These are <strong>local labels</strong>. Basically, a local label is only accessible inside its global label. Here's an example for clarity:
+</p>
+<pre>
+.alone ; BAD: no global label declared before it
+
+GlobalLabel:
+    ld hl, .local ; Refers to the "db $FF"'s address
+
+.local
+    db $FF
+
+    ld e, a ; More stuff, who cares!
+
+
+AnotherGlobalLabel:
+    ld a, e
+
+.local
+    ld sp, $E000
+
+    dw .local ; Refers to the "ld sp, $E000"'s address
+
+
+DontDoThis:
+
+.duplicate ; You can define a local label at the beginning of its "block".
+    ld b, b
+.duplicate ; BAD: twice the same name!
+</pre>
+<p>
+    Note that since labels refer to memory locations, they're just numbers. Thus, you can perform arithmetics with labels!
+</p>
+<pre>
+    ld bc, DataEnd - Data ; Gets the length of a block of data, for example
+
+    ; (...)
+
+Data:
+    ; Some data here
+DataEnd:
+</pre>
+
+<h2>Tricky Tabs!</h2>
+<p>
+    This one is an annoying tidbit. Basically, RGBDS is very touchy about tabs. Rest assured, you can use tabs (\t) or spaces alike, even mix both, it doesn't care. You can even be inconsistent! No, the problem lies in labels and instructions.
+</p>
+<p>
+    <b>Rule #1:</b> labels must be at the beginning of the line.
+</p>
+<pre>
+Good:
+
+    Bad: ; RGBDS will complain, probably about a macro not being defined. Don't worry, it will make sense later.
+ OhNo: ; Same
+</pre>
+<p>
+    <b>Rule #2:</b> instructions may not be at the beginning of the line.
+</p>
+<pre>
+    ld a, Good
+
+cp Bad ; Oh no
+</pre>
+<p>
+    <b>Rule #3:</b> comments... are don't care.
+</p>
+
+<p>
+    Alright, in the next page, we'll learn our first instruction!
 </p>
