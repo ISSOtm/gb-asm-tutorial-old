@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>
+            Interlude
+        </title>
+
+        <meta name="author" content="Eldred Habert" />
+        <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
+        <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
+        <link rel="author" href="https://issotm.github.io" />
+        <link rel="prev" href="arithmetics.html" />
+        <link rel="next" href="extras.html" />
+
+        <link rel="stylesheet" href="css/normalize.css" />
+        <link rel="stylesheet" href="css/common.css" />
+    </head>
+    <body>
+        <main>
+            <article>
+                <h1>
+                    Interlude
+                </h1>
+                
+                <p>
+                    This is a small interlude to talk about miscellaneous stuff. Take it easy, take a break, all that.
+                    <br />
+                    Note that while this is miscellanii, there are a few instructions introduced here. I still recommend you read this lesson.
+                </p>
+                
+                <h2>On the topic of doing nothing</h2>
+                <p>
+                    <code>nop</code> is one of the most powerful instructions of the GBz80's set. That's because it performs <b>no op</b>eration! ...That's right, it's a 1-byte instruction that has no effect whatsoever, aside from wasting time. It has its uses, at times -- believe it or not, but sometimes we need to waste some time.
+                </p>
+                
+                <h2>Not-so-nop</h2>
+                <p>
+                    You may think that instructions such as <code>ld c, c</code> or <code>ld a, a</code> are useless, and basically the equivalent of <code>nop</code>. Well, that's true, but we have two snowflakes there: <code>ld b, b</code> and <code>ld d, d</code>. While these instructions effectively do nothing, they're used by emulators (mostly) to notify the developer. Note that, as far as I'm aware, only two emulators support these: BGB and no$gmb. <code>ld b, b</code> is a <b>b</b>reakpoint inserted in the source code (BGB can break on those if the option is checked in the "Exceptions" menu), and <code>ld d, d</code> allows printing <b>d</b>ebug messages to the console. Refer to <a href="http://bgb.bircd.org/manual.html#expressions">BGB's manual</a> for an explanation on how those work.
+                </p>
+                <p>
+                    Note that while (some) emulators act specifically on these instructions, this is designed to be transparent (doing nothing) to emulators unaware of this, and to the actual console. You can also not use them.
+                </p>
+                
+                <h2>Alternate notation</h2>
+                <p>
+                    When <code>a</code> is the left operand to an arithmetic instruction (<code>add</code>, <code>sub</code>, <code>and</code>, etc.), it can be omitted. Thus, <code>add $38</code> is the same instruction as <code>add a, $38</code>. Each programmer has their own rules about this;I personally use the short notation for everything but <code>add a, X</code>. So, from now on, you will see things like <code>and b</code> in this tutorial; remember that they're exactly the same as <code>and a, b</code>!
+                </p>
+                
+                <h2>Small optimizations</h2>
+                <p>
+                    When you want to check if <code>a</code> equals zero, you may be tempted to use <code>cp 0</code>. That's intuitive, sure, but there's a more efficient alternative: <code>and a</code> (or <code>or a</code>). This comes from the fact that if B is a bit, then <code>B and B</code> = B. (<code>0 and 0</code> = 0, <code>1 and 1</code> = 1; note that this works for <code>or</code> as well). Thus, if <em>all</em> bits in <code>a</code> are reset, then <code>a</code> and <code>a</code> = 0, thus the Z flag will be set. You may also notice that this affects the flags in exactly the same way (C reset, Z set).
+                </p>
+                <p>
+                    Now, if you wanted to set <code>a</code> to 0, you would probably do <code>ld a, 0</code>. Again, there's a more efficient way: <code>xor a</code>. This is because 0 xor 0 = 0, and 1 xor 1 = 0. Thus, every bit of <code>a</code> will be xor'd with itself, which yields 0, for all bits. Now, there's a pretty big difference with <code>ld a, 0</code>: that one preserves the flags, whereas <code>xor a</code> resets C and sets Z. (It's also a pretty good way of setting the Z flag.)
+                </p>
+                
+                <h2>Playin' with C</h2>
+                <p>
+                    You can play very easily with the carry flag. Two instructions are entirely dedicated to it: <code>scf</code> <b>s</b>ets the <b>c</b>arry <code>f</code>lag, and <code>ccf</code> <b>c</b>omplements (inverts) the <b>c</b>arry <b>f</b>lag. Neither of these instructions affect other flags or any registers. Now, if you wanted to reset the carry, you may think of doing <code>scf</code> then <code>ccf</code>, but there's a simpler solution: <code>and a</code>. Remember that this instruction clears the carry... but it alters the Z flag.
+                </p>
+
+            </article>
+
+            <aside>
+                <nav id="tutorial-index">
+                    <b id="index-title">Navigation</b>
+                    <br /><a href="arithmetics.html">Previous: Arithmetics & boolean algebra</a>
+                    <br /><a href="extras.html">Next: Extras</a>
+
+                    <br /><br />
+                    <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
+                    <br />
+
+                    <a href="index.html">GB ASM Programming</a>
+                    <ol class="current">
+                        <li>
+                            <a href="introduction.html">Introduction</a>
+                            <ol>
+                                <li>
+                                    <a href="what_is_gb.html">What is Game Boy?</a>
+                                </li>
+                                <li>
+                                    <a href="concepts.html">Basic concepts</a>
+                                </li>
+                                <li>
+                                    <a href="tools.html">Tools</a>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="basics.html">Basics</a>
+                            <ol class="current">
+                                <li>
+                                    <a href="syntax.html">ASM syntax</a>
+                                </li>
+                                <li>
+                                    <a href="registers.html">Registers</a>
+                                </li>
+                                <li>
+                                    <a href="memory.html">Memory</a>
+                                </li>
+                                <li>
+                                    <a href="flags.html">Flags</a>
+                                </li>
+                                <li>
+                                    <a href="arithmetics.html">Arithmetics & boolean algebra</a>
+                                </li>
+                                <li>
+                                    <a href="interlude.html" class="current">Interlude</a>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="extras.html">Extras</a>
+                            <ol>
+                                <li>
+                                    <a href="resources.html">External resources</a>
+                                </li>
+                                <li>
+                                    <a href="instructions.html">Instruction cheat sheet</a>
+                                    <ol>
+                                        <li>
+                                            <a href="data_manip.html">Data manipulation</a>
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+
+
+                    <hr>
+
+                    <a href="https://github.com/ISSOtm/gb-asm-tutorial/issues">Report issue</a>
+                </nav>
+            </aside>
+        </main>
+
+        <nav id="navbar">
+            <a href="/" id="site-name">ISSOtm's</a> -- <a href="index.html">GB programming</a>
+            <a id="to-top" href="#">Back to top</a>
+        </nav>
+    </body>
+</html>
