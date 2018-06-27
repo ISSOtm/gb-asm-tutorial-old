@@ -4,5 +4,71 @@
 
 <h2>Some context</h2>
 <p>
-    Let's quickly talk about how the CPU processes instructions.
+    Let's quickly talk about how the CPU processes instructions. The CPU has another 16-bit register I didn't talk about yet, which is called <code>pc</code>, the <b>p</b>rogram <b>c</b>ounter. It's simply the memory address where the CPU is reading instructions from. When the CPU executes an instruction, the following happens:
+</p>
+<ol>
+    <li>The byte <code>[pc]</code> is read (this means that if PC = $1234, the byte at $1234 is read)</li>
+    <li><code>pc</code> is incremented</li>
+    <li>That byte is decoded so the CPU knows which instruction it should execute</li>
+    <li>If the instruction has operand byte(s), it is/they are read as well, one by one, and <code>pc</code> is incremented after each read</li>
+    <li>The instruction is executed proper</li>
+</ol>
+<p>
+    So far, execution is linear - from $0000 to $FFFF. However, some instructions modify <code>pc</code>! There are five instructions: <code>jp</code>, <code>jr</code>, <code>call</code>, <code>rst</code> and <code>ret</code>. The latter three make use of the stack, which is a concept we will see later. For now, we will focus on <code>jp</code> and <code>jr</code>.
+</p>
+
+<h2>A CPU on a pogo stick</h2>
+<p>
+    <code>jp</code> lets execution "<b>j</b>um<b>p</b>" (that's how it's called) to another place in memory. <code>jp $1234</code> simply sets <code>pc</code> to $1234 -- if you want, it's <code>ld pc, $1234</code>, although that syntax is invalid :3
+</p>
+<p>
+    This essentially enables execution to flow in any order, which resolves the linearity problem. But not the conditional problem. Fear not! For <code>jp</code> is an instruction that can be executed <em>conditionally</em>! Depending on what, you may ask? Depending on our trusty flags.
+</p>
+
+<h3>Conditions</h3>
+<p>
+    There are four conditions available, which act depending on two flags: C and Z.
+</p>
+<table>
+    <tr><th>Condition</th><th>Mnemonic</th><th>True when...</th></tr>
+    <tr><td>Non-zero</td> <td>nz</td>      <td>Zero set</td>    </tr>
+    <tr><td>Zero</td>     <td>z</td>       <td>Zero reset</td>  </tr>
+    <tr><td>No carry</td> <td>nc</td>      <td>Carry reset</td> </tr>
+    <tr><td>Carry</td>    <td>c</td>       <td>Carry set</td>   </tr>
+</table>
+<p>
+    Remember that labels point to memory locations, which make them very common operands for <code>jp</code>. Here's a small code snippet that uses several things we've seen so far:
+</p>
+<pre>
+    ld a, [wPlayerHP]
+    and a ; Is it 0?
+    jp z, GameOver ; If HP hit 0, play Game Over animation
+    cp 10 ; Is it under 10 HP?
+    jr nc, .noLowHealthBeep ; If above 10 HP, don't beep
+
+    ; We're going to see just below that jr is essentially the same as jp
+    ...
+
+.noLowHealthBeep
+</pre>
+
+<h3>Short, but fast</h3>
+<p>
+    Now, we saw how <code>jp</code> works. But what about <code>jr</code>? It also performs <b>j</b>umps, but they're <b>r</b>elative. Relative to what? To <code>pc</code>! Instead of specifying the destination address, <code>jr</code> takes one byte as its operand, the offset, which is added to <code>pc</code> to determine the target destination.
+</p>
+<p>
+    Pro: smaller and faster <br />
+    Con: can only go 128 bytes backwards or 127 bytes forwards
+</p>
+<p>
+    As for the syntax... it's the same as <code>jp</code>! The nice part about the assembler is that it computes the offset for you, based on where the instruction and the target will be located. If the offset cannot be encoded as a <code>jr</code>, then it will simply complain and error out. I recommend using <code>jr</code> by default, and <code>jp</code> when it can't be used.
+</p>
+<p>
+    And by the way, <code>jr</code> supports the same conditions as <code>jp</code>. Neat!
+</p>
+
+<hr>
+
+<p>
+    Does it all make sense so far? We are very close to making our Hello World, don't worry. All that's left for us to figure out is how to draw things to the screen...
 </p>
