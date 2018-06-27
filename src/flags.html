@@ -15,3 +15,68 @@
     <dt>n</dt><dd>Add/Subtract (ok, this one doesn't make sense)</dd>
     <dt>z</dt><dd>Zero</dd>
 </dl>
+<p>
+    Remember that flags are just bits of the <code>f</code> register. As such, a flag is said to be <em>set</em> when its corresponding bit is 1. (It thus equates to "true" by law of non-zero, but that doesn't matter a lot here.)
+</p>
+
+<h2>Z - Zero</h2>
+<p>
+    <code>Z</code> is the simplest flag of them all. It generally follows the rule of thumb "If the instruction's result was zero, then it's set; otherwise, it's reset." Simple enough. And to illustrate that, let's talk about <code>inc</code> and <code>dec</code>.
+</p>
+
+<h3><code>inc</code> and <code>dec</code></h3>
+<p>
+    <code>inc</code> has a simple purpose - <b>inc</b>rement a register's value. The purpose of <code>dec</code> is left as an exercise for our most alert readers. There are two flavors of <code>inc</code> and <code>dec</code>: 8-bit inc/dec and 16-bit inc/dec. 8-bit inc/dec affects the Z flag as you'd expect: if the register holds 0 <em>after</em> the operation, Z is set. Otherwise, it's reset. Note that, obviously, overflow applies, as demonstrated below.
+</p>
+<pre>
+    ld b, $FF
+    dec b
+    ; B = $FE, Z reset
+    inc b
+    ; B = $FF, Z reset
+    inc b
+    ; B = $00, Z set
+    inc b
+    ; B = $01, Z reset
+    dec b
+    ; B = $00, Z set
+
+    ld b, $FE
+    ; B = $FE, Z set (keep in mind, `ld` doesn't affect flags!)
+    inc b
+    ; B = $FF, Z reset
+    ld b, 0
+    ; B = $00, Z reset
+</pre>
+<p>
+    Remember how in the previous lesson, I said that <code>[hl]</code> basically was an 8-bit register? Well, it delivers: <code>inc [hl]</code> and <code>dec [hl]</code> are a thing! This directly modifies the byte in memory that <code>hl</code> points to, affecting flags.
+</p>
+<p>
+    Also, for future reference, note that <code>inc</code> and <code>dec</code> modify the H an N flags. Given how little importance they have, I won't explain how yet.
+</p>
+<p>
+    As for the 16-bit flavor of <code>inc</code> and <code>dec</code>, it takes any of the 3 16-bit registers, and increments/decrements their content. The twist is, flags are preserved. All flags.
+</p>
+
+<h2>C - Carry</h2>
+<p>
+    This one is also straightforward... or confusing, because different instructions make it work differently. The general rule is: it <em>extends</em> the current operation. Confused? Here's a slow start: remember in the <a href="concepts.html">Basic Concepts</a> lesson, we talked about overflow, and I mentioned that "we don't have space to store that ninth bit"? Well, there isn't space to store it in the register itself, but <em>since the carry extends the current operation</em>, that ninth bit is stashed in the Carry bit/flag instead.
+</p>
+<p>
+    Here's a concrete example: now introducing the <code>add</code> instruction! It also comes in two flavors, but this will be discussed more in the next chapter. For now, we will consider <code>add a, X</code>, where X is either an 8-bit register, or an immediate 8-bit value. It basically takes <code>a</code>'s content, adds X to that, and stores the result back in <code>a</code>. This updates both the Z and C flags. (And the H and N flags, but we'll see that later.)
+</p>
+<pre>
+    ld a, $EF
+    ld b, $10
+
+    add a, b
+    ; A = $FF, Z reset, C reset
+    add a, b
+    ; A = $0F, Z reset, C set
+    add a, b
+    ; A = $1F, Z reset, C reset
+    add a, $E1
+    ; A = $00, Z set, C set
+    add a, 0
+    ; A = $00, Z set, C reset
+</pre>
