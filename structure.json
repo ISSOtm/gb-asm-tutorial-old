@@ -19,7 +19,7 @@
                 { "leaf": true, "id": "registers", "title": "Registers" },
                 { "leaf": true, "id": "memory", "title": "Memory" },
                 { "leaf": true, "id": "flags", "title": "Flags"},
-                { "leaf": true, "id": "arithmetics", "title": "Arithmetics"}
+                { "leaf": true, "id": "arithmetics", "title": "Arithmetics & boolean algebra"}
             ]
         },
         {
