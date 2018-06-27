@@ -28,6 +28,58 @@
                 <p>
                     Let's talk quickly about how to display stuff on-screen. This is one of the most complex parts of the Game Boy, but for now we will cover just the basics.
                 </p>
+                
+                <h2>Overview</h2>
+                <p>
+                    Let's quickly see how pixels are rendered to the screen. It's important that you grasp this at a surface level; we will see all of this in practice in the next lesson.
+                </p>
+                <p>
+                    The Game Boy has a 4-color LCD, 144 pixels tall, 160 pixels wide. It's refreshed roughly 60 times per second; one refreshing period (basically the time between two consecutive redraws of the top-left pixel) is called a <strong>frame</strong>. If u gud at math, you will have figured out that a frame is roughly a 60th of a second.
+                </p>
+                <p>
+                    During a frame, the LCD's pixels are refreshed, line by line. The concept is inherited from old CRT TVs, where an electron beam has to sweep across the entire screen. First, the beam traces a line, from left to right, then it moves back to the beginning of the next row, during a small time called <strong>horizontal blanking</strong> (HBlank). Then it repeats with the next line, and so on.<br>
+                    When the beam has drawn the last line, it moves back to the top of the screen, and waits a little bit until the next frame. This is called <strong>vertical blanking</strong> (VBlank).
+                </p>
+                
+                <h3>Do you speak LCD?</h3>
+                <p>
+                    The Game Boy doesn't use a CRT display (thank god), but it also presents these two concepts. How do we interface with that? Let's introduce address $FF44, the <code>LY</code> register (it's not the same "register" concept as a CPU register, but that's how we call it). This register indicates which scanline the LCD is currently drawing: 0-143, or if the LCD is in the VBlank period (144-153). You can read from LY, but not write to it.
+                </p>
+<pre>
+    ; Wait until VBlank
+.notVBlanking
+    ldh a, [rLY] ; Read the LCD's drawing status
+    cp 144
+    jr c, .notVBlanking ; The LCD is VBlanking between LY 144 and 153
+</pre>
+                <p>
+                    We can also read the status of the LCD using address $FF41, the <code>STAT</code> register. More specifically, the lower two bits. There are four modes:
+                </p>
+                <dl>
+                    <dt>Mode 0</dt><dd>HBlank</dd>
+                    <dt>Mode 1</dt><dd>VBlank</dd>
+                    <dt>Mode 2</dt><dd>OAM search</dd>
+                    <dt>Mode 3</dt><dd>Rendering</dd>
+                </dl>
+                <p>
+                    We will explain the four modes below.
+                </p>
+                
+                <h3>VRAM</h3>
+                <p>
+                    The Video RAM (VRAM) is the section of memory between $8000 and $9FFF. The bulk of the graphics data is stored there. But before we talk about how data is stored there, we need to clear something up: accessing VRAM is delicate. Why? Well, as you know, the CPU (Central Processing Unit) is a chip that processes instructions. But the Game Boy also possesses a PPU (Pixel Processing Unit), which can be considered a very primitive GPU (you can't even program it, just set some registers that it uses as rendering parameters. No shaders! Whee.)
+                </p>
+                <p>
+                    The problem lies in that the PPU accesses VRAM to perform rendering, and the CPU cannot access VRAM while the PPU is accessing it. You can consider the VRAM "locked" by the PPU. What does it mean for the CPU? Reading from VRAM yields $FF, and writes have no effect. So we need to be careful! But how do we do that? We will turn the LCD off, which puts the PPU to sleep and grants us (the CPU) unlimited access to VRAM. Cool or what? The problem is that while the LCD is turned off, all pixels are fully white.
+                </p>
+                <p>
+                    There exists a solution to access VRAM safely with the LCD turned on, but for the sake of simplicity I'm omitting it for now. Let's focus on how to store data to be drawn.
+                </p>
+                
+                <h2>Picture this</h2>
+                <p>
+                    Okay, pixels. However, we won't be dealing with individual pixels. That would cause problems, basically room and processing power. So how does it work? Using tiles. Tiles are units of 8x8 pixels, which are then "assembled" on what's called a tile map / tilemap.
+                </p>
 
             </article>
 
