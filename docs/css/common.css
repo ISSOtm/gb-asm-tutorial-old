@@ -1,8 +1,12 @@
 
 body {
-    font-family: sans-serif;
     margin-top: 50px;
-    padding-bottom: 40px;
+    padding: 0 40px 40px 0;
+
+    background-color: #eee;
+
+    font-family: sans-serif;
+    font-size: 16px;
 }
 
 
@@ -11,13 +15,13 @@ body {
     background-color: #9bbc0f;
     color: #0f380f;
 
-    padding: 10px;
+    padding: 10px 2% 13px 2%;
     font-size: 18px;
 
     position: fixed;
     top: 0;
     height: 23px;
-    width: 100%;
+    width: 96%;
 }
 
 #navbar a {
@@ -42,6 +46,7 @@ body {
 
 
 main {
+    /* Make children position relative to this */
     position: relative;
     padding: 0 20px;
 
@@ -57,7 +62,7 @@ main {
 
 main article {
     flex-grow: 10;
-    /* Somehow this fixes horizontal overflow issues. Thanks @uki ! */
+    /* Somehow this fixes horizontal overflow issues. Thanks @uki-nz ! */
     min-width: 0;
 }
 
@@ -97,9 +102,22 @@ code {
 }
 
 
+/* Bump up readability somewhat, keeping code blocks more condensed */
+p {
+    line-height: 1.4;
+}
+
+pre {
+    line-height: 1.2;
+}
+
+
+/* Sidebar */
+
 #tutorial-index {
     flex-grow: 1;
 
+    /* Fixed would work as well, I just want a tiny superfluous thingy */
     position: -webkit-sticky;
     position: sticky;
     top: 50px;
