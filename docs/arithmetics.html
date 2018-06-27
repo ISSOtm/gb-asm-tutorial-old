@@ -62,7 +62,7 @@
     ; hl = $DE35
 </pre>
                 <p>
-                    If you take your calculator out, you'll notice that this is the correct result! Using <code>add</code> instead of <code>adc</code> would have yielded $DD35 instead, which is wrong. Basically, the purpose of <code>adc</code> is to simpify carrying out multi-byte additions. You saw an application above, here is another.
+                    If you take your calculator out, you'll notice that this is the correct result! Using <code>add</code> instead of <code>adc</code> would have yielded $DD35 instead, which is wrong. Basically, the purpose of <code>adc</code> is to simplify carrying out multi-byte additions. You saw an application above, here is another.
                 </p>
 <pre>
     ; Guess what this does?
@@ -189,7 +189,7 @@
                     Remember how i quickly skimmed over the H and N flags? Let's talk about them. But first, we need to talk about <s><a href="https://www.youtube.com/watch?v=kpk2tdsPh0A">parallel universes</a></s> what BCD is. When you store a number, say 42, you'd usually store it raw -- 42, 0x2A, %00101010. BCD is storing each digit in each nibble -- $42, %01000010. It <em>is</em> less efficient, but much more practical for decimal displaying (instead of dividing by 10, you <code>and a, $0F</code>). Therefore, BCD is better for displaying, but not for calculating: $59 + $01 = $60 and not $5A.
                 </p>
                 <p>
-                    Luckily, there's an instruction that does just that: <code>daa</code> performs <b>d</b>ecimal <b>a</b>djustment on the <b>a</b>cuumulator (the <code>a</code>) register. It acts depending on the H, N and C flags, <em>and</em> the accumulator's contents. On a surface level, it basically adjusts the contents of the <code>a</code> register to match the result of the BCD operation.
+                    Luckily, there's an instruction that does just that: <code>daa</code> performs <b>d</b>ecimal <b>a</b>djustment on the <b>a</b>ccumulator (the <code>a</code>) register. It acts depending on the H, N and C flags, <em>and</em> the accumulator's contents. On a surface level, it basically adjusts the contents of the <code>a</code> register to match the result of the BCD operation.
                 </p>
 <pre>
     ld a, $39
