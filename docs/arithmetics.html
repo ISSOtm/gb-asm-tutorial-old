@@ -25,7 +25,189 @@
                     Arithmetics & boolean algebra
                 </h1>
                 
-                <p>This page is empty for now, but it'll be done really soon. Stay tuned!</p>
+                <h2>Arithmetics</h2>
+                <h3>Adding, larger adding, and more adding</h3>
+                <p>
+                    Let's talk a bit more about <code>add</code>, shall we? It actually comes in two flavors: the <code>add a, X</code> we just saw, which does 8-bit addition, but rumors speak of a mythical 16-bit variant: <code>add hl, X</code>. This one has two major differences: one, <strong>only the Z flag is updated</strong>; two, unlike the 8-bit flavor, <strong>X cannot be an immediate value</strong>!
+                </p>
+                <p>
+                    There exists an instruction that is basically <code>add</code> but with an added twist: <code>adc</code>. This instruction <b>ad</b>ds with <b>c</b>arry. What does it mean? Well, where <code>add a, X</code> was doing <code>a = a + X</code>, <code>adc a, X</code> does <code>a = a + X + carry (either 0 or 1)</code>. If you're wondering how that's useful, we're going to use it to emulate <code>add hl, $XXXX</code>!
+                </p>
+<pre>
+    ; add hl, $1337
+    ; Note: destroys A
+
+    ld a, l
+    add a, $37 ; Process the low 8 bits...
+    ld l, a ; Store back
+    ld a, h
+    adc a, $13 ; Process the upper 8 bits, counting the carry that may have stemmed from the low 8 bits
+    ld h, a
+</pre>
+                <p>
+                    Let's run though this again, but supposing HL = $CAFE.
+                </p>
+<pre>
+    ; hl = $CAFE
+
+    ld a, l
+    add a, $37
+    ; A = $37 + $FE = $35, and Carry set
+    ld l, a
+    ; hl = $CA35
+
+    ld a, h
+    adc a, $13 ; A = $13 + $CA + 1 (carry set) = $DE
+    ld h, a
+    ; hl = $DE35
+</pre>
+                <p>
+                    If you take your calculator out, you'll notice that this is the correct result! Using <code>add</code> instead of <code>adc</code> would have yielded $DD35 instead, which is wrong. Basically, the purpose of <code>adc</code> is to simpify carrying out multi-byte additions. You saw an application above, here is another.
+                </p>
+<pre>
+    ; Guess what this does?
+
+    ld a, c
+    add a, [hl] ; Remember, [hl] is basically an 8-bit register, so you CAN do this!
+    ld c, a
+    inc hl
+    ld a, b
+    adc a, [hl]
+    ld b, a
+    dec hl
+
+    ; That's right -- this is basically `add bc, [hl]`. Neat, huh?
+</pre>
+                <p>
+                    If you remember what I said about endianness, this is basically the reason why little-endian is more practical: you have to process (and therefore read and/or write) the low byte(s) first to be able to ripple the carry to the upper byte(s). Thus, we store the lower byte first. It may be a little awkward at first, but I promise you get used to it.
+                </p>
+                <p>
+                    Oh, and by the way, <code>adc hl, X</code> doesn't exist. Get used to it -- there's basically just <code>add hl, X</code> as far as 16-bit operations are concerned. I miss my Z80 extended opcodes... ;-;
+                </p>
+                
+                <h3>The other way around</h3>
+                <p>
+                    Okay, great, I can add, but what if I wanted to <b>sub</b>tract? Well, as the bold characters may have made you guess, <code>sub</code> is right there for you! It has the same syntax as <code>add a, X</code>, and - <em>what a surprise!</em> - <code>sub hl, X</code> doesn't exist. It also affects the Z and C flags, although it's worth mentioning how C works there.
+                </p>
+<pre>
+    ld a, 3
+    ld b, 2
+
+    sub b
+    ; A = $01, Z reset, C reset
+    sub b
+    ; A = $FF, Z reset, C set
+    sub $FF
+    ; A = $00, Z set, C reset
+    sub 0
+    ; A = $00, Z set, C reset
+</pre>
+                <p>
+                    As you can see, C is set when a borrow/underflow occurs. Note that other CPUs, such as the 6502 family, use an inverted meaning - C is <em>reset</em> when a borrow occurs. It's less intuitive (cue a swath of "oops"-level bugs), but it's more practical in some cases.
+                </p>
+                <p>
+                    Oh, and by the way, there's also <code>sbc a, X</code>. It works the same way as <code>adc a, X</code> (<code>a = a - X - carry</code>), and there's no <code>sbc hl, X</code>, PLEASE STOP INSISTING
+                </p>
+                
+                <h3>Comparing</h3>
+                <p>
+                    When you want to <b>c</b>om<code>p</code>are two values, you use <code>cp a, X</code>. <code>cp</code> is extremely straightforward -- it's <code>sub</code>, but it doesn't write the result back to <code>a</code>. If you're wondering what it's useful for aside for wasting time, you didn't notice that it <em>still affects flags</em>! As such, it's the preferred operator for, well, comparisons.
+                </p>
+                <p>
+                    The cool part about <code>cp</code> is that you can test both equality cases (==, !=) and two inequality cases (&lt;, &gt;=) using only one <code>cp</code>. Don't believe me?
+                </p>
+<pre>
+    ld a, 42
+
+    cp 10 ; 42 - 10 = 32,  C reset (42 &gt;= 10), Z reset (42 != 10)
+    ; Notice how you can chain comparisons? That comes in handy at times
+    cp 57 ; 42 - 57 = 241, C set   (42 &lt; 10) , Z reset (42 != 10)
+    cp 42 ; 42 - 42 = 0,   C reset (42 &gt;= 42), Z set   (42 == 42)
+</pre>
+                
+                <h2>Boolean algebra</h2>
+                <p>
+                    Now, we can add and subtract. But we're dealing with bits, too, and maybe I can want to manipulate them as well? Well, boolean algebra has got you covered. There are three operations that you need to know about: <code>and</code>, <code>or</code> and <code>xor</code>.
+                </p>
+                <p>
+                    Let's begin by what they have in common. They all operate on the <code>a</code> register, basically like <code>add a, X</code>. Each of these operations work bit by bit -- they're binary operations, not logical operations. All three of them reset the C flag, always, and modify the Z flag as you'd expect.
+                </p>
+                
+                <h3>AND</h3>
+                <p>
+                    This operation takes each bit of both operands, and sets the corresponding bit of the result if and only if both bits are set.
+                </p>
+<pre>
+    ld a, %01010011
+    ld b, %00110101
+    and a, b
+    ;       A  %0101 0011
+    ;       B  %0011 0101
+    ;          ----------
+    ; A and B  %0001 0001
+</pre>
+                <p>
+                    This is pretty useful for "masking out" (resetting) some flags/bits, and to test if some bits are zero (since the Z flag will be set accordingly).
+                </p>
+                
+                <h3>OR</h3>
+                <p>
+                    This operation takes each bit of both operands, and sets the corresponding bit of the result if and only if any of both bits is set.
+                </p>
+<pre>
+    ld a, %01010011
+    ld b, %00110101
+    or a, b
+    ;      A  %0101 0011
+    ;      B  %0011 0101
+    ;         ----------
+    ; A or B  %0111 0111
+</pre>
+                <p>
+                    This is pretty useful for setting some flags/bits. This is used less frequently than <code>and</code>, but still.
+                </p>
+                
+                <h3>XOR</h3>
+                <p>
+                    This operation takes each bit of both operands, and sets the corresponding bit of the result if and only if both bits differ.
+                </p>
+<pre>
+    ld a, %01010011
+    ld b, %00110101
+    xor a, b
+    ;       A  %0101 0011
+    ;       B  %0011 0101
+    ;          ----------
+    ; A xor B  %0110 0110
+</pre>
+                <p>
+                    This is pretty useful to invert some flags/bits. This is heavily used instead of counters for "flip-flop" states (now you know why a lot of games have two-frame animations!).
+                </p>
+                
+                <h2>BCD</h2>
+                <p>
+                    Remember how i quickly skimmed over the H and N flags? Let's talk about them. But first, we need to talk about <s><a href="https://www.youtube.com/watch?v=kpk2tdsPh0A">parallel universes</a></s> what BCD is. When you store a number, say 42, you'd usually store it raw -- 42, 0x2A, %00101010. BCD is storing each digit in each nibble -- $42, %01000010. It <em>is</em> less efficient, but much more practical for decimal displaying (instead of dividing by 10, you <code>and a, $0F</code>). Therefore, BCD is better for displaying, but not for calculating: $59 + $01 = $60 and not $5A.
+                </p>
+                <p>
+                    Luckily, there's an instruction that does just that: <code>daa</code> performs <b>d</b>ecimal <b>a</b>djustment on the <b>a</b>cuumulator (the <code>a</code>) register. It acts depending on the H, N and C flags, <em>and</em> the accumulator's contents. On a surface level, it basically adjusts the contents of the <code>a</code> register to match the result of the BCD operation.
+                </p>
+<pre>
+    ld a, $39
+    add a, $01
+    ; A = $3A
+    daa ; Perform M.A.G.I.C
+    ; A = $40
+</pre>
+                <p>
+                    Let it be known that <code>daa</code> may set the C flag (for example if A was $99 in the example above instead of $39), and alters Z and H. If you don't care about how it works, you can safely skip the rest of this section. But if you want the nitty-gritty, then here we go.
+                </p>
+                <p>
+                    First, let's describe how the H and N flags work. H is the <b>h</b>alf-carry, and it works <strong>exactly</strong> the same way as the carry (even depending on the instruction!), but taking only the lower 4 bits into account. So, for example, when adding $08 to $39, H is set, because there's is an overflow in the low 4 bytes (goes from $9 to $1). N tells whether the previous operation was "positive" (flag reset) or "negative" (flag set). For example, <code>add a, X</code> resets that flag, and <code>sub a, X</code> sets it. This is because the adjusting depends on the last operation that occurred.
+                </p>
+                <p>
+                    If H is set or the lower 4 bits of A contain a non-BCD digit ($A-$F), then an implicit <code>add a, $06</code> is performed (this includes modifying the C flag). Then if C is set or the upper 4 bits of A contain a non-BCD digit, an implicit <code>add a, $60</code> is performed, including modifying the C flag. (Note: I believe the H flag isn't modified by this second <code>add</code>, but I'm not sure.) <strong>But,</strong> if the N flag was set, instead of <code>add</code>, the operations performed are instead <code>sub</code>s. (Note: I think that's how it's done, but I'm unsure.)
+                </p>
+
             </article>
 
             <aside>
