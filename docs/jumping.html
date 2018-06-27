@@ -5,15 +5,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>
-            Tools
+            Jumping around
         </title>
 
         <meta name="author" content="Eldred Habert" />
         <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://issotm.github.io" />
-        <link rel="prev" href="concepts.html" />
-        <link rel="next" href="basics.html" />
+        <link rel="prev" href="interlude.html" />
+        <link rel="next" href="hello-world.html" />
 
         <link rel="stylesheet" href="css/normalize.css" />
         <link rel="stylesheet" href="css/common.css" />
@@ -22,83 +22,25 @@
         <main>
             <article>
                 <h1>
-                    Tools
+                    Jumping around
                 </h1>
                 
-                <h2>Writing code</h2>
                 <p>
-                    First and foremost is a text editor, or better, an IDE. Your IDE/text editor <a href="https://github.com/avivace/awesome-gbdev/#syntax-highlighting-packages" target="_blank">might have GBz80 ASM highlighting support</a>! (I personally use VS Code on Linux.)
-                </p>
-                <p>
-                    Then comes the compiler (in the case of ASM, compilators are also called "assemblers", but you can use both). I use and recommend <a href="https://github.com/rednex/rgbds" target="_blank">RGBDS</a>, but some prefer <a href="https://github.com/vhelin/wla-dx">wla-dx</a>. I will be using RGBDS throughout this tutorial, but if for some reason you want to use wla, you will be able to follow (although you will have to make some adjustments).
+                    So far, all programs we have seen executed from top to bottom, and there weren't any conditions. It's time to change that!
                 </p>
                 
-                <h2>Running code</h2>
+                <h2>Some context</h2>
                 <p>
-                    You have three options to run your code:
+                    Let's quickly talk about how the CPU processes instructions.
                 </p>
-                <table>
-                    <tr>
-                        <th></th>
-                        <th>Manipulations to run your code</th>
-                        <th>Debugging</th>
-                        <th>Platform accuracy</th>
-                        <th>Cost</th>
-                        <th>Notes</th>
-                    </tr>
-                    <tr>
-                        <td>Emulator</td>
-                        <td>Basically none</td>
-                        <td>Depends if the emulator supports it</td>
-                        <td>Usually good but not perfect</td>
-                        <td>Free</td>
-                        <td>Everything heavily depends on the emulator</td>
-                    </tr>
-                    <tr>
-                        <td>Console (with flashcart)</td>
-                        <td>Can be tedious</td>
-                        <td>No</td>
-                        <td>Perfect</td>
-                        <td>Up to €/$200, depending on what you have and want</td>
-                        <td>This is only recommended to complement emulator testing</td>
-                    </tr>
-                    <tr>
-                        <td>Official devkit (IS-CGB-DEBUGGER)</td>
-                        <td>Not much</td>
-                        <td>Yes</td>
-                        <td>Perfect</td>
-                        <td>At <em>least</em> $1000</td>
-                        <td>This isn't the best solution, but some devkits are circulating on eBay.<br />Also, this requires you to use ISAS, the official assembler -- which is worse than RGBDS and wla.</td>
-                    </tr>
-                </table>
-                <p>
-                    I strongly recommend using an emulator to run initial tests on your game, and optionally run it on console afterwards (to get what the game feels like on console, and to eliminate the emulator's inaccuracies). Or, if you really want to, you can buy a IS-CGB-DEBUGGER and use that -- but you'll have to use ISAS, and the debugger's ancient interface software.
-                </p>
-                
-                <h3>Emulators</h3>
-                
-                <table>
-                    <tr>
-                        <th>Name</th><th>Accuracy</th><th>Debugger</th><th>Platforms</th>
-                    </tr>
-                    <tr>
-                        <td><a href="http://bgb.bircd.org/">BGB</a></td><td>Extremely good</td><td>Yes, GUI</td><td>Windows (x86), Wine</td>
-                    </tr>
-                    <tr>
-                        <td><a href="https://sameboy.github.io/">SameBoy</a></td><td>Near perfect</td><td>Yes, command-line</td><td>MacOS, slightly inferior Windows &amp; Linux</td>
-                    </tr>
-                    <tr>
-                        <td><a href="http://tasvideos.org/BizHawk.html">BizHawk (Gambatte)</a></td><td>Extremely good</td><td>Very basic, GUI</td><td>Windows</td>
-                    </tr>
-                </table>
 
             </article>
 
             <aside>
                 <nav id="tutorial-index">
                     <b id="index-title">Navigation</b>
-                    <br /><a href="concepts.html">Previous: Basic concepts</a>
-                    <br /><a href="basics.html">Next: Basics</a>
+                    <br /><a href="interlude.html">Previous: Interlude</a>
+                    <br /><a href="hello-world.html">Next: Hello World!</a>
 
                     <br /><br />
                     <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
@@ -108,7 +50,7 @@
                     <ol class="current">
                         <li>
                             <a href="introduction.html">Introduction</a>
-                            <ol class="current">
+                            <ol>
                                 <li>
                                     <a href="what_is_gb.html">What is Game Boy?</a>
                                 </li>
@@ -116,13 +58,13 @@
                                     <a href="concepts.html">Basic concepts</a>
                                 </li>
                                 <li>
-                                    <a href="tools.html" class="current">Tools</a>
+                                    <a href="tools.html">Tools</a>
                                 </li>
                             </ol>
                         </li>
                         <li>
                             <a href="basics.html">Basics</a>
-                            <ol>
+                            <ol class="current">
                                 <li>
                                     <a href="syntax.html">ASM syntax</a>
                                 </li>
@@ -142,7 +84,7 @@
                                     <a href="interlude.html">Interlude</a>
                                 </li>
                                 <li>
-                                    <a href="jumping.html">Jumping around</a>
+                                    <a href="jumping.html" class="current">Jumping around</a>
                                 </li>
                                 <li>
                                     <a href="hello-world.html">Hello World!</a>

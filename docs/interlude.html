@@ -13,7 +13,7 @@
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://issotm.github.io" />
         <link rel="prev" href="arithmetics.html" />
-        <link rel="next" href="extras.html" />
+        <link rel="next" href="jumping.html" />
 
         <link rel="stylesheet" href="css/normalize.css" />
         <link rel="stylesheet" href="css/common.css" />
@@ -59,7 +59,7 @@
                 
                 <h2>Playin' with C</h2>
                 <p>
-                    You can play very easily with the carry flag. Two instructions are entirely dedicated to it: <code>scf</code> <b>s</b>ets the <b>c</b>arry <code>f</code>lag, and <code>ccf</code> <b>c</b>omplements (inverts) the <b>c</b>arry <b>f</b>lag. Neither of these instructions affect other flags or any registers. Now, if you wanted to reset the carry, you may think of doing <code>scf</code> then <code>ccf</code>, but there's a simpler solution: <code>and a</code>. Remember that this instruction clears the carry... but it alters the Z flag.
+                    You can play very easily with the carry flag. Two instructions are entirely dedicated to it: <code>scf</code> <b>s</b>ets the <b>c</b>arry <code>f</code>lag, and <code>ccf</code> <b>c</b>omplements (inverts) the <b>c</b>arry <b>f</b>lag. Neither of these instructions affect other flags or any registers. Now, if you wanted to reset the carry, you may think of doing <code>scf</code> then <code>ccf</code>, but there's a simpler solution: <code>and a</code>. Remember that this instruction clears the carry, too... but it alters the Z flag, so it's not always applicable.
                 </p>
 
             </article>
@@ -68,7 +68,7 @@
                 <nav id="tutorial-index">
                     <b id="index-title">Navigation</b>
                     <br /><a href="arithmetics.html">Previous: Arithmetics & boolean algebra</a>
-                    <br /><a href="extras.html">Next: Extras</a>
+                    <br /><a href="jumping.html">Next: Jumping around</a>
 
                     <br /><br />
                     <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
@@ -110,6 +110,12 @@
                                 </li>
                                 <li>
                                     <a href="interlude.html" class="current">Interlude</a>
+                                </li>
+                                <li>
+                                    <a href="jumping.html">Jumping around</a>
+                                </li>
+                                <li>
+                                    <a href="hello-world.html">Hello World!</a>
                                 </li>
                             </ol>
                         </li>

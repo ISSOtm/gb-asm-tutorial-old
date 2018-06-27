@@ -20,7 +20,9 @@
                 { "leaf": true, "id": "memory", "title": "Memory" },
                 { "leaf": true, "id": "flags", "title": "Flags"},
                 { "leaf": true, "id": "arithmetics", "title": "Arithmetics & boolean algebra"},
-                { "leaf": true, "id": "interlude", "title": "Interlude"}
+                { "leaf": true, "id": "interlude", "title": "Interlude"},
+                { "leaf": true, "id": "jumping", "title": "Jumping around"},
+                { "leaf": true, "id": "hello-world", "title": "Hello World!"}
             ]
         },
         {
