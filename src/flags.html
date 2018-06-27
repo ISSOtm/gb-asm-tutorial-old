@@ -62,6 +62,8 @@
 <p>
     This one is also straightforward... or confusing, because different instructions make it work differently. The general rule is: it <em>extends</em> the current operation. Confused? Here's a slow start: remember in the <a href="concepts.html">Basic Concepts</a> lesson, we talked about overflow, and I mentioned that "we don't have space to store that ninth bit"? Well, there isn't space to store it in the register itself, but <em>since the carry extends the current operation</em>, that ninth bit is stashed in the Carry bit/flag instead.
 </p>
+
+<h3>8-bit <code>add</code></h3>
 <p>
     Here's a concrete example: now introducing the <code>add</code> instruction! It also comes in two flavors, but this will be discussed more in the next chapter. For now, we will consider <code>add a, X</code>, where X is either an 8-bit register, or an immediate 8-bit value. It basically takes <code>a</code>'s content, adds X to that, and stores the result back in <code>a</code>. This updates both the Z and C flags. (And the H and N flags, but we'll see that later.)
 </p>
@@ -80,3 +82,11 @@
     add a, 0
     ; A = $00, Z set, C reset
 </pre>
+<p>
+    We'll see different uses of the Carry flag in the upcoming lessons.
+</p>
+
+<h2>H &amp; N - The BCD flags</h2>
+<p>
+    These flags are updated by a lot of instructions, and they work in a kind of obtuse way... furthermore, they are used by exactly <em>one</em> instruction. What??!? Well, that instruction is pret~ty useful when doing <a href="https://en.wikipedia.org/wiki/Binary-coded_decimal">Binary-Coded Decimal (<abbr>BCD</abbr>)</a>. That will be discussed in the next section, because it's simpler to explain what it does than how it works. Don't worry, there will still be a detailed explanation for those whose OCD is triggering like crazy right now.
+</p>
