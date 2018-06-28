@@ -73,12 +73,47 @@
                     The problem lies in that the PPU accesses VRAM to perform rendering, and the CPU cannot access VRAM while the PPU is accessing it. You can consider the VRAM "locked" by the PPU. What does it mean for the CPU? Reading from VRAM yields $FF, and writes have no effect. So we need to be careful! But how do we do that? We will turn the LCD off, which puts the PPU to sleep and grants us (the CPU) unlimited access to VRAM. Cool or what? The problem is that while the LCD is turned off, all pixels are fully white.
                 </p>
                 <p>
-                    There exists a solution to access VRAM safely with the LCD turned on, but for the sake of simplicity I'm omitting it for now. Let's focus on how to store data to be drawn.
+                    There exists a solution to access VRAM safely with the LCD turned on, but for the sake of simplicity I'm omitting it for now. Now, let's focus on how to store the data to be drawn.
                 </p>
                 
                 <h2>Picture this</h2>
                 <p>
-                    Okay, pixels. However, we won't be dealing with individual pixels. That would cause problems, basically room and processing power. So how does it work? Using tiles. Tiles are units of 8x8 pixels, which are then "assembled" on what's called a tile map / tilemap.
+                    Okay, pixels. However, we won't be dealing with individual pixels. That would cause problems, basically room and processing power. So how does it work? Using tiles. Tiles are units of 8x8 pixels, which are then "assembled" on what's called a tile map / tilemap. Here's an example of tiles (please note that the blank tiles at the beginning are simply uninitialized):<br>
+                    <img src="img/cloud_tiles.png" /><br />
+                    and how they're assembled on the tilemap:<br />
+                    <img src="img/cloud_tilemap.png" /><br />
+                    You can notice that this cuts down on the repetition, which is the primary pro of tilemapping.
+                    <br />
+                    Please note that these are Game Boy Color graphics, and thus use more colors than available on the Game Boy. For the sake of simplicity, GBC support will be omitted from the Hello World.
+                </p>
+                <p>
+                    Each pixel can be one of four colours; since 4 = 2^<b>2</b>, this requires 2 bits per pixel (bpp). Thus, we have 8 * 8 pixels * 2 bpp / 8 bits-per-byte = 16 bytes per tile. The Game Boy stores tiles between $8000 and $97FF, which leaves space for 384 tiles, which can be considered in three "blocks" of 128 tiles.
+                </p>
+                <p>
+                    The Game Boy then stores two tile maps of 32  * 32 tiles (256 * 256 pixels), one at $9800-$9BFF, one at $9C00-$9FFF. But, alert readers will have noticed that 256x256 pixels is roughly 1.5x1.5 times larger than the 144x160 pixel screen. That's simply enough because we can <em>scroll</em> the screen around the tilemap! Meet <code>SCY</code> and <code>SCX</code> ($FF42 and $FF43, respectively). These registers specify the coordinates of the top-left corner of the screen, relative to the tilemap. Thus, increasing SCY appears to scroll the display up (because the "focus" moves downwards), and decreasing SCX scrolls right. But what happens when we're reaching the edge of the tilemap? Helpfully, it wraps around!
+                </p>
+                <p>
+                    And one final thing: each pixel of a tile doesn't have an intrinsic color -- colors are applied using a palette, specified by the <b>b</b>ack<b>g</b>round <b>p</b>alette, or <code>BGP</code>, register. The formatting of the palette is a little weird, so bear with me for a second. The <code>BGP</code> register is split into 4 groups of 2 bytes each. The lower 2 bits specify which color is color #0, then color #1, etc. (Remember that each pixel is encoded using 2 bits, which when combined yields one of 0 through 3, which is simply the color index to use in the palette.)
+                </p>
+<pre>
+BGP:  %33 22 11 00
+</pre>
+                <p>
+                    If the color is set to %00, then that's white. %01 is light gray, %10 is dark gray, and %11 is fully dark. So, the palette <code>%11 11 11 11</code> has the screen fully black, and <code>%11 10 01 00</code> maps every color (but you could shuffle colors around with <code>%10 00 01 11</code>, for example.)
+                </p>
+                
+                <hr />
+                <p>
+                    Here's a recap of what needs to be done to display stuff:
+                </p>
+                <ul>
+                    <li>Copy tiles to VRAM</li>
+                    <li>Write to tilemap</li>
+                    <li>Set scrolling (SCY, SCX)</li>
+                    <li>Set palette</li>
+                </ul>
+                <p>
+                    Doesn't sound simple? Well, that's what we're going to do next! Don't worry.
                 </p>
 
             </article>
