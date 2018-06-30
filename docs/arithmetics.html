@@ -111,7 +111,7 @@
                 
                 <h3>Comparing</h3>
                 <p>
-                    When you want to <b>c</b>om<code>p</code>are two values, you use <code>cp a, X</code>. <code>cp</code> is extremely straightforward -- it's <code>sub</code>, but it doesn't write the result back to <code>a</code>. If you're wondering what it's useful for aside for wasting time, you didn't notice that it <em>still affects flags</em>! As such, it's the preferred operator for, well, comparisons.
+                    When you want to <b>c</b>om<b>p</b>are two values, you use <code>cp a, X</code>. <code>cp</code> is extremely straightforward -- it's <code>sub</code>, but it doesn't write the result back to <code>a</code>. If you're wondering what it's useful for aside for wasting time, you didn't notice that it <em>still affects flags</em>! As such, it's the preferred operator for, well, comparisons.
                 </p>
                 <p>
                     The cool part about <code>cp</code> is that you can test both equality cases (==, !=) and two inequality cases (&lt;, &gt;=) using only one <code>cp</code>. Don't believe me?
@@ -125,9 +125,23 @@
     cp 42 ; 42 - 42 = 0,   C reset (42 &gt;= 42), Z set   (42 == 42)
 </pre>
                 
+                <h3>Where mah <code>mul</code> and <code>div</code>?</h3>
+                <p>
+                    Tough luck, the GBz80 does not have any multiplication or division capabilities. You can be clever about multiplication, though, using one simple trick: <code>add a, a</code> basically multiplies <code>a</code> by two! (This makes multiplying by powers of two much more efficient, btw). You could also multiply by 6 using this:
+                </p>
+<pre>
+    ld b, a
+    add a, a ; *2
+    add a, b ; *3
+    add a, a ; *6
+</pre>
+                <p>
+                    We will program, in a section further up, a function that performs multiplication. Don't worry.
+                </p>
+                
                 <h2>Boolean algebra</h2>
                 <p>
-                    Now, we can add and subtract. But we're dealing with bits, too, and maybe I can want to manipulate them as well? Well, boolean algebra has got you covered. There are three operations that you need to know about: <code>and</code>, <code>or</code> and <code>xor</code>.
+                    Now, we can add and subtract. But we're dealing with bits, too, and maybe I'll want to manipulate them as well? Well, boolean algebra has got you covered. There are three operations that you need to know about: <code>and</code>, <code>or</code> and <code>xor</code>.
                 </p>
                 <p>
                     Let's begin by what they have in common. They all operate on the <code>a</code> register, basically like <code>add a, X</code>. Each of these operations work bit by bit -- they're binary operations, not logical operations. All three of them reset the C flag, always, and modify the Z flag as you'd expect.
@@ -145,6 +159,8 @@
     ;       B  %0011 0101
     ;          ----------
     ; A and B  %0001 0001
+
+    ; Now, a = $11
 </pre>
                 <p>
                     This is pretty useful for "masking out" (resetting) some flags/bits, and to test if some bits are zero (since the Z flag will be set accordingly).
@@ -162,6 +178,8 @@
     ;      B  %0011 0101
     ;         ----------
     ; A or B  %0111 0111
+
+    ; Now, a = $77
 </pre>
                 <p>
                     This is pretty useful for setting some flags/bits. This is used less frequently than <code>and</code>, but still.
@@ -179,6 +197,8 @@
     ;       B  %0011 0101
     ;          ----------
     ; A xor B  %0110 0110
+
+    ; Now, a = $66
 </pre>
                 <p>
                     This is pretty useful to invert some flags/bits. This is heavily used instead of counters for "flip-flop" states (now you know why a lot of games have two-frame animations!).
@@ -186,7 +206,7 @@
                 
                 <h2>BCD</h2>
                 <p>
-                    Remember how i quickly skimmed over the H and N flags? Let's talk about them. But first, we need to talk about <s><a href="https://www.youtube.com/watch?v=kpk2tdsPh0A">parallel universes</a></s> what BCD is. When you store a number, say 42, you'd usually store it raw -- 42, 0x2A, %00101010. BCD is storing each digit in each nibble -- $42, %01000010. It <em>is</em> less efficient, but much more practical for decimal displaying (instead of dividing by 10, you <code>and a, $0F</code>). Therefore, BCD is better for displaying, but not for calculating: $59 + $01 = $60 and not $5A.
+                    Remember how I quickly skimmed over the H and N flags? Let's talk about them. But first, we need to talk about <s><a href="https://www.youtube.com/watch?v=kpk2tdsPh0A">parallel universes</a></s> what BCD is. When you store a number, say 42, you'd usually store it raw -- 42, 0x2A, %00101010. BCD is storing each digit in each nibble -- $42, %01000010. It <em>is</em> less efficient, but much more practical for decimal displaying (instead of dividing by 10, you <code>and a, $0F</code>). Therefore, BCD is better for displaying, but not for calculating: $59 + $01 = $60 and not $5A.
                 </p>
                 <p>
                     Luckily, there's an instruction that does just that: <code>daa</code> performs <b>d</b>ecimal <b>a</b>djustment on the <b>a</b>ccumulator (the <code>a</code>) register. It acts depending on the H, N and C flags, <em>and</em> the accumulator's contents. On a surface level, it basically adjusts the contents of the <code>a</code> register to match the result of the BCD operation.

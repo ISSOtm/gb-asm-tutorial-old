@@ -38,8 +38,8 @@
                     Binary is otherwise known as "base 2"; the base we're using, decimal, is called "base 10". The reason is, when I write 1337, it's decoded as follows:
                 </p>
 <pre>
-      1 * 10<sup>3</sup> + 3 * 10<sup>2</sup> + 3 * 10<sup>1</sup> + 7 * 10<sup>0</sup>
-    = 1 * 1000 + 3 * 100  + 3 * 10   + 7 * 1
+      1 * 10<sup>3</sup>  + 3 * 10<sup>2</sup> + 3 * 10<sup>1</sup> + 7 * 10<sup>0</sup>
+    = 1 * 1000 + 3 * 100 + 3 * 10  + 7 * 1
     = 1000 + 300 + 30 + 7
     = 1337
 </pre>
@@ -211,7 +211,7 @@
                     Developers got a helping hand from mathematicians for this one. As I said previously, only positive numbers can be manipulated. Well, actually, you can use negative ones too! That's partially possible thanks to overflow. Let me being the explanation by stating that 255 = -1. Shocking? Not so much; remember how, due to overflow, 256 = 0? Well, subtract 1 on both sides, and you have 255 = -1. Another way to prove it is to take any byte, for example 70, and adding 255 to it. This gives 335, but remember from the paragraph above that we need to apply modulo 256. Let's calculate it: 335 - 256 = 69. So, essentially, 70 + 255 = 69 = 70 - 1.
                 </p>
                 <p>
-                    Now, the question you may ask is, if 255 = -1, how do I differentiate both? The answer is that you don't, because you don't need to. Both numbers behave exactly in the same way! And while it's true that 1 = -255, that 0 = -256, and to pus hte logic further, that 255 = -1 = -257, a convention has been put in place to help define which numbers are negative and which aren't. Basically, if interpreting a byte in an <em>unsigned</em> manner, all 8 bits are interpreted as described previously.
+                    Now, the question you may ask is, if 255 = -1, how do I differentiate both? The answer is that you don't, because you don't need to. Both numbers behave exactly in the same way! And while it's true that 1 = -255, that 0 = -256, and to push the logic further, that 255 = -1 = -257, a convention has been put in place to help define which numbers are negative and which aren't. Basically, if interpreting a byte in an <em>unsigned</em> manner, all 8 bits are interpreted as described previously.
                 </p>
                 <p>
                     On the other hand, if interpreting (and note that it's an <strong>interpretation</strong>: the byte is neither signed or unsigned by itself, it only depends on how the code interprets it) a byte in a <em>signed</em> way, bit 7 instead holds a different meaning: the sign. If the bit is zero, bits 0 through 6 are interpreted normally. If the bit is one, the number is instead negative, and bits 0-6 are interpreted slightly differently; they are all inverted, then 1 is added to get the absolute value.

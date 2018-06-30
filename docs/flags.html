@@ -53,7 +53,7 @@
                 
                 <h3><code>inc</code> and <code>dec</code></h3>
                 <p>
-                    <code>inc</code> has a simple purpose - <b>inc</b>rement a register's value. The purpose of <code>dec</code> is left as an exercise for our most alert readers. There are two flavors of <code>inc</code> and <code>dec</code>: 8-bit inc/dec and 16-bit inc/dec. 8-bit inc/dec affects the Z flag as you'd expect: if the register holds 0 <em>after</em> the operation, Z is set. Otherwise, it's reset. Note that, obviously, overflow applies, as demonstrated below.
+                    <code>inc</code> has a simple purpose - <b>inc</b>rement a register's value. The purpose of <code>dec</code> is left as an exercise for the most alert of our readers. There are two flavors of <code>inc</code> and <code>dec</code>: 8-bit inc/dec and 16-bit inc/dec. 8-bit inc/dec affects the Z flag as you'd expect: if the register holds 0 <em>after</em> the operation, Z is set. Otherwise, it's reset. Note that, obviously, overflow applies, as demonstrated below.
                 </p>
 <pre>
     ld b, $FF
@@ -82,7 +82,7 @@
                     Also, for future reference, note that <code>inc</code> and <code>dec</code> modify the H an N flags. Given how little importance they have, I won't explain how yet.
                 </p>
                 <p>
-                    As for the 16-bit flavor of <code>inc</code> and <code>dec</code>, it takes any of the 3 16-bit registers, and increments/decrements their content. The twist is, flags are preserved. All flags.
+                    As for the 16-bit flavor of <code>inc</code> and <code>dec</code>, it takes any of the three 16-bit registers, and increments/decrements their content. The twist is, flags are preserved. All of them.
                 </p>
                 
                 <h2>C - Carry</h2>
