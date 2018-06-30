@@ -98,6 +98,20 @@
     cp 42 ; 42 - 42 = 0,   C reset (42 &gt;= 42), Z set   (42 == 42)
 </pre>
 
+<h3>Where mah <code>mul</code> and <code>div</code>?</h3>
+<p>
+    Tough luck, the GBz80 does not have any multiplication or division capabilities. You can be clever about multiplication, though, using one simple trick: <code>add a, a</code> basically multiplies <code>a</code> by two! (This makes multiplying by powers of two much more efficient, btw). You could also multiply by 6 using this:
+</p>
+<pre>
+    ld b, a
+    add a, a ; *2
+    add a, b ; *3
+    add a, a ; *6
+</pre>
+<p>
+    We will program, in a section further up, a function that performs multiplication. Don't worry.
+</p>
+
 <h2>Boolean algebra</h2>
 <p>
     Now, we can add and subtract. But we're dealing with bits, too, and maybe I'll want to manipulate them as well? Well, boolean algebra has got you covered. There are three operations that you need to know about: <code>and</code>, <code>or</code> and <code>xor</code>.
