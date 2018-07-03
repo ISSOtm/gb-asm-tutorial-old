@@ -28,6 +28,13 @@
         },
         {
             "leaf": false,
+            "index": { "leaf": true, "id": "intermediate", "title": "Intermediate" },
+            "subpages": [
+                { "leaf": true, "id": "stack", "title": "The Stack" }
+            ]
+        },
+        {
+            "leaf": false,
             "index": { "leaf": true, "id": "extras", "title": "Extras"},
             "subpages": [
                 { "leaf": true, "id": "resources", "title": "External resources" },
