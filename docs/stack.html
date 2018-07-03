@@ -27,12 +27,99 @@
                 
                 <h2>What is a stack?</h2>
                 <p>
-                    Good question.
+                    A stack is a concept that's not linked to GB programming. But the CPU implements a stack, so let's talk about it. A stack is a way to store data, in a LIFO manner (<b>l</b>ast <b>i</b>n <b>f</b>irst <b>o</b>ut). It's just like a stack of books: the last one put on top of the pile is the first one you take out.
+                </p>
+                <p>
+                    A stack is interfaced with in two ways: either you <strong>push</strong> data onto it, or you <strong>pop</strong> data off of it. In the second case, data is retrieved and <em>removed</em> from the stack. (Again, picture a pile of books.)
+                </p>
+                <p>
+                    The point of a stack is that it allows to "save" values temporarily. Push a value on top, get it back later.
                 </p>
                 
                 <h2>Now introducing <i>the <code>sp</code></i></h2>
                 <p>
-                    <code>sp</code> is the CPU's implementation of the stack concept. It's a 16-bit register...
+                    <code>sp</code> is the CPU's implementation of the stack concept. It's a 16-bit register that points to the top of the stack. Here's what you can do with <code>sp</code>, before we talk about how the CPU's stack works.
+                </p>
+<pre>
+    ld sp, $DEAD ; Set sp to something
+
+    ; Point hl to the stack, with a signed 8-bit offset
+    ld hl, sp+4
+    ; Set sp to hl, although this one doesn't have an offset
+    ld sp, hl
+
+    ; Edit sp directly (signed 8-bit offset)
+    add sp, -4
+
+    ; Save SP to RAM
+    ld [$BEEF], sp
+
+    ; Doesn't affect flags, IIRC?
+    inc sp
+    dec sp
+</pre>
+                <p>
+                    Now, let's get to the Real Stuff&trade;: the CPU's stack. The first instruction is <code>push</code>, which pushes a 16-bit register's contents to the stack. Here's a breakdown of what occurs:
+                </p>
+<pre>
+    push hl
+
+    ; is equivalent to
+    ; NB: some of these instructions are NOT valid, just here to give an example
+
+    dec sp
+    ld [sp], h
+    dec sp
+    ld [sp], l
+</pre>
+                <p>
+                    Notice how <code>hl</code> ends up being stored in little-endian format? (Little-endian was evoked in the <a href="memory.html">section</a>.) Notice also that <code>sp</code> is <strong>decremented</strong> after each push, which essentially means that the stack is placed at the <strong>end</strong> of RAM, rather than at the beginning (this is called an "ascending" stack). And finally, notice that <code>sp</code> always points to the topmost entry, instead of pointing to the free space before it (this is called a "full" stack).
+                </p>
+                <p>
+                    Also, the same way that we have <code>push</code>, we have <code>pop</code>:
+                </p>
+<pre>
+    pop de
+
+    ; is equivalent to
+
+    ld e, [sp]
+    inc sp
+    ld d, [sp]
+    inc sp
+</pre>
+                
+                <h2>Its uses</h2>
+                <p>
+                    A mentioned previously, the stack allows "saving" values.
+                </p>
+<pre>
+    ld hl, 42
+    ; hl contains an important value that we must not lose
+    ; But we need to use hl for a calculation!
+
+    push hl ; Save important value
+
+    ; Perform calculation that uses hl
+    ld hl, 1337
+    ld de, 9001
+    add hl, de
+    ld d, h
+    ld e, l
+
+    pop hl ; Get back important value
+</pre>
+                <p>
+                    So the stack is dandy and all, but you should be careful not to overuse it. Why? Because it's <strong>slow</strong>. <code>push hl</code> isn't as slow as
+                </p>
+<pre>
+    ld a, l
+    ld [$C000], a
+    ld a, h
+    ld [$C001], a
+</pre>
+                <p>
+                    -- but if you can avoid it, do so. (Otherwise you're a bad programmer who shouldn't complain when their OS or any other program takes ages to launch and/or runs like ass on a quad-core CPU and 8GB RAM.)
                 </p>
             </article>
 
