@@ -31,13 +31,13 @@
 </p>
 <table>
     <tr><th>Condition</th><th>Mnemonic</th><th>True when...</th></tr>
-    <tr><td>Non-zero</td> <td>nz</td>      <td>Zero set</td>    </tr>
-    <tr><td>Zero</td>     <td>z</td>       <td>Zero reset</td>  </tr>
+    <tr><td>Non-zero</td> <td>nz</td>      <td>Zero reset</td>  </tr>
+    <tr><td>Zero</td>     <td>z</td>       <td>Zero set</td>    </tr>
     <tr><td>No carry</td> <td>nc</td>      <td>Carry reset</td> </tr>
     <tr><td>Carry</td>    <td>c</td>       <td>Carry set</td>   </tr>
 </table>
 <p>
-    Remember that labels point to memory locations, which make them very common operands for <code>jp</code>. Here's a small code snippet that uses several things we've seen so far:
+    Remember that labels are references to memory locations, which make them very common operands for <code>jp</code>. Here's a small code snippet that uses several things we've seen so far:
 </p>
 <pre>
     ld a, [wPlayerHP]
