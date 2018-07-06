@@ -1,0 +1,57 @@
+<p>
+    Remember <code>call</code>, <code>ret</code> and <code>rst</code>? It's high time we give them some love and care!
+</p>
+
+<h2>Calling functions</h2>
+<p>
+    The concept of calling a function is that at some point in the flow, the flow is interrupted, a separate piece of code is ran, and then the flow resumes, optionally using some of the function's calculations. On the GB, this is done using the <code>call</code> instruction.
+</p>
+<p>
+    The principle is, again, that the function "returns" to the main flow. To do that, it need to save where the "calling" flow was... My, my, didn't we just see that the stack was perfect for saving stuff? Well, that's exactly what happens!
+</p>
+<pre>
+    ; Let's say that `Function` is a label
+
+    call Function
+
+    ; equivalent to (again, these instructions are illustrative but **invalid**)
+
+    push pc ; But PC equals the address after the following instruction
+    jp Function
+.return ; This is the address whose value gets pushed onto the stack
+</pre>
+<p>
+    (If you're not sure how that works, read <code>ret</code>'s description below; that should make it clearer.)
+</p>
+<p>
+    Oh, and also, just like <code>jp</code> and <code>jr</code>, <code>call</code> can be executed conditionally. <code>call nz, CallOnlyIfZIsReset</code>
+</p>
+
+<h2>Returning</h2>
+<p>
+    Now, a function needs to tell the CPU when it's over, and when control need to be passed back to the calling code. This is done by the <code>ret</code> operation, which is basically <code>pop pc</code>. And this instruction can be used conditionally too! Here's an example:
+</p>
+<pre>
+    ld de, DefaultPlayerName
+    ld hl, wPlayerName
+    call Strcpy
+
+    ; (...)
+
+; Copy a string up to but not including the first NUL character
+; @param de A pointer to the string to be copied
+; @param hl A pointer to the beginning of the destination buffer
+; @return de A pointer to the source string's terminating byte
+; @return hl A pointer to the last copied byte
+; @return a Zero
+; @return flags C reset, Z set
+Strcpy:
+    ld a, [de]
+    and a
+    ret z
+    ld [hli], a
+    jr Strcpy
+</pre>
+<p>
+    Note that I inserted a huge comment before the <code>Strcpy</code> function. This is to help document what it does, etc. I recommend using a format similar to this one, because it's clear and concise.
+</p>

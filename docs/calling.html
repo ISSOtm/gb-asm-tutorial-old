@@ -5,15 +5,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>
-            Jumping around
+            London Calling
         </title>
 
         <meta name="author" content="Eldred Habert" />
         <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://issotm.github.io" />
-        <link rel="prev" href="interlude.html" />
-        <link rel="next" href="displaying.html" />
+        <link rel="prev" href="stack.html" />
+        <link rel="next" href="extras.html" />
 
         <link rel="stylesheet" href="css/normalize.css" />
         <link rel="stylesheet" href="css/common.css" />
@@ -22,91 +22,73 @@
         <main>
             <article>
                 <h1>
-                    Jumping around
+                    London Calling
                 </h1>
                 
                 <p>
-                    So far, all programs we have seen executed from top to bottom, and there weren't any conditions. It's time to change that!
+                    Remember <code>call</code>, <code>ret</code> and <code>rst</code>? It's high time we give them some love and care!
                 </p>
                 
-                <h2>Some context</h2>
+                <h2>Calling functions</h2>
                 <p>
-                    Let's quickly talk about how the CPU processes instructions. The CPU has another 16-bit register I didn't talk about yet, which is called <code>pc</code>, the <b>p</b>rogram <b>c</b>ounter. It's simply the memory address where the CPU is reading instructions from. When the CPU executes an instruction, the following happens:
-                </p>
-                <ol>
-                    <li>The byte <code>[pc]</code> is read (this means that if PC = $1234, the byte at $1234 is read)</li>
-                    <li><code>pc</code> is incremented</li>
-                    <li>That byte is decoded so the CPU knows which instruction it should execute</li>
-                    <li>If the instruction has operand byte(s), it is/they are read as well, one by one, and <code>pc</code> is incremented after each read</li>
-                    <li>The instruction is executed proper</li>
-                </ol>
-                <p>
-                    So far, execution has been linear - from $0000 to $FFFF. However, some instructions modify <code>pc</code>! There are five instructions: <code>jp</code>, <code>jr</code>, <code>call</code>, <code>rst</code> and <code>ret</code>. The latter three make use of the stack, which is a concept we will see later. For now, we will focus on <code>jp</code> and <code>jr</code>.
-                </p>
-                
-                <h2>A CPU on a pogo stick</h2>
-                <p>
-                    <code>jp</code> lets execution "<b>j</b>um<b>p</b>" (that's how it's called) to another place in memory. <code>jp $1234</code> simply sets <code>pc</code> to $1234 -- if you want, it's <code>ld pc, $1234</code>, although that syntax is invalid :3
+                    The concept of calling a function is that at some point in the flow, the flow is interrupted, a separate piece of code is ran, and then the flow resumes, optionally using some of the function's calculations. On the GB, this is done using the <code>call</code> instruction.
                 </p>
                 <p>
-                    This essentially enables execution to flow in any order, which resolves the linearity problem. But not the conditional problem. Fear not! For <code>jp</code> is an instruction that can be executed <em>conditionally</em>! Depending on what, you may ask? Depending on our trusty flags.
-                </p>
-                
-                <h3>Conditions</h3>
-                <p>
-                    There are four conditions available, which act depending on two flags: C and Z.
-                </p>
-                <table>
-                    <tr><th>Condition</th><th>Mnemonic</th><th>True when...</th></tr>
-                    <tr><td>Non-zero</td> <td>nz</td>      <td>Zero set</td>    </tr>
-                    <tr><td>Zero</td>     <td>z</td>       <td>Zero reset</td>  </tr>
-                    <tr><td>No carry</td> <td>nc</td>      <td>Carry reset</td> </tr>
-                    <tr><td>Carry</td>    <td>c</td>       <td>Carry set</td>   </tr>
-                </table>
-                <p>
-                    Remember that labels point to memory locations, which make them very common operands for <code>jp</code>. Here's a small code snippet that uses several things we've seen so far:
+                    The principle is, again, that the function "returns" to the main flow. To do that, it need to save where the "calling" flow was... My, my, didn't we just see that the stack was perfect for saving stuff? Well, that's exactly what happens!
                 </p>
 <pre>
-    ld a, [wPlayerHP]
-    and a ; Is it 0?
-    jp z, GameOver ; If HP hit 0, play Game Over animation
-    cp 10 ; Is it under 10 HP?
-    jr nc, .noLowHealthBeep ; If above 10 HP, don't beep
+    ; Let's say that `Function` is a label
 
-    ; We're going to see just below that jr is essentially the same as jp
-    ...
+    call Function
 
-.noLowHealthBeep
+    ; equivalent to (again, these instructions are illustrative but **invalid**)
+
+    push pc ; But PC equals the address after the following instruction
+    jp Function
+.return ; This is the address whose value gets pushed onto the stack
 </pre>
-                
-                <h3>Short, but fast</h3>
                 <p>
-                    Now, we saw how <code>jp</code> works. But what about <code>jr</code>? It also performs <b>j</b>umps, but they're <b>r</b>elative. Relative to what? To <code>pc</code>! Instead of specifying the destination address, <code>jr</code> takes one byte as its operand, the offset, which is added to <code>pc</code> to determine the target destination.
+                    (If you're not sure how that works, read <code>ret</code>'s description below; that should make it clearer.)
                 </p>
                 <p>
-                    Pro: smaller and faster <br />
-                    Con: can only go 128 bytes backwards or 127 bytes forwards
-                </p>
-                <p>
-                    As for the syntax... it's the same as <code>jp</code>! The nice part about the assembler is that it computes the offset for you, based on where the instruction and the target will be located. If the offset cannot be encoded as a <code>jr</code>, then it will simply complain and error out. I recommend using <code>jr</code> by default, and <code>jp</code> when it can't be used.
-                </p>
-                <p>
-                    And by the way, <code>jr</code> supports the same conditions as <code>jp</code>. Neat!
+                    Oh, and also, just like <code>jp</code> and <code>jr</code>, <code>call</code> can be executed conditionally. <code>call nz, CallOnlyIfZIsReset</code>
                 </p>
                 
-                <hr>
-                
+                <h2>Returning</h2>
                 <p>
-                    Does it all make sense so far? We are very close to making our Hello World, don't worry. All that's left for us to figure out is how to draw things to the screen...
+                    Now, a function needs to tell the CPU when it's over, and when control need to be passed back to the calling code. This is done by the <code>ret</code> operation, which is basically <code>pop pc</code>. And this instruction can be used conditionally too! Here's an example:
                 </p>
+<pre>
+    ld de, DefaultPlayerName
+    ld hl, wPlayerName
+    call Strcpy
 
+    ; (...)
+
+; Copy a string up to but not including the first NUL character
+; @param de A pointer to the string to be copied
+; @param hl A pointer to the beginning of the destination buffer
+; @return de A pointer to the source string's terminating byte
+; @return hl A pointer to the last copied byte
+; @return a Zero
+; @return flags C reset, Z set
+Strcpy:
+    ld a, [de]
+    and a
+    ret z
+    ld [hli], a
+    jr Strcpy
+</pre>
+                <p>
+                    Note that I inserted a huge comment before the <code>Strcpy</code> function. This is to help document what it does, etc. I recommend using a format similar to this one, because it's clear and concise.
+                </p>
             </article>
 
             <aside>
                 <nav id="tutorial-index">
                     <b id="index-title">Navigation</b>
-                    <br /><a href="interlude.html">Previous: Interlude</a>
-                    <br /><a href="displaying.html">Next: Displaying</a>
+                    <br /><a href="stack.html">Previous: The Stack</a>
+                    <br /><a href="extras.html">Next: Extras</a>
 
                     <br /><br />
                     <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
@@ -130,7 +112,7 @@
                         </li>
                         <li>
                             <a href="basics.html">Basics</a>
-                            <ol class="current">
+                            <ol>
                                 <li>
                                     <a href="syntax.html">ASM syntax</a>
                                 </li>
@@ -150,7 +132,7 @@
                                     <a href="interlude.html">Interlude</a>
                                 </li>
                                 <li>
-                                    <a href="jumping.html" class="current">Jumping around</a>
+                                    <a href="jumping.html">Jumping around</a>
                                 </li>
                                 <li>
                                     <a href="displaying.html">Displaying</a>
@@ -162,12 +144,12 @@
                         </li>
                         <li>
                             <a href="intermediate.html">Intermediate</a>
-                            <ol>
+                            <ol class="current">
                                 <li>
                                     <a href="stack.html">The Stack</a>
                                 </li>
                                 <li>
-                                    <a href="calling.html">London Calling</a>
+                                    <a href="calling.html" class="current">London Calling</a>
                                 </li>
                             </ol>
                         </li>
