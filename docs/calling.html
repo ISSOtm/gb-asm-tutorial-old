@@ -59,6 +59,29 @@
                     Now, a function needs to tell the CPU when it's over, and when control need to be passed back to the calling code. This is done by the <code>ret</code> operation, which is basically <code>pop pc</code>. And this instruction can be used conditionally too! Here's an example:
                 </p>
 <pre>
+Memcpy:
+    ld a, [de]
+    ld [hli], a
+    inc de
+    dec bc
+    ld a, b
+    or c
+    jr nz, Memcpy
+    ret
+</pre>
+                <p>
+                    If you remember from the Hello World chapter, this looks like the piece of code we used to copy data to VRAM. This is useful to avoid repeating blocks of code:
+                </p>
+<pre>
+    ld de, FontTiles
+    ld hl, $9000
+    ld bc, FontTilesEnd - FontTiles
+    call Memcpy
+</pre>
+                <p>
+                    Note that the <code>ret</code> doesn't have to be at the end of the function!
+                </p>
+<pre>
     ld de, DefaultPlayerName
     ld hl, wPlayerName
     call Strcpy
@@ -79,8 +102,10 @@ Strcpy:
     ld [hli], a
     jr Strcpy
 </pre>
+                
+                <h2>An announcement about documentation</h2>
                 <p>
-                    Note that I inserted a huge comment before the <code>Strcpy</code> function. This is to help document what it does, etc. I recommend using a format similar to this one, because it's clear and concise.
+                    You can see that I inserted a huge comment before the <code>Strcpy</code> function. This is to help document what it does, etc. I recommend using a format similar to this one, because it's clear and concise. I use <code>@param</code> to indicate which registers, flags and memory addresses the function uses as input, <code>@return</code> to document the effects that the function has that are consistent, and <code>@destroy</code> to document the effects it has which are either inconsistent or too complex to explain. I recommend taking the time to write and keep this kind of comment to date, to help you maintain your code.
                 </p>
             </article>
 
