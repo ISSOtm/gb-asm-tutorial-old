@@ -98,6 +98,8 @@ pre {
 }
 
 code {
+    white-space: nowrap;
+
     background-color: #e0e0e0;
     border-radius: 3px;
     padding: 0 5px;
