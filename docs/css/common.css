@@ -90,6 +90,8 @@ td {
 
 
 pre {
+    overflow-x: auto;
+
     background-color: #ddd;
     border-radius: 10px;
     padding: 10px;
