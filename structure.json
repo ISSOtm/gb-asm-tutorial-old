@@ -30,6 +30,7 @@
             "leaf": false,
             "index": { "leaf": true, "id": "intermediate", "title": "Intermediate" },
             "subpages": [
+                { "leaf": true, "id": "memories", "title": "Memory types"},
                 { "leaf": true, "id": "stack", "title": "The Stack" },
                 { "leaf": true, "id": "calling", "title": "London Calling" }
             ]

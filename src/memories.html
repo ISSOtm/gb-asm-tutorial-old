@@ -1,0 +1,21 @@
+<h2>Memory regions</h2>
+<p>
+    As you know, the Game Boy's CPU has a 16-bit address space: it can access up to 65,536 bytes of memory at any time, labelled from $0000 to $FFFF. Now, although from the CPU all of these bytes are equal, the programmer needs to be aware that not all of these bytes are the same. Simple example: some of the memory is the ROM where the game code is, some of the memory is the RAM. We need to know where each is.
+</p>
+
+<h2>Memory map</h2>
+<p>
+    Here are the different memory types; we will explain them one by one.
+</p>
+<table>
+    <tr><th>Begins at</th><th>Ends at</th><th>Name</th></tr>
+    <tr><td>$0000</td><td>$7FFF</td><td>ROM</td></tr>
+    <tr><td>$8000</td><td>$9FFF</td><td>VRAM</td></tr>
+    <tr><td>$A000</td><td>$BFFF</td><td>SRAM</td></tr>
+    <tr><td>$C000</td><td>$DFFF</td><td>WRAM</td></tr>
+    <tr><td>$E000</td><td>$FDFF</td><td>Echo RAM</td></tr>
+    <tr><td>$FE00</td><td>$FE9F</td><td>OAM</td></tr>
+    <tr><td>$FEA0</td><td>$FEFF</td><td>"FEXX"</td></tr>
+    <tr><td>$FF00</td><td>$FF7F</td><td>IO</td></tr>
+    <tr><td>$FF80</td><td>$FFFE</td><td>HRAM</td></tr>
+</table>

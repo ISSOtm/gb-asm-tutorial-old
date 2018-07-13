@@ -5,15 +5,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>
-            Instruction cheat sheet
+            Memory types
         </title>
 
         <meta name="author" content="Eldred Habert" />
         <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://issotm.github.io" />
-        <link rel="prev" href="resources.html" />
-        <link rel="next" href="data_manip.html" />
+        <link rel="prev" href="intermediate.html" />
+        <link rel="next" href="stack.html" />
 
         <link rel="stylesheet" href="css/normalize.css" />
         <link rel="stylesheet" href="css/common.css" />
@@ -22,54 +22,37 @@
         <main>
             <article>
                 <h1>
-                    Instruction cheat sheet
+                    Memory types
                 </h1>
                 
+                <h2>Memory regions</h2>
                 <p>
-                    You can check the effects, flag results, cycle counts etc. of all GBz80 instructions here.
-                    <br />
-                    Notes:
+                    As you know, the Game Boy's CPU has a 16-bit address space: it can access up to 65,536 bytes of memory at any time, labelled from $0000 to $FFFF. Now, although from the CPU all of these bytes are equal, the programmer needs to be aware that not all of these bytes are the same. Simple example: some of the memory is the ROM where the game code is, some of the memory is the RAM. We need to know where each is.
                 </p>
-                <ul>
-                    <li><code>immX</code> means a X-bit immediate value.</li>
-                    <li><code>regX</code> means a X-bit register. (Note: <code>af</code> isn't part of the <code>reg16</code> group)</li>
-                    <li><code>opX</code> means either a <code>regX</code>, or an <code>immX</code>.</li>
-                    <li><code>mem16</code> means a 16-bit immediate value, that is used to address memory.</li>
-                    <li>M-Cycles are 1MHz cycles, not the 4MHz clock cycles.</li>
-                    <li>Flag alterations are noted as such: <code>-</code> means "unaffected", <code>0</code> or <code>1</code> means the flag is set to that value, and anything else describes what value the flag is set to.</li>
-                </ul>
                 
-                <h2>Data manipulation</h2>
-                <ul>
-                    <li><a href="data_manip.html#ld">Load: <code>ld</code></a></li>
-                    <li><a href="data_manip.html#ldh">IO load: <code>ldh</code></a></li>
-                    <li><a href="data_manip.html#ldi_ldd">Block load: <code>ldi, ldd</code></a></li>
-                    <li><a href="data_manip.html#push_pop">Stack: <code>push, pop</code></a></li>
-                </ul>
-                
-                <!--
-                Table for one instruction:
-                
-                <table class="invert-stripes">
-                    <tr>
-                        <th rowspan="2">Syntax</th><th rowspan="2">Effect</th><th rowspan="2">Size</th><th rowspan="2">M-Cycles</th><th colspan="4">Flags</th>
-                    </tr>
-                    <tr>
-                        <th>C</th><th>Z</th><th>H</th><th>N</th>
-                    </tr>
-                    <tr>
-                        <td><code>Syntax</code></td><td>Effect</td><td>Bytes</td><td>Cycles</td><td>C</td><td>Z</td><td>H</td><td>N</td>
-                    </tr>
+                <h2>Memory map</h2>
+                <p>
+                    Here are the different memory types; we will explain them one by one.
+                </p>
+                <table>
+                    <tr><th>Begins at</th><th>Ends at</th><th>Name</th></tr>
+                    <tr><td>$0000</td><td>$7FFF</td><td>ROM</td></tr>
+                    <tr><td>$8000</td><td>$9FFF</td><td>VRAM</td></tr>
+                    <tr><td>$A000</td><td>$BFFF</td><td>SRAM</td></tr>
+                    <tr><td>$C000</td><td>$DFFF</td><td>WRAM</td></tr>
+                    <tr><td>$E000</td><td>$FDFF</td><td>Echo RAM</td></tr>
+                    <tr><td>$FE00</td><td>$FE9F</td><td>OAM</td></tr>
+                    <tr><td>$FEA0</td><td>$FEFF</td><td>"FEXX"</td></tr>
+                    <tr><td>$FF00</td><td>$FF7F</td><td>IO</td></tr>
+                    <tr><td>$FF80</td><td>$FFFE</td><td>HRAM</td></tr>
                 </table>
-                
-                -->
             </article>
 
             <aside>
                 <nav id="tutorial-index">
                     <b id="index-title">Navigation</b>
-                    <br /><a href="resources.html">Previous: External resources</a>
-                    <br /><a href="data_manip.html">Next: Data manipulation</a>
+                    <br /><a href="intermediate.html">Previous: Intermediate</a>
+                    <br /><a href="stack.html">Next: The Stack</a>
 
                     <br /><br />
                     <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
@@ -125,9 +108,9 @@
                         </li>
                         <li>
                             <a href="intermediate.html">Intermediate</a>
-                            <ol>
+                            <ol class="current">
                                 <li>
-                                    <a href="memories.html">Memory types</a>
+                                    <a href="memories.html" class="current">Memory types</a>
                                 </li>
                                 <li>
                                     <a href="stack.html">The Stack</a>
@@ -139,13 +122,13 @@
                         </li>
                         <li>
                             <a href="extras.html">Extras</a>
-                            <ol class="current">
+                            <ol>
                                 <li>
                                     <a href="resources.html">External resources</a>
                                 </li>
                                 <li>
-                                    <a href="instructions.html" class="current">Instruction cheat sheet</a>
-                                    <ol class="current">
+                                    <a href="instructions.html">Instruction cheat sheet</a>
+                                    <ol>
                                         <li>
                                             <a href="data_manip.html">Data manipulation</a>
                                         </li>
