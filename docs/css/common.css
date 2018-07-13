@@ -143,29 +143,63 @@ pre {
     font-size: 18px;
 }
 
+/* List number formatting */
 #tutorial-index > ol {
     list-style-type: upper-roman;
 }
 
 #tutorial-index > ol > li > ol {
     list-style-type: decimal;
-
-    /* Use visibility instead of display: none to avoid the box resizing horizontally when the sub-list pops up */
-    visibility: hidden;
-    height: 0;
-    opacity: 0;
-    transition: visibility 0.5s step-end, height 0.5s step-end, opacity 0.5s ease-in;
 }
 
 #tutorial-index > ol > li > ol > li > ol {
     list-style-type: lower-alpha;
 }
 
-#tutorial-index > ol > li:hover > ol, #tutorial-index > ol > li > ol.current {
+/* Collapsing styling for checkbox trick */
+#tutorial-index > ol ol {
+    /* Use visibility instead of display: none to avoid the box resizing horizontally when the sub-list pops up */
+    visibility: hidden;
+    height: 0;
+    opacity: 0;
+    transition: visibility 0.25s step-end, height 0.25s step-end, opacity 0.25s ease-in;
+}
+
+#tutorial-index > ol :checked + label + ol, #tutorial-index > :checked + label + ol ol {
     visibility: visible;
     height: 100%;
     opacity: 1;
-    transition: visibility 0.5s step-start, height 0.5s step-start, opacity 0.5s ease-out;
+    transition: visibility 0.25s step-start, height 0.25s step-start, opacity 0.25s ease-out;
+}
+
+/* Hide trick's checkbox */
+#tutorial-index input[type="checkbox"] {
+    display: none;
+}
+
+/* Dynamically alter displayed text (JS-less!) */
+#tutorial-index > ol :checked + label::after {
+    content: "[Collapse]";
+}
+
+#tutorial-index > ol input[type="checkbox"]:not(:checked) + label::after {
+    content: "[Expand]";
+}
+
+/* Root level has "Expand all" button */
+#tutorial-index > :checked + label::after {
+    content: "[Collapse all]";
+}
+
+#tutorial-index > input[type="checkbox"]:not(:checked) + label::after {
+    content: "[Expand all]";
+}
+
+/* Eye-candy */
+#tutorial-index label {
+    font-size: 80%;
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 a.current {

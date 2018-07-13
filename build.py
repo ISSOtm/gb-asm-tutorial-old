@@ -20,7 +20,7 @@ include_re = re.compile("(?P<whitespace>\s+)#include\s+(?P<id>\w+)", re.IGNORECA
 """
 Generates the navigation HTML for a given page
 """
-def generate_navigation(structure, current_id):
+def generate_navigation(structure, current_id, is_root=True):
     is_current = False
 
     if structure["leaf"]:
@@ -33,22 +33,29 @@ def generate_navigation(structure, current_id):
         lines = ["<a href=\"{}.html\"{}>{}</a>\n".format(structure["id"], opening_class, structure["title"])]
     
     else:
-        is_current, lines = generate_navigation(structure["index"], current_id)
+        # Generate link to section index
+        is_current, lines = generate_navigation(structure["index"], current_id, False)
 
+        # Generate lists for sub-sections
         sub_lines = []
         for sub_struct in structure["subpages"]:
             sub_lines.append("<li>\n")
 
-            _is_current, _sub_lines = generate_navigation(sub_struct, current_id)
+            _is_current, _sub_lines = generate_navigation(sub_struct, current_id, False)
             is_current |= _is_current
 
             sub_lines.extend([ "    " + line for line in _sub_lines ])
             sub_lines.append("</li>\n")
+
+        # Prepare attrs for expanding shenanigans
+        opening_attr = ""
+        if is_current and not is_root: # Do not "expand all" by default
+            opening_attr = " checked"
+        section_id = structure["index"]["id"]
         
-        if is_current:
-            lines.append("<ol class=\"current\">\n")
-        else:
-            lines.append("<ol>\n")
+        lines.append("<input type=\"checkbox\" id=\"" + section_id + "-navcheckbox\"" + opening_attr + ">\n")
+        lines.append("<label for=\"" + section_id + "-navcheckbox\"></label>\n")
+        lines.append("<ol>\n")
         
         lines.extend([ "    " + line for line in sub_lines ])
         lines.append("</ol>\n")

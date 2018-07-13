@@ -122,13 +122,17 @@
                     <br /><a href="instructions.html">Previous: Instruction cheat sheet</a>
 
                     <br /><br />
-                    <small>Hover over section names to expand,<br />or tap next to links if on phone</small>
+                    <small>Click [Expand] to expand a section, or [Expand all] to deploy everything</small>
                     <br />
 
                     <a href="index.html">GB ASM Programming</a>
-                    <ol class="current">
+                    <input type="checkbox" id="index-navcheckbox">
+                    <label for="index-navcheckbox"></label>
+                    <ol>
                         <li>
                             <a href="introduction.html">Introduction</a>
+                            <input type="checkbox" id="introduction-navcheckbox">
+                            <label for="introduction-navcheckbox"></label>
                             <ol>
                                 <li>
                                     <a href="what_is_gb.html">What is Game Boy?</a>
@@ -143,6 +147,8 @@
                         </li>
                         <li>
                             <a href="basics.html">Basics</a>
+                            <input type="checkbox" id="basics-navcheckbox">
+                            <label for="basics-navcheckbox"></label>
                             <ol>
                                 <li>
                                     <a href="syntax.html">ASM syntax</a>
@@ -175,6 +181,8 @@
                         </li>
                         <li>
                             <a href="intermediate.html">Intermediate</a>
+                            <input type="checkbox" id="intermediate-navcheckbox">
+                            <label for="intermediate-navcheckbox"></label>
                             <ol>
                                 <li>
                                     <a href="memories.html">Memory types</a>
@@ -189,13 +197,17 @@
                         </li>
                         <li>
                             <a href="extras.html">Extras</a>
-                            <ol class="current">
+                            <input type="checkbox" id="extras-navcheckbox" checked>
+                            <label for="extras-navcheckbox"></label>
+                            <ol>
                                 <li>
                                     <a href="resources.html">External resources</a>
                                 </li>
                                 <li>
                                     <a href="instructions.html">Instruction cheat sheet</a>
-                                    <ol class="current">
+                                    <input type="checkbox" id="instructions-navcheckbox" checked>
+                                    <label for="instructions-navcheckbox"></label>
+                                    <ol>
                                         <li>
                                             <a href="data_manip.html" class="current">Data manipulation</a>
                                         </li>
