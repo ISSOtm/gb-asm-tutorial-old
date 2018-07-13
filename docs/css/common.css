@@ -162,7 +162,7 @@ pre {
     visibility: hidden;
     height: 0;
     opacity: 0;
-    transition: visibility 0.25s step-end, height 0.25s step-end, opacity 0.25s ease-in;
+    transition: visibility 0.25s step-end, height 0.25s step-end, opacity 0.25s cubic-bezier(.08,.82,.17,1);
 }
 
 #tutorial-index > ol :checked + label + ol, #tutorial-index > :checked + label + ol ol {
