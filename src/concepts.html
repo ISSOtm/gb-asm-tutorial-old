@@ -188,9 +188,12 @@
 </p>
 <p>
     On the other hand, if interpreting (and note that it's an <strong>interpretation</strong>: the byte is neither signed or unsigned by itself, it only depends on how the code interprets it) a byte in a <em>signed</em> way, bit 7 instead holds a different meaning: the sign. If the bit is zero, bits 0 through 6 are interpreted normally. If the bit is one, the number is instead negative, and bits 0-6 are interpreted slightly differently; they are all inverted, then 1 is added to get the absolute value.
-    <br />
-    Here's an example to help you understand: <code>$FF = %1111 1111 -> negative of %111 1111 -> %000 0000 + 1 = 1, thus $FF = -1</code>
-    <br />
+</p>
+<p>
+    Here's an example to help you understand:
+</p>
+<pre>$FF = %1111 1111 -&gt; negative of %111 1111 -&gt; %000 0000 + 1 = 1, thus $FF = -1</pre>
+<p>
     Another explanation can be found <a href="https://en.wikipedia.org/wiki/Two's_complement">here</a>.
 </p>
 <p>
