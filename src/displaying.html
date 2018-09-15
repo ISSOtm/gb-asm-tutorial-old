@@ -22,6 +22,7 @@
     ; Wait until VBlank
 .notVBlanking
     ldh a, [rLY] ; Read the LCD's drawing status
+    ; NOTE: ldh is a shorter and faster version of ld for addresses in the $FF00-$FFFF range
     cp 144
     jr c, .notVBlanking ; The LCD is VBlanking between LY 144 and 153
 </pre>
