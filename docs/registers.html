@@ -30,7 +30,7 @@
                     The CPU has to work with some memory, otherwise not much can be achieved. However, <em>external</em> memory is rather slow to access (as we'll see later), thus, the CPU has a tiny amount of memory embedded within it. Tiny as in, a handful of bytes. This memory is split in units called <strong>registers</strong>.
                 </p>
                 <p>
-                    The GBz80 has eight <strong>general-purpose</strong> registers: <code>a</code>, <code>f</code>, <code>b</code>, <code>c</code>, <code>d</code>, <code>e</code>, <code>h</code>, and <code>l</code> (plus some others we'll discuss later). The odd ordering I might have given isn't random, it'll be explained below. "General-purpose" means that any register can be used for anything (although <code>a</code> is kind of special).
+                    The GBz80 has eight registers: <code>a</code>, <code>f</code>, <code>b</code>, <code>c</code>, <code>d</code>, <code>e</code>, <code>h</code>, and <code>l</code> (plus some others we'll discuss later). The odd ordering I might have given isn't random, it'll be explained below.
                 </p>
                 <p>
                     All of these registers are 1 byte, which, if you remember, means they can hold each an integer between either 0 and 255, or -128 and 127. Also, all of them <em>besides <code>f</code></em> are "general-purpose", meaning they can roughly be freely swapped (we'll see that <code>a</code> is a bit special). <code>f</code>, on the other hand, cannot be used at all directly (except in one case explained much later). <code>f</code> will be discussed more in the <a href="flags.html">Flags</a> lesson.
