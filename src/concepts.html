@@ -40,26 +40,17 @@
 <p>
     Similarly, hexadecimal's prefixes are "0x" or "$", so <em>1337 = %10100111001 = $539</em>. But, you may ask, why is hex (abbreviation of hexadecimal) more convenient than binary? Well, as I said before, 16 = 2<sup>4</sup>. Here's a conversion table from hex to bin:
 </p>
-<pre>
-    Hex | Bin
-    ----+----
-    0   |    0
-    1   |    1
-    2   |   10
-    3   |   11
-    4   |  100
-    5   |  101
-    6   |  110
-    7   |  111
-    8   | 1000
-    9   | 1001
-    A   | 1010
-    B   | 1011
-    C   | 1100
-    D   | 1101
-    E   | 1110
-    F   | 1111
-</pre>
+<table>
+    <tr><th>Hex</th><th>Bin</th><th>Hex</th><th>Bin</th></tr>
+    <tr><td>0</td><td style="text-align: right;">0</td><td>8</td><td style="text-align: right;">1000</td></tr>
+    <tr><td>1</td><td style="text-align: right;">1</td><td>9</td><td style="text-align: right;">1001</td></tr>
+    <tr><td>2</td><td style="text-align: right;">10</td><td>A</td><td style="text-align: right;">1010</td></tr>
+    <tr><td>3</td><td style="text-align: right;">11</td><td>B</td><td style="text-align: right;">1011</td></tr>
+    <tr><td>4</td><td style="text-align: right;">100</td><td>C</td><td style="text-align: right;">1100</td></tr>
+    <tr><td>5</td><td style="text-align: right;">101</td><td>D</td><td style="text-align: right;">1101</td></tr>
+    <tr><td>6</td><td style="text-align: right;">110</td><td>E</td><td style="text-align: right;">1110</td></tr>
+    <tr><td>7</td><td style="text-align: right;">111</td><td>F</td><td style="text-align: right;">1111</td></tr>
+</table>
 <p>
     As you can see, <em>one hexadecimal character (a "nibble") replaces exactly 4 binary characters (bits)</em>! This is why hex is so convenient: it's trivial to convert to binary, uses only 6 extra symbols, and is four times as compact as binary. This is why you will barely see any binary, and mostly hex and decimal.
     <br />
@@ -171,7 +162,7 @@
     You might be wondering how your computer is able to present the correct result when asked "255 + 1". It's simple, it uses more bytes. First, it adds the bytes together, which yields 0, plus the carry bit. Thus, it knows that it must add 1 to the second byte. ($00FF + $0001 = $0000 + $0100, if you follow my lead)
 </p>
 <p>
-    If you're working with decimal numbers, it's not obvious how many bits a number uses, unless you know your powers of 2 by heart (...I do :3). Here's how to apply overflow anyways, and in a simple manner: modulo arithmetics. The modulo operation, usually noted "A % B", consists in performing integer division of A and B, and keeping only the remainder. Example: 7 / 3 = 2 remainder 1, so 7 % 3 = 1. Another way to calculate A % B is to subtract B from A until A is smaller than B: 7 - 3 = 4, 4 - 3 = 1, 1 &lt; 3 so 7 % 3 = 1 (NB: if A is negative, you must instead add B until the result is positive). The reason why modulo arithmeticas are convenient is that working with a byte basically means applying modulo 256 to all your operaiton's results.
+    If you're working with decimal numbers, it's not obvious how many bits a number uses, unless you know your powers of 2 by heart (...I do :3). Here's how to apply overflow anyways, and in a simple manner: modulo arithmetics. The modulo operation, usually noted "A % B", consists in performing integer division of A and B, and keeping only the remainder. Example: 7 / 3 = 2 remainder 1, so 7 % 3 = 1. Another way to calculate A % B is to subtract B from A until A is smaller than B: 7 - 3 = 4, 4 - 3 = 1, 1 &lt; 3 so 7 % 3 = 1 (NB: if A is negative, you must instead add B until the result is positive). The reason why modulo arithmetics are convenient is that working with a byte basically means applying modulo 256 to the result of all your operations.
 </p>
 
 <h2>Bits, form ranks!</h2>
@@ -188,9 +179,12 @@
 </p>
 <p>
     On the other hand, if interpreting (and note that it's an <strong>interpretation</strong>: the byte is neither signed or unsigned by itself, it only depends on how the code interprets it) a byte in a <em>signed</em> way, bit 7 instead holds a different meaning: the sign. If the bit is zero, bits 0 through 6 are interpreted normally. If the bit is one, the number is instead negative, and bits 0-6 are interpreted slightly differently; they are all inverted, then 1 is added to get the absolute value.
-    <br />
-    Here's an example to help you understand: <code>$FF = %1111 1111 -> negative of %111 1111 -> %000 0000 + 1 = 1, thus $FF = -1</code>
-    <br />
+</p>
+<p>
+    Here's an example to help you understand:
+</p>
+<pre>$FF = %1111 1111 -&gt; negative of %111 1111 -&gt; %000 0000 + 1 = 1, thus $FF = -1</pre>
+<p>
     Another explanation can be found <a href="https://en.wikipedia.org/wiki/Two's_complement">here</a>.
 </p>
 <p>

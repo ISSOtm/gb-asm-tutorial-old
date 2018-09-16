@@ -51,7 +51,7 @@
                     (If you're not sure how that works, read <code>ret</code>'s description below; that should make it clearer.)
                 </p>
                 <p>
-                    Oh, and also, just like <code>jp</code> and <code>jr</code>, <code>call</code> can be executed conditionally. <code>call nz, CallOnlyIfZIsReset</code>
+                    Oh, and also, just like <code>jp</code> and <code>jr</code>, <code>call</code> can be executed conditionally. <code>call nz, AFunctionCalledOnlyIfZIsReset</code>
                 </p>
                 
                 <h2>Returning</h2>
@@ -107,6 +107,7 @@ Strcpy:
                 <p>
                     You can see that I inserted a huge comment before the <code>Strcpy</code> function. This is to help document what it does, etc. I recommend using a format similar to this one, because it's clear and concise. I use <code>@param</code> to indicate which registers, flags and memory addresses the function uses as input, <code>@return</code> to document the effects that the function has that are consistent, and <code>@destroy</code> to document the effects it has which are either inconsistent or too complex to explain. I recommend taking the time to write and keep this kind of comment to date, to help you maintain your code.
                 </p>
+
             </article>
 
             <aside>

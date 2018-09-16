@@ -83,8 +83,10 @@ Start:
                 
                 <h2>A line of ASM</h2>
                 <p>
-                    To explain how ASM is written, we'll analyze one line of the lines of the snippet presented above: <code>cp a, $11 ; Compare value left by boot ROM</code>.
-                    <br />
+                    To explain how ASM is written, we'll analyze one line of the lines of the snippet presented above:
+                </p>
+                <pre>cp a, $11 ; Compare value left by boot ROM</pre>.
+                <p>
                     This line is split in two by the half-colon (<code>;</code>). To its left is the <em>instruction</em>; to its right is the <em>comment</em>.
                 </p>
                 <p>
@@ -112,7 +114,7 @@ Eh: db $FE ; You can have all three on the same line!
 Label: ; RGBDS will complain that you defined this twice
 </pre>
                 <p>
-                    It's of course invalid to create two labels with the same name. It's actually fairly annoying when it happens, because RGBDS tends to not give you line numbers when it happens. Cue heavy Ctrl+F and/or <code>grep</code> in your project files.
+                    It's of course invalid to create two labels with the same name. It's actually fairly annoying when it happens, because RGBDS tends to not give you line numbers in the error message. Cue heavy Ctrl+F and/or <code>grep</code> in your project files.
                 </p>
                 <p>
                     But then what about these other labels starting with a dot? These are <strong>local labels</strong>. Basically, a local label is only accessible inside its global label. Here's an example for clarity:

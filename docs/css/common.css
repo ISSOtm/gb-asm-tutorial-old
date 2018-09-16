@@ -62,6 +62,7 @@ main {
 
 main article {
     flex-grow: 10;
+    text-align: justify;
     /* Somehow this fixes horizontal overflow issues. Thanks @uki-nz ! */
     min-width: 0;
 }
