@@ -5,7 +5,7 @@
 
 <h2>Memory map</h2>
 <p>
-    Here are the different memory types; we will explain them one by one.
+    Here are the different memory types; I will explain them one by one. We will also see how they're used with RGBDS.
 </p>
 <table>
     <tr><th>Begins at</th><th>Ends at</th><th>Name</th></tr>
@@ -19,3 +19,32 @@
     <tr><td>$FF00</td><td>$FF7F</td><td>IO</td></tr>
     <tr><td>$FF80</td><td>$FFFE</td><td>HRAM</td></tr>
 </table>
+
+<h2>ROM</h2>
+<p>
+    ROM is where the game's program and data are stored. RGBDS provides <em>two</em> memory types for that area, <code>ROM0</code> ($0000-$3FFF) and <code>ROMX</code> ($4000-$7FFF). This is due to something called banking, but we'll forget it for now. We will instead pass the <code>-t</code> option to RGBLINK to make <code>ROM0</code> span the entire ROM space.
+</p>
+<p>
+    ROM is, as its name suggests, read-only. (You may see writes to the ROM space in games, but that's also due to banking, so forget it for now.) It's where the CPU will be executing code from almost always. Aside from banking, which we will pretend doesn't exist for now, there isn't anything special about ROM.
+</p>
+
+<h2>VRAM</h2>
+<p>
+    We already discussed about VRAM in the <a href="displaying.html">Displaying</a> lesson, but here's a quick recap. Between $8000 and $97FF are stored the tiles; 16 ($10) bytes per tile, and 384 ($180) tiles in three "blocks" of 128 ($80) tiles each. Then are two tilemaps, one at $9800-$9BFF, and one at $9C00-$9FFF. Each tilemap is 32*32 bytes.
+</p>
+<p>
+    VRAM has a big flaw, in that it can only be accessed while the PPU is not; that is, it must be accessed during LCD modes 0, 1 and 2.
+</p>
+
+<h2>SRAM</h2>
+<p>
+    SRAM stands for <b>S</b>ave <b>RAM</b>. It's somewhat misleading, which is why some refer to it as XRAM (E<b>x</b>ternal <b>RAM</b> or E<b>x</b>pansion <b>RAM</b>), but SRAM is the most common term. SRAM is RAM on the cartridge; most of the time, it's backed up by a battery and used to store save data, but some games also use it as extra work RAM (Pokémon games use SRAM as scratch buffers for sprite decompression, Super Mario Land 2 uses some of its SRAM to store variables and level data).
+</p>
+<p>
+    By default, SRAM is in a "locked" state, which, like locked VRAM, ignores writes and returns $FF when read. (Editor's note: it's actually possible that $FF may NOT be always returned. It's best to not rely on reads from SRAM.) How SRAM is unlocked depends on the MBC.
+</p>
+
+<h2>WRAM</h2>
+<p>
+    WRAM is the console's <b>w</b>ork <b>RAM</b>. It's on the 
+</p>
