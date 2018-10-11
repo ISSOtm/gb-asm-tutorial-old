@@ -64,12 +64,13 @@ Memcpy:
 ; Copy a string up to but not including the first NUL character
 ; @param de A pointer to the string to be copied
 ; @param hl A pointer to the beginning of the destination buffer
-; @return de A pointer to the source string's terminating byte
-; @return hl A pointer to the last copied byte
+; @return de A pointer to the byte after the source string's terminating byte
+; @return hl A pointer to the byte after the last copied byte
 ; @return a Zero
 ; @return flags C reset, Z set
 Strcpy:
     ld a, [de]
+    inc de
     and a
     ret z
     ld [hli], a
