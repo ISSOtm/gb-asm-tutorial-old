@@ -11,10 +11,10 @@
 
 <h2>GBDK users</h2>
 <p>
-    If you're a GBDK user, let it be known that I'm not a fan of GBDK. But, before you leave thinking I'm just a purist that hates C, that's not the grudge I have against GBDK. C is useful because it abstracts a lot of implementation tidbits that ASM requires, and I use C a lot on my computer.
+    If you're a GBDK user, let it be known that I'm not a fan of GBDK. But, before you leave thinking I'm just a purist that hates C, that's not the grudge I have against GBDK. C is useful because it abstracts a lot of implementation tidbits that ASM requires, and I use C a lot on my computer. Further, developing ASM is slower, be it just because you have to type more; so, ASM isn't really suited for game jams, for example.
 </p>
 <p>
-    The problem with GBDK is that it's extremely inefficient due to an awful C compiler, and a thoroughly unoptimized stdlib. But even worse is that it attempts to abstract the way the hardware works, but ultimately fails at doing so. It's basically impossible to abstract such a small, constrained device. I have seen a lot of people who were having problems that they couldn't comprehend, but that were obvious (some of them almost trivial) to me because I <i>knew</i> what the hardware was doing.
+    The problem with GBDK is that it's extremely inefficient due to <a href="http://zalods.blogspot.com/2016/12/game-boy-development-tips-and-tricks-iii.html">an awful C compiler</a>, and <a href="https://pastebin.com/D8AefGQU">a thoroughly unoptimized stdlib</a>. But even worse is that it attempts to abstract the way the hardware works, but ultimately fails at doing so. It's basically impossible to abstract such a small, constrained device. I have seen a lot of people who were having problems that they couldn't comprehend, but that were obvious (some of them almost trivial) to me because I <i>knew</i> what the hardware was doing.
 </p>
 <p>
     Besides, another big bummer (but this one is related to C on the Game Boy more than GBDK) is, there are no C debuggers for the Game Boy. All there is is BGB, which provides ASM debugging. (I don't think there's going to be a C debugger for the GB, either, because it would be way too complex). Thus, I recommend at least having enough ASM knowledge - even if you don't end up programming in ASM! - to be able to use BGB to debug your C programs.
@@ -26,7 +26,7 @@
     <q>My opinion was that it's too complicated, takes too long to get anything to work etc. But now I actually quite enjoy working in ASM, and I feel like I'm learning a lot</q> (<a href="img/robbi_discord_screenshot.png">screenshot</a>)
 </p>
 <p>
-    By the way, I have also made a <a href="https://gist.github.com/ISSOtm/4f4d335c3fd258ad0dfc7d4d615409fd">write-up</a> about the benefits and drawbacks of using C or ASM on the Game Boy. I definitely recommend checking it out.
+    By the way, I have also made a <a href="https://gist.github.com/ISSOtm/4f4d335c3fd258ad0dfc7d4d615409fd">write-up</a> about the benefits and drawbacks of using either C or ASM on the Game Boy, if you're interested in a comparison.
 </p>
 
 <h2>Contributing</h2>
