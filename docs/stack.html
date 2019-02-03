@@ -78,7 +78,7 @@
     ld [sp], l
 </pre>
                 <p>
-                    Notice how <code>hl</code> ends up being stored in little-endian format? (Little-endian was evoked in the <a href="memory.html">section</a>.) Notice also that <code>sp</code> is <strong>decremented</strong> after each push, which essentially means that the stack is placed at the <strong>end</strong> of RAM, rather than at the beginning (this is called an "ascending" stack). And finally, notice that <code>sp</code> always points to the topmost entry, instead of pointing to the free space before it (this is called a "full" stack).
+                    Notice how <code>hl</code> ends up being stored in little-endian format? (Little-endian was evoked in the <a href="memory.html">section</a>.) Notice also that <code>sp</code> is <strong>decremented</strong> after each push, which essentially means that the stack is placed at the <strong>end</strong> of RAM, rather than at the beginning (this is called an "descending" stack). And finally, notice that <code>sp</code> always points to the topmost entry, instead of pointing to the free space before it (this is called a "full" stack).
                 </p>
                 <p>
                     Also, the same way that we have <code>push</code>, we have <code>pop</code>:
