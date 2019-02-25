@@ -13,7 +13,10 @@
     Begin the work by creating a directory, anywhere. Call it whatever you want, but <code>hello-world-gb</code> is probably a good pick. Then go into that directory; this is the <b>root</b> of our project. (Everything we'll do will happen inside of the directory.)
 </p>
 <p>
-    Then, download <a href="https://raw.githubusercontent.com/tobiasvl/hardware.inc/master/hardware.inc">this file</a> (right-click, Save As) and save it as <code>hardware.inc</code>. This file contains a lot of definitions that will cut us some work, <i>and</i> standardize the names of the IO registers.
+    Then, download <a href="https://raw.githubusercontent.com/tobiasvl/hardware.inc/master/hardware.inc">this file</a> (right-click, Save As) and save it as <code>hardware.inc</code> in our project's directory. This file contains a lot of definitions that will cut us some work, <i>and</i> standardize the names of the IO registers.
+</p>
+<p>
+    For the font used in this example, download <a href="res/font.chr">this file</a> (again, right-click, Save As...) and save it as <code>font.chr</code> in the project's directory.
 </p>
 <p>
     Now, create a file, and call it, say, <code>main.asm</code>. We will write all our code in there, starting with the following line: <code>INCLUDE "hardware.inc"</code>. When RGBASM reads this, it will parse <code>hardware.inc</code>'s contents, letting us use all the neat definitions that it contains.
@@ -167,7 +170,7 @@ Start:
 
 <h2>Defining data</h2>
 <p>
-    Ok, we're almost done. All the code is in place, we just need to give the program the font and the Hello World string. For the font, you need to download <a href="res/font.chr">this file</a> (again, right-click, Save As...), and place it in our Hello World folder. Here's how to use it:
+    Ok, we're almost done. All the code is in place, we just need to give the program the font and the Hello World string. Remember the font file you downloaded during setup? Here's how to use it:
 </p>
 <pre>
     jr .lockup

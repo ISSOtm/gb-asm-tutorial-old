@@ -98,13 +98,13 @@
     ld a, 3
     ld b, 2
 
-    sub b
+    sub a, b
     ; A = $01, Z reset, C reset
-    sub b
+    sub a, b
     ; A = $FF, Z reset, C set
-    sub $FF
+    sub a, $FF
     ; A = $00, Z set, C reset
-    sub 0
+    sub a, 0
     ; A = $00, Z set, C reset
 </pre>
                 <p>
@@ -124,10 +124,10 @@
 <pre>
     ld a, 42
 
-    cp 10 ; 42 - 10 = 32,  C reset (42 &gt;= 10), Z reset (42 != 10)
+    cp a, 10 ; 42 - 10 = 32,  C reset (42 &gt;= 10), Z reset (42 != 10)
     ; Notice how you can chain comparisons? That comes in handy at times
-    cp 57 ; 42 - 57 = 241, C set   (42 &lt; 57) , Z reset (42 != 57)
-    cp 42 ; 42 - 42 = 0,   C reset (42 &gt;= 42), Z set   (42 == 42)
+    cp a, 57 ; 42 - 57 = 241, C set   (42 &lt; 57) , Z reset (42 != 57)
+    cp a, 42 ; 42 - 42 = 0,   C reset (42 &gt;= 42), Z set   (42 == 42)
 </pre>
                 
                 <h3>Where mah <code>mul</code> and <code>div</code>?</h3>
@@ -141,7 +141,7 @@
     add a, a ; *6
 </pre>
                 <p>
-                    We will program, in a section further up, a function that performs multiplication. Don't worry.
+                    We will program, in a later section, a function that performs multiplication. Don't worry.
                 </p>
                 
                 <h2>Boolean algebra</h2>
@@ -209,7 +209,7 @@
                     This is pretty useful to invert some flags/bits. This is heavily used instead of counters for "flip-flop" states (now you know why a lot of games have two-frame animations!).
                 </p>
                 
-                <h2>BCD</h2>
+                <h2>Binary Coded Decimal (BCD)</h2>
                 <p>
                     Remember how I quickly skimmed over the H and N flags? Let's talk about them. But first, we need to talk about <s><a href="https://www.youtube.com/watch?v=kpk2tdsPh0A">parallel universes</a></s> what BCD is. When you store a number, say 42, you'd usually store it raw -- 42, 0x2A, %00101010. BCD is storing each digit in each nibble -- $42, %01000010. It <em>is</em> less efficient, but much more practical for decimal displaying (instead of dividing by 10, you <code>and a, $0F</code>). Therefore, BCD is better for displaying, but not for calculating: $59 + $01 = $60 and not $5A.
                 </p>
