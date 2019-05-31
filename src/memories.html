@@ -30,7 +30,7 @@
 
 <h2>VRAM</h2>
 <p>
-    We already discussed about VRAM in the <a href="displaying.html">Displaying</a> lesson, but here's a quick recap. Between $8000 and $97FF are stored the tiles; 16 ($10) bytes per tile, and 384 ($180) tiles in three "blocks" of 128 ($80) tiles each. Then are two tilemaps, one at $9800-$9BFF, and one at $9C00-$9FFF. Each tilemap is 32*32 bytes.
+    We already discussed VRAM in the <a href="displaying.html">Displaying</a> lesson, but here's a quick recap. Between $8000 and $97FF are stored the tiles; 16 ($10) bytes per tile, and 384 ($180) tiles in three "blocks" of 128 ($80) tiles each. Then are two tilemaps, one at $9800-$9BFF, and one at $9C00-$9FFF. Each tilemap is 32*32 bytes.
 </p>
 <p>
     VRAM has a big flaw, in that it can only be accessed while the PPU is not; that is, it must be accessed during LCD modes 0, 1 and 2.
@@ -41,10 +41,42 @@
     SRAM stands for <b>S</b>ave <b>RAM</b>. It's somewhat misleading, which is why some refer to it as XRAM (E<b>x</b>ternal <b>RAM</b> or E<b>x</b>pansion <b>RAM</b>), but SRAM is the most common term. SRAM is RAM on the cartridge; most of the time, it's backed up by a battery and used to store save data, but some games also use it as extra work RAM (Pokémon games use SRAM as scratch buffers for sprite decompression, Super Mario Land 2 uses some of its SRAM to store variables and level data).
 </p>
 <p>
-    By default, SRAM is in a "locked" state, which, like locked VRAM, ignores writes and returns $FF when read. (Editor's note: it's actually possible that $FF may NOT be always returned. It's best to not rely on reads from SRAM.) How SRAM is unlocked depends on the MBC.
+    By default, SRAM is in a "locked" state, which, like locked VRAM, ignores writes and returns $FF when read. (Editor's note: it's actually possible that $FF may NOT be always returned. It's best to not rely on reads from locked SRAM.) How SRAM is unlocked depends on the MBC.
 </p>
 
 <h2>WRAM</h2>
 <p>
-    WRAM is the console's <b>w</b>ork <b>RAM</b>. It's on the 
+    WRAM is the console's <b>w</b>ork <b>RAM</b>. It's present in the console itself, and serves as the main writable storage. There are 8 kB of WRAM, and you can pretty much use it however you please.
+</p>
+
+<h2>Echo RAM</h2>
+<p>
+    Echo RAM is the product of a hardware quirk that causes most of WRAM to also be accessible at $E000-FDFF. It's recommended to avoid relying on it for several reasons, though its behavior appears to be mostly stable and well-understood.
+</p>
+<p>
+    You're going to have to get used to this: the Game Boy has no protection features whatsoever, so things that you aren't supposed to do or absolutely mustn't... well, you can still do them, and it'll yield <em>some interesting</em> results. (Most of the time. Sometimes it'll just crash, or be equally underwhelming :D)
+</p>
+
+<h2>OAM</h2>
+<p>
+    OAM can be considered a extension of VRAM, if you stretch the definition. It's the area of memory where information about objects (commonly referred to as "sprites", though the term "sprite" gets annoyingly often misused). It works similarly to VRAM, being locked from the CPU while the PPU is accessing it, although it has its own specificities.
+</p>
+
+<h2>"FEXX"</h2>
+<p>
+    The area between OAM and IO is pretty weird. It has the same "locking" behavior as OAM, but the rest of its behavior depends on the console model and revision. Best not rely on it at all.
+</p>
+
+<h2>IO</h2>
+<p>
+    This area of memory is a mess of hardware-mapped registers. It's here that a lot of interfacing with the Game Boy is performed, such as configuring graphics, playing sound, or communicate with another Game Boy.
+</p>
+
+<p>
+    There's a slightly special byte of IO, which is register <code>IE</code>; it's mapped at $FFFF, ie. just after the end of HRAM. Why it's there seems to be due to the way the CPU works internally.
+</p>
+
+<h2>HRAM</h2>
+<p>
+    These 127 bytes of RAM work just like WRAM, except that they can be accessed slightly faster by a certain instruction; therefore, it's a good place to store temporary variables in.
 </p>
