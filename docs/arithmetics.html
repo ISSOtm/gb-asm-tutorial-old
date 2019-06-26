@@ -39,8 +39,8 @@
                     There exists an instruction that is basically <code>add</code> but with an added twist: <code>adc</code>. This instruction <b>ad</b>ds with <b>c</b>arry. What does it mean? Well, where <code>add a, X</code> was doing <code>a = a + X</code>, <code>adc a, X</code> does <code>a = a + X + carry (either 0 or 1)</code>. If you're wondering how that's useful, we're going to use it to emulate <code>add hl, $XXXX</code>!
                 </p>
 <pre>
-    ; add hl, $1337
-    ; Note: destroys A
+    ; Add $1337 to hl
+    ; Note: destroys A, that means "alters its value"
 
     ld a, l
     add a, $37 ; Process the low 8 bits...
