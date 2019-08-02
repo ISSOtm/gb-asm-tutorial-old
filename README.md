@@ -19,16 +19,16 @@ Each element MUST contain a `leaf` boolean attribute. If that attribute is `true
 
 A leaf MUST contain the following attributes:
 <dl>
-    <dt>`id`</dt><dd>The page's ID; `.html` is appended to it to get the source and destination HTML page</dd>
-    <dt>`title`</dt><dd>The page's displayed name</dd>
+    <dt><code>id</code></dt><dd>The page's ID; `.html` is appended to it to get the source and destination HTML page</dd>
+    <dt><code>title</code></dt><dd>The page's displayed name</dd>
 </dl>
 
 A non-leaf MUST contain the following attributes:
 <dl>
-    <dt>`index`</dt><dd>The ID of the page that serves as the subtree/section's index</dd>
-    <dt>`subpages`</dt><dd>The list of subpages that this section contains. May contain non-leaves.</dd>
+    <dt><code>index</code></dt><dd>The ID of the page that serves as the subtree/section's index</dd>
+    <dt><code>subpages</code></dt><dd>The list of subpages that this section contains. May contain non-leaves.</dd>
 </dl>
 A non-leaf MAY contain the following attributes:
 <dl>
-    <dt>`special_pages`</dt><dd>A list of subpages that should not be present in the tree, but still be generated nonetheless.</dd>
+    <dt><code>special_pages</code></dt><dd>A list of subpages that should not be present in the tree, but still be generated nonetheless.</dd>
 </dl>
