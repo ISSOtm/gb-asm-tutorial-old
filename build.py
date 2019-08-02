@@ -19,7 +19,7 @@ def generate_navigation(structure, current_id, is_root=True):
             opening_class = " class=\"current\""
 
         # Generate exactly 1 line
-        lines = ["<a href=\"{}.html\"{}>{}</a>\n".format(structure["id"], opening_class, structure["title"])]
+        lines = [f"<a href=\"{structure['id']}.html\"{opening_class}>{structure['title']}</a>\n"]
 
     # If not leaf, generate the HTML recursively
     else:
@@ -37,7 +37,7 @@ def generate_navigation(structure, current_id, is_root=True):
 
             # Insert list elem (including indenting, I know it's stupid but the output looks nicer = better debugging)
             sub_lines.append("<li>\n")
-            sub_lines.extend([ "    " + line for line in _sub_lines ])
+            sub_lines.extend([ f"    {line}" for line in _sub_lines ])
             sub_lines.append("</li>\n")
 
         # Prepare attrs for expanding shenanigans
@@ -47,14 +47,14 @@ def generate_navigation(structure, current_id, is_root=True):
         section_id = structure["index"]["id"]
 
         # Generate "Expand" elems (the checkbox holds the state, the label serves as the interactor)
-        lines.append("<input type=\"checkbox\" id=\"" + section_id + "-navcheckbox\"" + opening_attr + ">\n")
-        lines.append("<label for=\"" + section_id + "-navcheckbox\"></label>\n")
+        lines.append(f"<input type=\"checkbox\" id=\"{section_id}-navcheckbox\"{opening_attr}>\n")
+        lines.append(f"<label for=\"{section_id}-navcheckbox\"></label>\n")
         lines.append("<ol>\n")
 
         # Add sub-sections (& index)
-        lines.extend([ "    " + line for line in sub_lines ])
+        lines.extend([ f"    {line}" for line in sub_lines ])
         lines.append("</ol>\n")
-    
+
     return is_current, lines
 
 """
@@ -92,17 +92,17 @@ def get_structure(page_id, structure):
             return structure
         else:
             return None
-    
+
     else:
         struct = get_structure(page_id, structure["index"])
         if struct != None:
             return struct
-        
+
         for sub_struct in structure["subpages"]:
             struct = get_structure(page_id, sub_struct)
             if struct != None:
                 return struct
-        
+
         return None
 
 """
@@ -118,26 +118,26 @@ def generate_pages(structure, site_structure, links, template, include_re):
 
     # Leaves actually generate the page
     else:
-        print("Generating page {}.html, \"{}\"...".format(structure["id"], structure["title"]))
+        print(f"Generating page {structure['id']}.html, \"{structure['title']}\"...")
 
         # First, generate the "snips" that will be inserted into the template
         HTML_snips = {}
         # They're hardcoded, which might be a problem (but I doubt it)
         HTML_snips["navigation"] = generate_navigation(site_structure, structure["id"])[1] # Navbar's list
-        HTML_snips["title"] = [ structure["title"] + " - GB ASM tutorial" ] # <title> content
+        HTML_snips["title"] = [ f"{structure['title']} - GB ASM tutorial" ] # <title> content
         HTML_snips["heading"] = [ structure["title"] ] # <h1> content
         # "prev" and "next" pages; useful for prefetching, apparently
         # Also "Previous" and "Next" pages, useful for user navigation this time
         page_links = links.get(structure["id"])
         if page_links != None:
-            HTML_snips["prev_next"] = [ "<link rel=\"{}\" href=\"{}.html\" />\n".format(*pair) for pair in links[structure["id"]].items() ]
+            HTML_snips["prev_next"] = [ f"<link rel=\"{pair[0]}\" href=\"{pair[1]}.html\" />\n" for pair in links[structure["id"]].items() ]
             previous_next = {"prev": "Previous", "next": "Next"}
-            HTML_snips["previous_next_pages"] = [ "<br /><a href=\"{}.html\">{}: {}</a>\n".format(pair[1], previous_next[pair[0]], get_structure(pair[1], site_structure)["title"]) for pair in links[structure["id"]].items() ]
+            HTML_snips["previous_next_pages"] = [ f"<br /><a href=\"{pair[1]}.html\">{previous_next[pair[0]]}: {get_structure(pair[1], site_structure)['title']}</a>\n" for pair in links[structure["id"]].items() ]
         else:
             HTML_snips["prev_next"] = []
             HTML_snips["previous_next_pages"] = []
         # Actual page content
-        with open("src/{}.html".format(structure["id"]), "rt", encoding = "utf8") as content_file:
+        with open(f"src/{structure['id']}.html", "rt", encoding = "utf8") as content_file:
             HTML_snips["content"] = content_file.readlines()
 
         # Now generate the final HTML
@@ -148,7 +148,7 @@ def generate_pages(structure, site_structure, links, template, include_re):
             if match:
                 snip = HTML_snips.get(match.group("id"), None)
                 if snip == None:
-                    raise IndexError("Unknown snippet name: {}".format(match.group("id")))
+                    raise IndexError(f"Unknown snippet name: {match.group('id')}")
 
                 # Insert all snippet lines with leading whitespace (looks more "pro" :p); however, <pre> blocks should *not* be indented
                 pre_mode = False
@@ -158,7 +158,7 @@ def generate_pages(structure, site_structure, links, template, include_re):
                         pre_mode = not pre_mode
                         if not pre_mode:
                             last_line = True
-                    
+
                     if not pre_mode and not last_line:
                         line = match.group("whitespace") + line
 
@@ -171,14 +171,14 @@ def generate_pages(structure, site_structure, links, template, include_re):
                 out_lines.append(line)
 
         # Finally, write the output (buffer everything to preserve pages if an error occurs)
-        with open("docs/{}.html".format(structure["id"]), "wt", encoding = "utf8") as out_file:
+        with open(f"docs/{structure['id']}.html", "wt", encoding = "utf8") as out_file:
             out_file.writelines(out_lines)
 
 
 if __name__ == "__main__":
     # Perform common operations
 
-    # Read the tutorial's structure 
+    # Read the tutorial's structure
     with open("structure.json", "rt") as f:
         site_structure = json.load(f)
 
@@ -196,4 +196,4 @@ if __name__ == "__main__":
     links = build_links(site_structure)[0]
 
     print("Generating pages...")
-    generate_pages(site_structure, site_structure, links, template, include_re) # site_structure argument is duplicated due to the recursive call; it would also allow generating only a subset of all pages if there ever was a point to that 
+    generate_pages(site_structure, site_structure, links, template, include_re) # site_structure argument is duplicated due to the recursive call; it would also allow generating only a subset of all pages if there ever was a point to that
