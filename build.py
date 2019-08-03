@@ -167,12 +167,12 @@ def generate_pages(structure, properties, links, template, include_re):
                 HTML_snips[f"meta_{meta}"] = [ f"<meta {properties['metas'][meta]}=\"{meta}\" content=\"{content}\" />" ]
 
             # This snip already contains the language-specific "Available in..." string
-            HTML_snips["other_languages"].append("<ol>\n")
+            HTML_snips["other_languages"].append("<ul>\n")
             for other_language,other_language_name in properties["languages"].items():
                 if other_language != language and os.path.exists(f"src/{other_language}/{structure['id']}.html"):
                     HTML_snips["other_languages"].append(f"\t<li><a href=\"{get_lang_root_dir(language)}{get_lang_out_dir(other_language)}{structure['id']}.html\">{other_language_name}</a></li>\n")
             if len(HTML_snips["other_languages"]) != 2:
-                HTML_snips["other_languages"].append("</ol>")
+                HTML_snips["other_languages"].append("</ul>")
             else: # If no other languages are available, override the whole list
                 HTML_snips["other_languages"] = HTML_snips["no_other_languages"]
 
