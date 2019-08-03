@@ -5,6 +5,37 @@
         "keywords": "Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial"
     },
 
+    "titles": {
+        "index": "GB ASM programming",
+        "introduction": "introduction",
+        "what_is_gb": "What is Game Boy?",
+        "concepts": "Basic concepts",
+        "tools": "Tools",
+
+        "basics": "Basics",
+        "syntax": "Syntax",
+        "registers": "Registers",
+        "memory": "Memory",
+        "flags": "Flags",
+        "arithmetics": "Arithmetics &amp; boolean algebra",
+        "interlude": "Interlude",
+        "jumping": "Jumping around",
+        "displaying": "Displaying",
+        "hello-world": "Hello World!",
+
+        "intermediate": "Intermediate",
+        "memories": "Memory types",
+        "stack": "The Stack",
+        "calling": "London Calling",
+
+        "extras": "Extras",
+        "resources": "External resources",
+        "instructions": "Instruction cheat sheet",
+        "data_manip": "Data manipulation",
+
+        "404": "Resource not found"
+    },
+
     "navigation": "Navigation",
     "expand_instruction": "Click [Expand] to expand a section, or [Expand all] to deploy everything",
     "report_issue": "Report issue",

@@ -8,7 +8,7 @@ import os
 """
 Generate the navigation HTML for a given page
 """
-def generate_navigation(structure, current_id, is_root=True):
+def generate_navigation(structure, current_id, page_titles, is_root=True):
     is_current = False
 
     # If leaf, generate a link to that page
@@ -20,12 +20,12 @@ def generate_navigation(structure, current_id, is_root=True):
             opening_class = " class=\"current\""
 
         # Generate exactly 1 line
-        lines = [f"<a href=\"{structure['id']}.html\"{opening_class}>{structure['title']}</a>\n"]
+        lines = [f"<a href=\"{structure['id']}.html\"{opening_class}>{page_titles[structure['id']]}</a>\n"]
 
     # If not leaf, generate the HTML recursively
     else:
         # Generate link to section index (should be a leaf, normally)
-        is_current, lines = generate_navigation(structure["index"], current_id, False)
+        is_current, lines = generate_navigation(structure["index"], current_id, page_titles, False)
 
         # Generate lists for sub-sections
         # This has to be done first to know if we are "current" (for Expand)
@@ -33,7 +33,7 @@ def generate_navigation(structure, current_id, is_root=True):
         for sub_struct in structure["subpages"]:
             # Generate navigation for the sub-section, inheriting "current" status
             # Note that the root element will always be marked as current
-            _is_current, _sub_lines = generate_navigation(sub_struct, current_id, False)
+            _is_current, _sub_lines = generate_navigation(sub_struct, current_id, page_titles, False)
             is_current |= _is_current
 
             # Insert list elem (including indenting, I know it's stupid but the output looks nicer = better debugging)
@@ -138,18 +138,19 @@ def generate_pages(structure, properties, links, template, include_re):
     # Leaves actually generate the page
     else:
         for language in properties["languages"].keys():
-            print(f"Generating page {language}/{structure['id']}.html, \"{structure['title']}\"...")
+            print(f"Generating page {language}/{structure['id']}.html...")
 
             # First, generate the "snips" that will be inserted into the template
             HTML_snips = None
             # Load language-dependent snips from a language-dependent file
             with open(f"src/{language}/strings.json") as f:
                 HTML_snips = { key: [string]  for key,string in json.load(f).items() }
+            page_titles = HTML_snips["titles"][0]
 
             # Some snips need to be generated through code
-            HTML_snips["nav_tree"] = generate_navigation(properties["pages"], structure["id"])[1] # Navbar's list
-            HTML_snips["title"] = [ f"{structure['title']} - GB ASM tutorial" ] # <title> content
-            HTML_snips["heading"] = [ structure["title"] ] # <h1> content
+            HTML_snips["nav_tree"] = generate_navigation(properties["pages"], structure["id"], page_titles)[1] # Navbar's list
+            HTML_snips["title"] = [ f"{page_titles[structure['id']]} - GB ASM tutorial" ] # <title> content
+            HTML_snips["heading"] = [ page_titles[structure['id']] ] # <h1> content
             HTML_snips["stylesheets"] = [ f"<link rel=\"stylesheet\" href=\"{get_lang_root_dir(language)}css/{stylesheet}.css\" />\n"  for stylesheet in properties["stylesheets"] ]
             HTML_snips["favicon"] = [ f"<link rel=\"icon\" href=\"{get_lang_root_dir(language)}img/favicon.ico\" type=\"image/x-icon\" />" ]
 
@@ -159,7 +160,7 @@ def generate_pages(structure, properties, links, template, include_re):
             if page_links != None:
                 HTML_snips["prev_next"] = [ f"<link rel=\"{pair[0]}\" href=\"{pair[1]}.html\" />\n" for pair in links[structure["id"]].items() ]
                 previous_next = {"prev": "Previous", "next": "Next"}
-                HTML_snips["previous_next_pages"] = [ f"<br /><a href=\"{pair[1]}.html\">{previous_next[pair[0]]}: {get_structure(pair[1], properties['pages'])['title']}</a>\n" for pair in links[structure["id"]].items() ]
+                HTML_snips["previous_next_pages"] = [ f"<br /><a href=\"{pair[1]}.html\">{previous_next[pair[0]]}: {page_titles[get_structure(pair[1], properties['pages'])['id']]}</a>\n" for pair in links[structure["id"]].items() ]
             else:
                 HTML_snips["prev_next"] = []
                 HTML_snips["previous_next_pages"] = []

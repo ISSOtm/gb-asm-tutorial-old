@@ -3,58 +3,58 @@
 
     "pages": {
         "leaf": false,
-        "index": { "leaf": true, "id": "index", "title": "GB ASM Programming" },
+        "index": { "leaf": true, "id": "index" },
         "subpages": [
             {
                 "leaf": false,
-                "index": { "leaf": true, "id": "introduction", "title": "Introduction" },
+                "index": { "leaf": true, "id": "introduction" },
                 "subpages": [
-                    { "leaf": true, "id": "what_is_gb", "title": "What is Game Boy?" },
-                    { "leaf": true, "id": "concepts", "title": "Basic concepts" },
-                    { "leaf": true, "id": "tools", "title": "Tools"}
+                    { "leaf": true, "id": "what_is_gb" },
+                    { "leaf": true, "id": "concepts" },
+                    { "leaf": true, "id": "tools" }
                 ]
             },
             {
                 "leaf": false,
-                "index": { "leaf": true, "id": "basics", "title": "Basics" },
+                "index": { "leaf": true, "id": "basics" },
                 "subpages": [
-                    { "leaf": true, "id": "syntax", "title": "ASM syntax" },
-                    { "leaf": true, "id": "registers", "title": "Registers" },
-                    { "leaf": true, "id": "memory", "title": "Memory" },
-                    { "leaf": true, "id": "flags", "title": "Flags"},
-                    { "leaf": true, "id": "arithmetics", "title": "Arithmetics &amp; boolean algebra"},
-                    { "leaf": true, "id": "interlude", "title": "Interlude"},
-                    { "leaf": true, "id": "jumping", "title": "Jumping around"},
-                    { "leaf": true, "id": "displaying", "title": "Displaying"},
-                    { "leaf": true, "id": "hello-world", "title": "Hello World!"}
+                    { "leaf": true, "id": "syntax" },
+                    { "leaf": true, "id": "registers" },
+                    { "leaf": true, "id": "memory" },
+                    { "leaf": true, "id": "flags" },
+                    { "leaf": true, "id": "arithmetics" },
+                    { "leaf": true, "id": "interlude" },
+                    { "leaf": true, "id": "jumping" },
+                    { "leaf": true, "id": "displaying" },
+                    { "leaf": true, "id": "hello-world" }
                 ]
             },
             {
                 "leaf": false,
-                "index": { "leaf": true, "id": "intermediate", "title": "Intermediate" },
+                "index": { "leaf": true, "id": "intermediate" },
                 "subpages": [
-                    { "leaf": true, "id": "memories", "title": "Memory types"},
-                    { "leaf": true, "id": "stack", "title": "The Stack" },
-                    { "leaf": true, "id": "calling", "title": "London Calling" }
+                    { "leaf": true, "id": "memories" },
+                    { "leaf": true, "id": "stack" },
+                    { "leaf": true, "id": "calling" }
                 ]
             },
             {
                 "leaf": false,
-                "index": { "leaf": true, "id": "extras", "title": "Extras"},
+                "index": { "leaf": true, "id": "extras" },
                 "subpages": [
-                    { "leaf": true, "id": "resources", "title": "External resources" },
+                    { "leaf": true, "id": "resources" },
                     {
                         "leaf": false,
-                        "index": { "leaf": true, "id": "instructions", "title": "Instruction cheat sheet" },
+                        "index": { "leaf": true, "id": "instructions" },
                         "subpages": [
-                            { "leaf": true, "id": "data_manip", "title": "Data manipulation" }
+                            { "leaf": true, "id": "data_manip" }
                         ]
                     }
                 ]
             }
         ],
         "special_pages": [
-            { "leaf": true, "id": "404", "title": "Resource not found" }
+            { "leaf": true, "id": "404" }
         ]
     },
 
