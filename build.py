@@ -150,7 +150,7 @@ def generate_pages(structure, properties, links, template, include_re):
             HTML_snips["nav_tree"] = generate_navigation(properties["pages"], structure["id"])[1] # Navbar's list
             HTML_snips["title"] = [ f"{structure['title']} - GB ASM tutorial" ] # <title> content
             HTML_snips["heading"] = [ structure["title"] ] # <h1> content
-            HTML_snips["stylesheets"] = [ f"<link rel=\"stylesheet\" src=\"{get_lang_root_dir(language)}css/{stylesheet}.css\" />\n"  for stylesheet in properties["stylesheets"] ]
+            HTML_snips["stylesheets"] = [ f"<link rel=\"stylesheet\" href=\"{get_lang_root_dir(language)}css/{stylesheet}.css\" />\n"  for stylesheet in properties["stylesheets"] ]
 
             # "prev" and "next" pages; useful for prefetching, apparently
             # Also "Previous" and "Next" pages, useful for user navigation this time
