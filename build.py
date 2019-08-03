@@ -151,6 +151,7 @@ def generate_pages(structure, properties, links, template, include_re):
             HTML_snips["title"] = [ f"{structure['title']} - GB ASM tutorial" ] # <title> content
             HTML_snips["heading"] = [ structure["title"] ] # <h1> content
             HTML_snips["stylesheets"] = [ f"<link rel=\"stylesheet\" href=\"{get_lang_root_dir(language)}css/{stylesheet}.css\" />\n"  for stylesheet in properties["stylesheets"] ]
+            HTML_snips["favicon"] = [ f"<link rel=\"icon\" href=\"{get_lang_root_dir(language)}img/favicon.ico\" type=\"image/x-icon\" />" ]
 
             # "prev" and "next" pages; useful for prefetching, apparently
             # Also "Previous" and "Next" pages, useful for user navigation this time
