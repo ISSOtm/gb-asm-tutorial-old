@@ -2,18 +2,27 @@
 
 An online Game Boy assembly programming tutorial, hosted at https://eldred.fr/gb-asm-tutorial.
 
+## Structure
+
+The `docs` folder is what is served publicly. (Note: GitHub Pages only considers the `master` branch's `docs` folder.)
+
+The `src` folder contains all "source" HTML files, sorted by language. (This hierarchy is **not** preserved in the `docs` folder due to historical reasons). Each of those files contains a page's "main content" (ie. not the navigation, header, etc. HTML; this is taken care of by the build script)
+
+Files in the root of the repo are for converting the pages only (plus this README for obvious reasons).
 
 ## Building
 
-The "output" is located in the `docs` folder, which is what is served publicly. (Note: GitHub Pages only considers the `master` branch's `docs` folder.)
+To convert files from the `src` folder to `docs`, run `build.py`. Python 3 is required.
 
-The `.html` files in that folder's root are **auto-generated** (and thus shouldn't be edited manually). To re-generate them, run the `build.py` Python script. (May not work with Python 2).
+### Missing pages
 
+If a page isn't present in a given language, a fallback will be generated offering to read it in another language. This is intended for pages that haven't been translated yet.
 
-The page's contents are located in the `src` folder. They are inserted into the `template.html` file, alongside a few other generated HTML snippets. The structure of the tutorial is contained within the `structure.json` file.
+## `properties.json`
 
+This file is read by `build.py` to determine what pages to convert.
 
-## The structure
+### `structure` attribute
 
 Each element MUST contain a `leaf` boolean attribute. If that attribute is `true`, then it is a leaf; otherwise it's not.
 

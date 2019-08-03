@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>
-            London Calling - GB ASM tutorial
+            Memory types - GB ASM tutorial
         </title>
 
         <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
@@ -18,105 +18,22 @@
         <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://eldred.fr" />
-        <link rel="prev" href="stack.html" />
-        <link rel="next" href="extras.html" />
+        <link rel="prev" href="intermediate.html" />
+        <link rel="next" href="stack.html" />
 
 
-        <link rel="stylesheet" src="css/normalize.css" />
-        <link rel="stylesheet" src="css/common.css" />
+        <link rel="stylesheet" src="../css/normalize.css" />
+        <link rel="stylesheet" src="../css/common.css" />
 
     </head>
     <body>
         <main>
             <article>
                 <h1>
-                    London Calling
+                    Memory types
                 </h1>
 
-                <p>
-                    Remember <code>call</code>, <code>ret</code> and <code>rst</code>? It's high time we give them some love and care!
-                </p>
-                
-                <h2>Calling functions</h2>
-                <p>
-                    The concept of calling a function is that at some point in the flow, the flow is interrupted, a separate piece of code is ran, and then the flow resumes, optionally using some of the function's calculations. On the GB, this is done using the <code>call</code> instruction.
-                </p>
-                <p>
-                    The principle is, again, that the function "returns" to the main flow. To do that, it need to save where the "calling" flow was... My, my, didn't we just see that the stack was perfect for saving stuff? Well, that's exactly what happens!
-                </p>
-<pre>
-    ; Let's say that `Function` is a label
-
-    call Function
-
-    ; equivalent to (again, these instructions are illustrative but **invalid**)
-
-    push pc ; But PC equals the address after the following instruction
-    jp Function
-.return ; This is the address whose value gets pushed onto the stack
-</pre>
-                <p>
-                    (If you're not sure how that works, read <code>ret</code>'s description below; that should make it clearer.)
-                </p>
-                <p>
-                    Oh, and also, just like <code>jp</code> and <code>jr</code>, <code>call</code> can be executed conditionally. <code>call nz, AFunctionCalledOnlyIfZIsReset</code>
-                </p>
-                
-                <h2>Returning</h2>
-                <p>
-                    Now, a function needs to tell the CPU when it's over, and when control need to be passed back to the calling code. This is done by the <code>ret</code> operation, which is basically <code>pop pc</code>. And this instruction can be used conditionally too! Here's an example:
-                </p>
-<pre>
-Memcpy:
-    ld a, [de]
-    ld [hli], a
-    inc de
-    dec bc
-    ld a, b
-    or c
-    jr nz, Memcpy
-    ret
-</pre>
-                <p>
-                    If you remember from the Hello World chapter, this looks like the piece of code we used to copy data to VRAM. This is useful to avoid repeating blocks of code:
-                </p>
-<pre>
-    ld de, FontTiles
-    ld hl, $9000
-    ld bc, FontTilesEnd - FontTiles
-    call Memcpy
-</pre>
-                <p>
-                    Note that the <code>ret</code> doesn't have to be at the end of the function!
-                </p>
-<pre>
-    ld de, DefaultPlayerName
-    ld hl, wPlayerName
-    call Strcpy
-
-    ; (...)
-
-; Copy a string up to but not including the first NUL character
-; @param de A pointer to the string to be copied
-; @param hl A pointer to the beginning of the destination buffer
-; @return de A pointer to the byte after the source string's terminating byte
-; @return hl A pointer to the byte after the last copied byte
-; @return a Zero
-; @return flags C reset, Z set
-Strcpy:
-    ld a, [de]
-    inc de
-    and a
-    ret z
-    ld [hli], a
-    jr Strcpy
-</pre>
-                
-                <h2>An announcement about documentation</h2>
-                <p>
-                    You can see that I inserted a huge comment before the <code>Strcpy</code> function. This is to help document what it does, etc. I recommend using a format similar to this one, because it's clear and concise. I use <code>@param</code> to indicate which registers, flags and memory addresses the function uses as input, <code>@return</code> to document the effects that the function has that are consistent, and <code>@destroy</code> to document the effects it has which are either inconsistent or too complex to explain. I recommend taking the time to write and keep this kind of comment to date, to help you maintain your code.
-                </p>
-
+                This page has not been translated yet. You can use the navigation box to continue reading in another language.
             </article>
 
             <aside>
@@ -124,8 +41,8 @@ Strcpy:
                     <b id="index-title">
                         Navigation
                     </b>
-                    <br /><a href="stack.html">Previous: The Stack</a>
-                    <br /><a href="extras.html">Next: Extras</a>
+                    <br /><a href="intermediate.html">Previous: Intermediate</a>
+                    <br /><a href="stack.html">Next: The Stack</a>
 
                     <br /><br />
                     <small>
@@ -193,13 +110,13 @@ Strcpy:
                             <label for="intermediate-navcheckbox"></label>
                             <ol>
                                 <li>
-                                    <a href="memories.html">Memory types</a>
+                                    <a href="memories.html" class="current">Memory types</a>
                                 </li>
                                 <li>
                                     <a href="stack.html">The Stack</a>
                                 </li>
                                 <li>
-                                    <a href="calling.html" class="current">London Calling</a>
+                                    <a href="calling.html">London Calling</a>
                                 </li>
                             </ol>
                         </li>
@@ -228,7 +145,9 @@ Strcpy:
 
                     <hr>
 
-                    This page isn't available in other languages.
+                    Other available languages:                    <ol>
+                    	<li><a href="../memories.html">English</a></li>
+                    </ol>
 
                     <hr>
 

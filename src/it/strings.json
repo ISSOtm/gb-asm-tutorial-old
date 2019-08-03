@@ -1,0 +1,17 @@
+{
+    "metas": {
+        "og:description": "A complete guide to programming Game Boy games in assembly.",
+        "description": "A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!",
+        "keywords": "Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial"
+    },
+
+    "navigation": "Navigation",
+    "expand_instruction": "Click [Expand] to expand a section, or [Expand all] to deploy everything",
+    "report_issue": "Report issue",
+    "to_top": "Back to top",
+
+    "other_languages": "Other available languages:",
+    "no_other_languages": "This page isn't available in other languages.",
+
+    "fallback": "This page has not been translated yet. You can use the navigation box to continue reading in another language."
+}

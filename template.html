@@ -7,19 +7,20 @@
         <title>
             #include title
         </title>
+
         <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
         <meta property="og:title" content="GB ASM Tutorial" />
-        <meta property="og:description" content="A complete guide to programming Game Boy games in assembly." />
+        #include meta_og:description
         <meta property="og:url" content="https://eldred.fr/gb-asm-tutorial/" />
         <meta property="og:image" content="https://eldred.fr/gb-asm-tutorial/img/favicon.png" />
 
         <meta name="author" content="Eldred Habert" />
-        <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
-        <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
+        #include meta_description
+        #include meta_keywords
         <link rel="author" href="https://eldred.fr" />
         #include prev_next
-        <link rel="stylesheet" href="css/normalize.css" />
-        <link rel="stylesheet" href="css/common.css" />
+
+        #include stylesheets
     </head>
     <body>
         <main>
@@ -27,30 +28,42 @@
                 <h1>
                     #include heading
                 </h1>
-                
+
                 #include content
             </article>
 
             <aside>
                 <nav id="tutorial-index">
-                    <b id="index-title">Navigation</b>
+                    <b id="index-title">
+                        #include navigation
+                    </b>
                     #include previous_next_pages
                     <br /><br />
-                    <small>Click [Expand] to expand a section, or [Expand all] to deploy everything</small>
+                    <small>
+                        #include expand_instruction
+                    </small>
                     <br />
 
-                    #include navigation
+                    #include nav_tree
 
                     <hr>
 
-                    <a href="https://github.com/ISSOtm/gb-asm-tutorial/issues">Report issue</a>
+                    #include other_languages
+
+                    <hr>
+
+                    <a href="https://github.com/ISSOtm/gb-asm-tutorial/issues">
+                        #include report_issue
+                    </a>
                 </nav>
             </aside>
         </main>
 
         <nav id="navbar">
             <a href="/" id="site-name">ISSOtm's</a> &mdash; <a href="index.html">GB programming</a>
-            <a id="to-top" href="#">Back to top</a>
+            <a id="to-top" href="#">
+                #include to_top
+            </a>
         </nav>
     </body>
 </html>

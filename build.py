@@ -2,6 +2,7 @@
 
 import json
 import re
+import os
 
 
 """
@@ -106,94 +107,137 @@ def get_structure(page_id, structure):
         return None
 
 """
+Return the target directory for a given language (except English which is at the root for historical reasons, languages are in their own directories)
+"""
+def get_lang_out_dir(language):
+    if language == "en":
+        return ""
+    else:
+        return f"{language}/"
+
+"""
+Return the path to the root dir from a given language's dir (only English is at the root)
+"""
+def get_lang_root_dir(language):
+    if language == "en":
+        return ""
+    else:
+        return "../"
+
+"""
 Generate all pages in a structure recursively
 """
-def generate_pages(structure, site_structure, links, template, include_re):
+def generate_pages(structure, properties, links, template, include_re):
 
     # Non-leaves generate their children
     if not structure["leaf"]:
-        generate_pages(structure["index"], site_structure, links, template, include_re)
+        generate_pages(structure["index"], properties, links, template, include_re)
         for sub_struct in structure["subpages"] + structure.get("special_pages", []):
-            generate_pages(sub_struct, site_structure, links, template, include_re)
+            generate_pages(sub_struct, properties, links, template, include_re)
 
     # Leaves actually generate the page
     else:
-        print(f"Generating page {structure['id']}.html, \"{structure['title']}\"...")
+        for language in properties["languages"].keys():
+            print(f"Generating page {language}/{structure['id']}.html, \"{structure['title']}\"...")
 
-        # First, generate the "snips" that will be inserted into the template
-        HTML_snips = {}
-        # They're hardcoded, which might be a problem (but I doubt it)
-        HTML_snips["navigation"] = generate_navigation(site_structure, structure["id"])[1] # Navbar's list
-        HTML_snips["title"] = [ f"{structure['title']} - GB ASM tutorial" ] # <title> content
-        HTML_snips["heading"] = [ structure["title"] ] # <h1> content
-        # "prev" and "next" pages; useful for prefetching, apparently
-        # Also "Previous" and "Next" pages, useful for user navigation this time
-        page_links = links.get(structure["id"])
-        if page_links != None:
-            HTML_snips["prev_next"] = [ f"<link rel=\"{pair[0]}\" href=\"{pair[1]}.html\" />\n" for pair in links[structure["id"]].items() ]
-            previous_next = {"prev": "Previous", "next": "Next"}
-            HTML_snips["previous_next_pages"] = [ f"<br /><a href=\"{pair[1]}.html\">{previous_next[pair[0]]}: {get_structure(pair[1], site_structure)['title']}</a>\n" for pair in links[structure["id"]].items() ]
-        else:
-            HTML_snips["prev_next"] = []
-            HTML_snips["previous_next_pages"] = []
-        # Actual page content
-        with open(f"src/{structure['id']}.html", "rt", encoding = "utf8") as content_file:
-            HTML_snips["content"] = content_file.readlines()
+            # First, generate the "snips" that will be inserted into the template
+            HTML_snips = None
+            # Load language-dependent snips from a language-dependent file
+            with open(f"src/{language}/strings.json") as f:
+                HTML_snips = { key: [string]  for key,string in json.load(f).items() }
 
-        # Now generate the final HTML
-        out_lines = []
-        for line in template:
-            # Check if the line should trigger snippet insertion
-            match = include_re.match(line)
-            if match:
-                snip = HTML_snips.get(match.group("id"), None)
-                if snip == None:
-                    raise IndexError(f"Unknown snippet name: {match.group('id')}")
+            # Some snips need to be generated through code
+            HTML_snips["nav_tree"] = generate_navigation(properties["pages"], structure["id"])[1] # Navbar's list
+            HTML_snips["title"] = [ f"{structure['title']} - GB ASM tutorial" ] # <title> content
+            HTML_snips["heading"] = [ structure["title"] ] # <h1> content
+            HTML_snips["stylesheets"] = [ f"<link rel=\"stylesheet\" src=\"{get_lang_root_dir(language)}css/{stylesheet}.css\" />\n"  for stylesheet in properties["stylesheets"] ]
 
-                # Insert all snippet lines with leading whitespace (looks more "pro" :p); however, <pre> blocks should *not* be indented
-                pre_mode = False
-                for line in snip:
-                    last_line = False
-                    if len(re.findall("(<pre>|</pre>)", line, re.IGNORECASE)) % 2 == 1:
-                        pre_mode = not pre_mode
-                        if not pre_mode:
-                            last_line = True
-
-                    if not pre_mode and not last_line:
-                        line = match.group("whitespace") + line
-
-                    out_lines.append(line)
-                # Snips don't have a trailing newline, enforce it
-                out_lines.append("\n")
-
-            # If not a snippet, just copy the line
+            # "prev" and "next" pages; useful for prefetching, apparently
+            # Also "Previous" and "Next" pages, useful for user navigation this time
+            page_links = links.get(structure["id"])
+            if page_links != None:
+                HTML_snips["prev_next"] = [ f"<link rel=\"{pair[0]}\" href=\"{pair[1]}.html\" />\n" for pair in links[structure["id"]].items() ]
+                previous_next = {"prev": "Previous", "next": "Next"}
+                HTML_snips["previous_next_pages"] = [ f"<br /><a href=\"{pair[1]}.html\">{previous_next[pair[0]]}: {get_structure(pair[1], properties['pages'])['title']}</a>\n" for pair in links[structure["id"]].items() ]
             else:
-                out_lines.append(line)
+                HTML_snips["prev_next"] = []
+                HTML_snips["previous_next_pages"] = []
 
-        # Finally, write the output (buffer everything to preserve pages if an error occurs)
-        with open(f"docs/{structure['id']}.html", "wt", encoding = "utf8") as out_file:
-            out_file.writelines(out_lines)
+            for meta,content in HTML_snips["metas"][0].items():
+                HTML_snips[f"meta_{meta}"] = [ f"<meta {properties['metas'][meta]}=\"{meta}\" content=\"{content}\" />" ]
+
+            # This snip already contains the language-specific "Available in..." string
+            HTML_snips["other_languages"].append("<ol>\n")
+            for other_language,other_language_name in properties["languages"].items():
+                if other_language != language and os.path.exists(f"src/{other_language}/{structure['id']}.html"):
+                    HTML_snips["other_languages"].append(f"\t<li><a href=\"{get_lang_root_dir(language)}{get_lang_out_dir(other_language)}{structure['id']}.html\">{other_language_name}</a></li>\n")
+            if len(HTML_snips["other_languages"]) != 2:
+                HTML_snips["other_languages"].append("</ol>")
+            else: # If no other languages are available, override the whole list
+                HTML_snips["other_languages"] = HTML_snips["no_other_languages"]
+
+            # Actual page content
+            try:
+                with open(f"src/{language}/{structure['id']}.html", "rt", encoding = "utf8") as content_file:
+                    HTML_snips["content"] = content_file.readlines()
+            except FileNotFoundError:
+                HTML_snips["content"] = HTML_snips["fallback"]
+
+
+            # Now generate the final HTML
+            out_lines = []
+            for line in template:
+                # Check if the line should trigger snippet insertion
+                match = include_re.match(line)
+                if match:
+                    snip = HTML_snips.get(match.group("id"), None)
+                    if snip == None:
+                        raise IndexError(f"Unknown snippet name: {match.group('id')}")
+
+                    # Prepend leading whitespace to all inserted lines (looks prettier :3); however, <pre> blocks should *not* be indented
+                    pre_mode = False
+                    for line in snip:
+                        last_line = False
+                        if len(re.findall("(<pre>|</pre>)", line, re.IGNORECASE)) % 2 == 1:
+                            pre_mode = not pre_mode
+                            if not pre_mode:
+                                last_line = True
+
+                        if not pre_mode and not last_line:
+                            line = match.group("whitespace") + line
+
+                        out_lines.append(line)
+                    # Snips don't have a trailing newline, enforce it
+                    out_lines.append("\n")
+
+                # If not a snippet, just copy the line
+                else:
+                    out_lines.append(line)
+
+            # Finally, write the output (buffer everything to preserve pages if an error occurs)
+            with open(f"docs/{get_lang_out_dir(language)}{structure['id']}.html", "wt", encoding = "utf8") as out_file:
+                out_file.writelines(out_lines)
 
 
 if __name__ == "__main__":
     # Perform common operations
 
     # Read the tutorial's structure
-    with open("structure.json", "rt") as f:
-        site_structure = json.load(f)
+    with open("properties.json", "rt") as f:
+        properties = json.load(f)
 
     # Read template HTML file
     with open("template.html", "rt") as template_file:
         template = template_file.readlines()
 
     # Compile regex that detects & parses `#include` lines
-    include_re = re.compile("(?P<whitespace>\s+)#include\s+(?P<id>\w+)", re.IGNORECASE)
+    include_re = re.compile("^(?P<whitespace>\s+)#include\s+(?P<id>[a-zA-Z0-9:_-]+)$", re.IGNORECASE)
 
 
     # Generate the pages
 
     print("Building links...")
-    links = build_links(site_structure)[0]
+    links = build_links(properties["pages"])[0]
 
     print("Generating pages...")
-    generate_pages(site_structure, site_structure, links, template, include_re) # site_structure argument is duplicated due to the recursive call; it would also allow generating only a subset of all pages if there ever was a point to that
+    generate_pages(properties["pages"], properties, links, template, include_re)
