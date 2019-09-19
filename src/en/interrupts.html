@@ -1,0 +1,60 @@
+<h2>What's an interrupt?</h2>
+<p>
+    Before describing interrupts, I shall present the kind of situation they solve; knowing what benefit they provide will help understanding what they are.
+</p>
+<p>
+    Consider the Game Boy's link cable. It allows exchanging data between consoles byte by byte. However, there is only a single byte of temporary storage, so you need to read the incoming byte and write the next byte quickly. But, you also want to run an entire game (say, Tetris) while this is happening, so you can't just check for incoming bytes in a loop. This could be solved by checking for bytes at specific points in the game code, but that may be impractical and lead to missed bytes, a lot of wasted computing, and hard to track bugs: in short, it's bad.
+</p>
+<p>
+    Interrupts solve this problem by allowing the CPU to "interrupt" execution when it recieves a signal; which signals cause what to happen is defined by the hardware configuration (wiring, etc.). To explain how interrupts work on the Game Boy, we'll need to introduce two registers, <code>IE</code> (<b>I</b>nterrupt <b>E</b>nable) and <code>IF</code> (<b>I</b>nterrupt <b>F</b>lag).
+</p>
+<p>
+    <code>IE</code> is simply a register that can be written to; its purpose will be made clearer later on. <code>IF</code> is also a register that can be written to, but this is rarely done. When the CPU recieves an external signal (say, one indicating that a byte was just transferred through the link cable), it sets the corresponding bit in <code>IF</code>; the interrupt is now <em>pending</em>. Before executing each instruction, the CPU computes <code>[IE] & [IF] & $1F</code> (that's to say, both registers are ANDed together, and only the bottom 5 bits are considered); if the result is non-zero, then the CPU handles an interrupt. Which one is, depends on which bits are set. The lowest bit in the result (after ANDing, of course) has the highest priority. <code>IE</code> basically selects which bits of <code>IF</code> are considered, and therefore, which interrupts are <em>enabled</em>.
+</p>
+<p>
+    Now we need to talk about what happens when an interrupt is handled. It makes sense that an interrupt should only <em>temporarily</em> take over execution, and eventually return to the original flow, yes? Why, that's a perfect job for the function calling we just explained! When an interrupt is serviced, the CPU essentially executes a <code>call</code> instruction. Where it jumps to, though, depends on which interrupt is serviced (thankfully). The destination can be computed by taking the number of the "selected" bit (say, bit 2), multiplying it by 8 (now 16 = $10), and adding $40 (now $50). So, for interrupt bit 2 ($04, if need a refresher), the CPU would essentially <code>call $0050</code>.
+</p>
+<p>
+    Further, when an interrupt is serviced, its corresponding bit in IF is reset, a process called <strong>acknowledging</strong>. There is an additional thing that needs to be explained for this to be complete, though, and it's the <code>IME</code> bit. <code>IME</code> is simply a bit that, when zero, causes the CPU to skip checking for interrupts (the process described two paragraphs above). It being called the Interrupt Master Enable thus makes sense. That bit cannot be read directly at a given time, but can be reset by using the <code>di</code> (Disable Interrupts) and set by the<code>ei</code> (Enable Interrupts) instructions. Finally, when the CPU services an interrupt, IME is automatically reset, which prevents an interrupt being serviced while it is being serviced; the <code>reti</code> instruction serves as a <code>ret</code> instruction that also sets IME.
+</p>
+
+<h2>The different types of interrupts</h2>
+<p>
+    There are five different interrupts, in this order:
+</p>
+<ol class="start-zero">
+    <li>VBlank</li>
+    <li><code>STAT</code> (also called LCD or sometimes abusively <code>LCDC</code>)</li>
+    <li>Timer</li>
+    <li>Serial</li>
+    <li>Joypad</li>
+</ol>
+<p>
+    Their index in the list (for screen readers, do note that the list starts at zero) corresponds to their bit in the <code>IE</code> and <code>IF</code> registers.
+</p>
+<p>
+    The VBlank interrupt is the simplest of them, since it triggers as soon as VBlank starts. (If you don't remember what VBlank is, check out the "Displaying" lesson.) A good way to sum up its main use is that this interrupt triggers at the end of every frame.
+</p>
+<p>
+    Same deal with the STAT interrupt, which triggers based on conditions selected through the STAT register. It'll be further explained in the next lesson. You may also see this interrupt called the "LCD interrupt" or, abusively, "LCDC interrupt".
+</p>
+<p>
+    The timer interrupt triggers at a certain frequency that can be configured using a few registers. It's useful for things that need to occur at a given frequency, such as sound updates.
+</p>
+<p>
+    The serial interrupt triggers every time a byte has been recieved via the serial port. Its job is basically to prepare the following transfer.
+</p>
+<p>
+    Finally, the joypad interrupt... triggers more or less when a button is pressed. It's hardly ever used, though.
+</p>
+
+<h2>Recap</h2>
+<p>
+    Interrupts allow the CPU to react to certain external events, such as the end of a frame, by essentially executing a <code>call</code> instruction.
+</p>
+<p>
+    Where the <code>call</code> jumps to is determined by which event occurred.
+</p>
+<p>
+    Which interrupts are enabled is selected using the <code>IE</code> register, and they can also be globally toggled using the <code>ei</code> and <code>di</code> instructions.
+</p>

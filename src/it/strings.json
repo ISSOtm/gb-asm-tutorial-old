@@ -27,6 +27,7 @@
         "memories": "Memory types",
         "stack": "The Stack",
         "calling": "London Calling",
+        "interrupts": "Interrupts",
 
         "extras": "Extras",
         "resources": "External resources",

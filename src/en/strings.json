@@ -6,14 +6,14 @@
     },
 
     "titles": {
-        "index": "GB ASM programming",
-        "introduction": "introduction",
+        "index": "GB ASM Programming",
+        "introduction": "Introduction",
         "what_is_gb": "What is Game Boy?",
         "concepts": "Basic concepts",
         "tools": "Tools",
 
         "basics": "Basics",
-        "syntax": "Syntax",
+        "syntax": "ASM syntax",
         "registers": "Registers",
         "memory": "Memory",
         "flags": "Flags",
@@ -27,6 +27,7 @@
         "memories": "Memory types",
         "stack": "The Stack",
         "calling": "London Calling",
+        "interrupts": "Interrupts",
 
         "extras": "Extras",
         "resources": "External resources",

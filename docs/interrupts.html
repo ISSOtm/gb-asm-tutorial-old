@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>
-            Memory types - GB ASM tutorial
+            Interrupts - GB ASM tutorial
         </title>
 
         <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
@@ -18,8 +18,8 @@
         <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://eldred.fr" />
-        <link rel="prev" href="intermediate.html" />
-        <link rel="next" href="stack.html" />
+        <link rel="prev" href="calling.html" />
+        <link rel="next" href="extras.html" />
 
 
         <link rel="stylesheet" href="css/normalize.css" />
@@ -30,90 +30,68 @@
         <main>
             <article>
                 <h1>
-                    Memory types
+                    Interrupts
                 </h1>
 
-                <h2>Memory regions</h2>
+                <h2>What's an interrupt?</h2>
                 <p>
-                    As you know, the Game Boy's CPU has a 16-bit address space: it can access up to 65,536 bytes of memory at any time, labelled from $0000 to $FFFF. Now, although from the CPU all of these bytes are equal, the programmer needs to be aware that not all of these bytes are the same. Simple example: some of the memory is the ROM where the game code is, some of the memory is the RAM. We need to know where each is.
+                    Before describing interrupts, I shall present the kind of situation they solve; knowing what benefit they provide will help understanding what they are.
+                </p>
+                <p>
+                    Consider the Game Boy's link cable. It allows exchanging data between consoles byte by byte. However, there is only a single byte of temporary storage, so you need to read the incoming byte and write the next byte quickly. But, you also want to run an entire game (say, Tetris) while this is happening, so you can't just check for incoming bytes in a loop. This could be solved by checking for bytes at specific points in the game code, but that may be impractical and lead to missed bytes, a lot of wasted computing, and hard to track bugs: in short, it's bad.
+                </p>
+                <p>
+                    Interrupts solve this problem by allowing the CPU to "interrupt" execution when it recieves a signal; which signals cause what to happen is defined by the hardware configuration (wiring, etc.). To explain how interrupts work on the Game Boy, we'll need to introduce two registers, <code>IE</code> (<b>I</b>nterrupt <b>E</b>nable) and <code>IF</code> (<b>I</b>nterrupt <b>F</b>lag).
+                </p>
+                <p>
+                    <code>IE</code> is simply a register that can be written to; its purpose will be made clearer later on. <code>IF</code> is also a register that can be written to, but this is rarely done. When the CPU recieves an external signal (say, one indicating that a byte was just transferred through the link cable), it sets the corresponding bit in <code>IF</code>; the interrupt is now <em>pending</em>. Before executing each instruction, the CPU computes <code>[IE] & [IF] & $1F</code> (that's to say, both registers are ANDed together, and only the bottom 5 bits are considered); if the result is non-zero, then the CPU handles an interrupt. Which one is, depends on which bits are set. The lowest bit in the result (after ANDing, of course) has the highest priority. <code>IE</code> basically selects which bits of <code>IF</code> are considered, and therefore, which interrupts are <em>enabled</em>.
+                </p>
+                <p>
+                    Now we need to talk about what happens when an interrupt is handled. It makes sense that an interrupt should only <em>temporarily</em> take over execution, and eventually return to the original flow, yes? Why, that's a perfect job for the function calling we just explained! When an interrupt is serviced, the CPU essentially executes a <code>call</code> instruction. Where it jumps to, though, depends on which interrupt is serviced (thankfully). The destination can be computed by taking the number of the "selected" bit (say, bit 2), multiplying it by 8 (now 16 = $10), and adding $40 (now $50). So, for interrupt bit 2 ($04, if need a refresher), the CPU would essentially <code>call $0050</code>.
+                </p>
+                <p>
+                    Further, when an interrupt is serviced, its corresponding bit in IF is reset, a process called <strong>acknowledging</strong>. There is an additional thing that needs to be explained for this to be complete, though, and it's the <code>IME</code> bit. <code>IME</code> is simply a bit that, when zero, causes the CPU to skip checking for interrupts (the process described two paragraphs above). It being called the Interrupt Master Enable thus makes sense. That bit cannot be read directly at a given time, but can be reset by using the <code>di</code> (Disable Interrupts) and set by the<code>ei</code> (Enable Interrupts) instructions. Finally, when the CPU services an interrupt, IME is automatically reset, which prevents an interrupt being serviced while it is being serviced; the <code>reti</code> instruction serves as a <code>ret</code> instruction that also sets IME.
                 </p>
                 
-                <h2>Memory map</h2>
+                <h2>The different types of interrupts</h2>
                 <p>
-                    Here are the different memory types; I will explain them one by one. We will also see how they're used with RGBDS.
+                    There are five different interrupts, in this order:
                 </p>
-                <table>
-                    <tr><th>Begins at</th><th>Ends at</th><th>Name</th></tr>
-                    <tr><td>$0000</td><td>$7FFF</td><td>ROM</td></tr>
-                    <tr><td>$8000</td><td>$9FFF</td><td>VRAM</td></tr>
-                    <tr><td>$A000</td><td>$BFFF</td><td>SRAM</td></tr>
-                    <tr><td>$C000</td><td>$DFFF</td><td>WRAM</td></tr>
-                    <tr><td>$E000</td><td>$FDFF</td><td>Echo RAM</td></tr>
-                    <tr><td>$FE00</td><td>$FE9F</td><td>OAM</td></tr>
-                    <tr><td>$FEA0</td><td>$FEFF</td><td>"FEXX"</td></tr>
-                    <tr><td>$FF00</td><td>$FF7F</td><td>IO</td></tr>
-                    <tr><td>$FF80</td><td>$FFFE</td><td>HRAM</td></tr>
-                </table>
-                
-                <h2>ROM</h2>
+                <ol class="start-zero">
+                    <li>VBlank</li>
+                    <li><code>STAT</code> (also called LCD or sometimes abusively <code>LCDC</code>)</li>
+                    <li>Timer</li>
+                    <li>Serial</li>
+                    <li>Joypad</li>
+                </ol>
                 <p>
-                    ROM is where the game's program and data are stored. RGBDS provides <em>two</em> memory types for that area, <code>ROM0</code> ($0000-$3FFF) and <code>ROMX</code> ($4000-$7FFF). This is due to something called banking, but we'll forget it for now. We will instead pass the <code>-t</code> option to RGBLINK to make <code>ROM0</code> span the entire ROM space.
+                    Their index in the list (for screen readers, do note that the list starts at zero) corresponds to their bit in the <code>IE</code> and <code>IF</code> registers.
                 </p>
                 <p>
-                    ROM is, as its name suggests, read-only. (You may see writes to the ROM space in games, but that's also due to banking, so forget it for now.) It's where the CPU will be executing code from almost always. Aside from banking, which we will pretend doesn't exist for now, there isn't anything special about ROM.
-                </p>
-                
-                <h2>VRAM</h2>
-                <p>
-                    We already discussed VRAM in the <a href="displaying.html">Displaying</a> lesson, but here's a quick recap. Between $8000 and $97FF are stored the tiles; 16 ($10) bytes per tile, and 384 ($180) tiles in three "blocks" of 128 ($80) tiles each. Then are two tilemaps, one at $9800-$9BFF, and one at $9C00-$9FFF. Each tilemap is 32*32 bytes.
+                    The VBlank interrupt is the simplest of them, since it triggers as soon as VBlank starts. (If you don't remember what VBlank is, check out the "Displaying" lesson.) A good way to sum up its main use is that this interrupt triggers at the end of every frame.
                 </p>
                 <p>
-                    VRAM has a big flaw, in that it can only be accessed while the PPU is not; that is, it must be accessed during LCD modes 0, 1 and 2.
+                    Same deal with the STAT interrupt, which triggers based on conditions selected through the STAT register. It'll be further explained in the next lesson. You may also see this interrupt called the "LCD interrupt" or, abusively, "LCDC interrupt".
+                </p>
+                <p>
+                    The timer interrupt triggers at a certain frequency that can be configured using a few registers. It's useful for things that need to occur at a given frequency, such as sound updates.
+                </p>
+                <p>
+                    The serial interrupt triggers every time a byte has been recieved via the serial port. Its job is basically to prepare the following transfer.
+                </p>
+                <p>
+                    Finally, the joypad interrupt... triggers more or less when a button is pressed. It's hardly ever used, though.
                 </p>
                 
-                <h2>SRAM</h2>
+                <h2>Recap</h2>
                 <p>
-                    SRAM stands for <b>S</b>ave <b>RAM</b>. It's somewhat misleading, which is why some refer to it as XRAM (E<b>x</b>ternal <b>RAM</b> or E<b>x</b>pansion <b>RAM</b>), but SRAM is the most common term. SRAM is RAM on the cartridge; most of the time, it's backed up by a battery and used to store save data, but some games also use it as extra work RAM (Pokémon games use SRAM as scratch buffers for sprite decompression, Super Mario Land 2 uses some of its SRAM to store variables and level data).
+                    Interrupts allow the CPU to react to certain external events, such as the end of a frame, by essentially executing a <code>call</code> instruction.
                 </p>
                 <p>
-                    By default, SRAM is in a "locked" state, which, like locked VRAM, ignores writes and returns $FF when read. (Editor's note: it's actually possible that $FF may NOT be always returned. It's best to not rely on reads from locked SRAM.) How SRAM is unlocked depends on the MBC.
-                </p>
-                
-                <h2>WRAM</h2>
-                <p>
-                    WRAM is the console's <b>w</b>ork <b>RAM</b>. It's present in the console itself, and serves as the main writable storage. There are 8 kB of WRAM, and you can pretty much use it however you please.
-                </p>
-                
-                <h2>Echo RAM</h2>
-                <p>
-                    Echo RAM is the product of a hardware quirk that causes most of WRAM to also be accessible at $E000-FDFF. It's recommended to avoid relying on it for several reasons, though its behavior appears to be mostly stable and well-understood.
+                    Where the <code>call</code> jumps to is determined by which event occurred.
                 </p>
                 <p>
-                    You're going to have to get used to this: the Game Boy has no protection features whatsoever, so things that you aren't supposed to do or absolutely mustn't... well, you can still do them, and it'll yield <em>some interesting</em> results. (Most of the time. Sometimes it'll just crash, or be equally underwhelming :D)
-                </p>
-                
-                <h2>OAM</h2>
-                <p>
-                    OAM can be considered a extension of VRAM, if you stretch the definition. It's the area of memory where information about objects (commonly referred to as "sprites", though the term "sprite" gets annoyingly often misused). It works similarly to VRAM, being locked from the CPU while the PPU is accessing it, although it has its own specificities.
-                </p>
-                
-                <h2>"FEXX"</h2>
-                <p>
-                    The area between OAM and IO is pretty weird. It has the same "locking" behavior as OAM, but the rest of its behavior depends on the console model and revision. Best not rely on it at all.
-                </p>
-                
-                <h2>IO</h2>
-                <p>
-                    This area of memory is a mess of hardware-mapped registers. It's here that a lot of interfacing with the Game Boy is performed, such as configuring graphics, playing sound, or communicate with another Game Boy.
-                </p>
-                
-                <p>
-                    There's a slightly special byte of IO, which is register <code>IE</code>; it's mapped at $FFFF, ie. just after the end of HRAM. Why it's there seems to be due to the way the CPU works internally.
-                </p>
-                
-                <h2>HRAM</h2>
-                <p>
-                    These 127 bytes of RAM work just like WRAM, except that they can be accessed slightly faster by a certain instruction; therefore, it's a good place to store temporary variables in.
+                    Which interrupts are enabled is selected using the <code>IE</code> register, and they can also be globally toggled using the <code>ei</code> and <code>di</code> instructions.
                 </p>
 
             </article>
@@ -123,8 +101,8 @@
                     <b id="index-title">
                         Navigation
                     </b>
-                    <br /><a href="intermediate.html">Previous: Intermediate</a>
-                    <br /><a href="stack.html">Next: The Stack</a>
+                    <br /><a href="calling.html">Previous: London Calling</a>
+                    <br /><a href="extras.html">Next: Extras</a>
 
                     <br /><br />
                     <small>
@@ -192,7 +170,7 @@
                             <label for="intermediate-navcheckbox"></label>
                             <ol>
                                 <li>
-                                    <a href="memories.html" class="current">Memory types</a>
+                                    <a href="memories.html">Memory types</a>
                                 </li>
                                 <li>
                                     <a href="stack.html">The Stack</a>
@@ -201,7 +179,7 @@
                                     <a href="calling.html">London Calling</a>
                                 </li>
                                 <li>
-                                    <a href="interrupts.html">Interrupts</a>
+                                    <a href="interrupts.html" class="current">Interrupts</a>
                                 </li>
                             </ol>
                         </li>
