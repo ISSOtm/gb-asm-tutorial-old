@@ -6,34 +6,36 @@
     Consider the Game Boy's link cable. It allows exchanging data between consoles byte by byte. However, there is only a single byte of temporary storage, so you need to read the incoming byte and write the next byte quickly. But, you also want to run an entire game (say, Tetris) while this is happening, so you can't just check for incoming bytes in a loop. This could be solved by checking for bytes at specific points in the game code, but that may be impractical and lead to missed bytes, a lot of wasted computing, and hard to track bugs: in short, it's bad.
 </p>
 <p>
-    Interrupts solve this problem by allowing the CPU to "interrupt" execution when it recieves a signal; which signals cause what to happen is defined by the hardware configuration (wiring, etc.). To explain how interrupts work on the Game Boy, we'll need to introduce two registers, <code>IE</code> (<b>I</b>nterrupt <b>E</b>nable) and <code>IF</code> (<b>I</b>nterrupt <b>F</b>lag).
+    Interrupts solve this problem by allowing the CPU to "interrupt" execution when it recieves a signal; which signals cause what to happen is defined by the hardware configuration (wiring, etc.). To explain how interrupts work on the Game Boy, we'll need to introduce two registers, the first of them being <code>IF</code> (<b>I</b>nterrupt <b>F</b>lag).
 </p>
 <p>
-    <code>IE</code> is simply a register that can be written to; its purpose will be made clearer later on. <code>IF</code> is also a register that can be written to, but this is rarely done. When the CPU recieves an external signal (say, one indicating that a byte was just transferred through the link cable), it sets the corresponding bit in <code>IF</code>; the interrupt is now <em>pending</em>. Before executing each instruction, the CPU computes <code>[IE] & [IF] & $1F</code> (that's to say, both registers are ANDed together, and only the bottom 5 bits are considered); if the result is non-zero, then the CPU handles an interrupt. Which one is, depends on which bits are set. The lowest bit in the result (after ANDing, of course) has the highest priority. <code>IE</code> basically selects which bits of <code>IF</code> are considered, and therefore, which interrupts are <em>enabled</em>.
+    <code>IF</code> is a register that can be read from and written to, but this is rarely done&mdash;most changes to this register are done by the hardware automatically. When the CPU receives the right external signal (say, one indicating that a byte was just transferred through the link cable), it sets the corresponding bit in <code>IF</code>; the interrupt is now <em>pending</em>. Before executing each instruction, the CPU checks for set bits in <code>IF</code>, and handles the interrupt corresponding to the lowest set bit, giving priority to the interrupts that were considered more important by the hardware designers.
 </p>
 <p>
-    Now we need to talk about what happens when an interrupt is handled. It makes sense that an interrupt should only <em>temporarily</em> take over execution, and eventually return to the original flow, yes? Why, that's a perfect job for the function calling we just explained! When an interrupt is serviced, the CPU essentially executes a <code>call</code> instruction. Where it jumps to, though, depends on which interrupt is serviced (thankfully). The destination can be computed by taking the number of the "selected" bit (say, bit 2), multiplying it by 8 (now 16 = $10), and adding $40 (now $50). So, for interrupt bit 2 ($04, if need a refresher), the CPU would essentially <code>call $0050</code>.
+    Let's talk about what happens when an interrupt is handled. It makes sense that an interrupt should only <em>temporarily</em> take over execution, and eventually return to the original flow, yes? Why, that's a perfect job for the function calling we just explained! When an interrupt is serviced, the CPU essentially executes a <code>call</code> instruction. Where it jumps to, though, depends on which interrupt is serviced (thankfully).
+
+    The destination can be computed by taking the number of the "selected" bit (say, bit 2), multiplying it by 8 (now 16 = $10), and adding $40 (now $50). So, for interrupt bit 2 ($04, if need a refresher), the CPU would essentially <code>call $0050</code>.
 </p>
 <p>
-    Further, when an interrupt is serviced, its corresponding bit in IF is reset, a process called <strong>acknowledging</strong>. There is an additional thing that needs to be explained for this to be complete, though, and it's the <code>IME</code> bit. <code>IME</code> is simply a bit that, when zero, causes the CPU to skip checking for interrupts (the process described two paragraphs above). It being called the Interrupt Master Enable thus makes sense. That bit cannot be read directly at a given time, but can be reset by using the <code>di</code> (Disable Interrupts) and set by the<code>ei</code> (Enable Interrupts) instructions. Finally, when the CPU services an interrupt, IME is automatically reset, which prevents an interrupt being serviced while it is being serviced; the <code>reti</code> instruction serves as a <code>ret</code> instruction that also sets IME.
+    Further, when an interrupt is serviced, its corresponding bit in IF is reset, a process called <strong>acknowledging</strong>. This ensures that the CPU will only service an interrupt once each time it fires.
 </p>
 
 <h2>The different types of interrupts</h2>
 <p>
     There are five different interrupts, in this order:
 </p>
-<ol class="start-zero">
-    <li>VBlank</li>
-    <li><code>STAT</code> (also called LCD or sometimes abusively <code>LCDC</code>)</li>
-    <li>Timer</li>
-    <li>Serial</li>
-    <li>Joypad</li>
-</ol>
+<table>
+    <tr><th>Bit in <code>IF</code></th><th>Interrupt name</th><th>Handler address</th><th>Notes</th></tr>
+    <tr><td>0 ($01)</td><td>VBlank</td><td><code>$0040</code></td><td>highest priority</td></tr>
+    <tr><td>1 ($02)</td><td><code>STAT</code></td><td><code>$0048</code></td><td>also called LCD or sometimes abusively <code>LCDC</code></td></tr>
+    <tr><td>2 ($04)</td><td>Timer</td><td><code>$0050</code></td><td></td></tr>
+    <tr><td>3 ($08)</td><td>Serial</td><td><code>$0058</code></td><td></td></tr>
+    <tr><td>4 ($10)</td><td>Joypad</td><td><code>$0060</code></td><td>lowest priority; rarely used</td></tr>
+</table>
 <p>
-    Their index in the list (for screen readers, do note that the list starts at zero) corresponds to their bit in the <code>IE</code> and <code>IF</code> registers.
-</p>
-<p>
-    The VBlank interrupt is the simplest of them, since it triggers as soon as VBlank starts. (If you don't remember what VBlank is, check out the "Displaying" lesson.) A good way to sum up its main use is that this interrupt triggers at the end of every frame.
+    The VBlank interrupt is the simplest of them, since it triggers as soon as VBlank starts. (If you don't remember what VBlank is, check out the
+    <a href="displaying.html">"Displaying" lesson</a>.)
+    A good way to sum up its main use is that this interrupt triggers at the end of every frame.
 </p>
 <p>
     Same deal with the STAT interrupt, which triggers based on conditions selected through the STAT register. It'll be further explained in the next lesson. You may also see this interrupt called the "LCD interrupt" or, abusively, "LCDC interrupt".
@@ -45,16 +47,35 @@
     The serial interrupt triggers every time a byte has been recieved via the serial port. Its job is basically to prepare the following transfer.
 </p>
 <p>
-    Finally, the joypad interrupt... triggers more or less when a button is pressed. It's hardly ever used, though.
+    Finally, the joypad interrupt... triggers more or less when a button is pressed. It's hardly ever used, though, because it's hard to use reliably and it usually makes more sense to check for input once a frame.
+</p>
+
+<h2>Configuring interrupts</h2>
+<p>
+    If you think about it, it's not hard to imagine that you won't need to make use of all interrupts all the time. This is where the second interrupt register, <code>IE</code> (<b>I</b>nterrupt <b>E</b>nable), comes in. In contrast with <code>IF</code>, this one is only modified by your code.
+</p>
+<p>
+    When the CPU checks for interrupts, it actually computes <code>[IE] & [IF] & $1F</code> (that's to say, both registers are ANDed together, and only the bottom 5 bits are considered). This means that you can enable only the interrupts you need by setting their corresponding <code>IE</code> bits to 1.
+</p>
+<p>
+    There is an additional thing that needs to be explained for this to be complete, though, and it's the <code>IME</code> bit.
+    <code>IME</code> is simply a bit that, when zero, causes the CPU to skip checking for interrupts (the process described in the paragraph above). It being called the <b>I</b>nterrupt <b>M</b>aster <b>E</b>nable thus makes sense.
+    <code>IME</code> is not exposed through any registers in the I/O area. Instead, it can be reset by the <code>di</code> (<b>D</b>isable <b>I</b>nterrupts) and set by the<code>ei</code> (<b>E</b>nable <b>I</b>nterrupts) instructions.
+</p>
+<p>
+    Finally, when the CPU services an interrupt, <code>IME</code> is automatically reset, which prevents an interrupt being serviced while another is being serviced.
+    Because of this, the interrupts need to be enabled when the interrupt service routine returns. This can be done by placing an <code>ei</code> just before the corresponding <code>ret</code>. However, this combination is executed frequently enough to be available as a single instruction: <code>reti</code>. Using it instead saves both a byte in the ROM and some CPU time.
 </p>
 
 <h2>Recap</h2>
-<p>
+<ul>
+<li>
     Interrupts allow the CPU to react to certain external events, such as the end of a frame, by essentially executing a <code>call</code> instruction.
-</p>
-<p>
+</li>
+<li>
     Where the <code>call</code> jumps to is determined by which event occurred.
-</p>
-<p>
+</li>
+<li>
     Which interrupts are enabled is selected using the <code>IE</code> register, and they can also be globally toggled using the <code>ei</code> and <code>di</code> instructions.
-</p>
+</li>
+</ul>
