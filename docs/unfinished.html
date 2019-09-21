@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>
-            External resources - GB ASM tutorial
+            Not finished... - GB ASM tutorial
         </title>
 
         <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
@@ -18,8 +18,8 @@
         <meta name="description" content="A complete Game Boy assembly programming tutorial, providing resources for beginners and experts alike!" />
         <meta name="keywords" content="Game Boy, Game Boy Color, assembly, ASM, programming, games, tutorial" />
         <link rel="author" href="https://eldred.fr" />
-        <link rel="prev" href="extras.html" />
-        <link rel="next" href="instructions.html" />
+        <link rel="prev" href="interrupts.html" />
+        <link rel="next" href="extras.html" />
 
 
         <link rel="stylesheet" href="css/normalize.css" />
@@ -30,35 +30,20 @@
         <main>
             <article>
                 <h1>
-                    External resources
+                    Not finished...
                 </h1>
 
                 <p>
-                    This page lists some resources that you should definitely bookmark during your development. If you have any suggestions, please click the "Report issue" link in the nav box to submit it. Or better yet, fork the repository and submit a PR directly - it helps a little bit :)
+                    Sorry! But I haven't had time to finish this tutorial. Don't worry, I still update it, though irregularly. In the meantime, here are some links you should follow:
                 </p>
-                
-                <h2>Online documentation</h2>
                 <ul>
-                    <li>
-                        <a href="https://github.com/avivace/awesome-gbdev">awesome-gbdev</a> is a community-maintained list of GB-related... everything. There are links to other tutorials, assemblers, emulators, etc. It's a hub, in a way.
-                    </li>
-                    <li>
-                        <a href="http://gbdev.gg8.se/wiki/articles/Pan_Docs">Wikified version of the Pan Docs</a>. These docs give a lot of information on how to operate with the Game Boy, most notably descriptions of what each IO port does. I always fall back to these when I'm not sure what a given bit in LCDC does, for example.
-                    </li>
+                    <li><a href="https://gbdev.gg8.se/wiki/articles/Pan_Docs">The GBDev Wiki's Pan Docs</a>. This is one of the many copies on the net, but this one's errors have been corrected, and it's kept up to date with recent research.</li>
+                    <li><a href="https://gbdev.github.io/">The Awesome GBDev List</a>. This is a community-curated list of resources deemed awesome. That should be self-explanatory. Oh, and there's also a Discord link near the top of it, if want to ask us more.</li>
                 </ul>
-                
-                <h2>Community</h2>
-                <ul>
-                    <li>
-                        #gbdev of EFNet IRC. Where it all began! The "oldbies" are still there, including BGB's developer beware, who is still actively developing and maintaining BGB. If you don't have an IRC client, it's possible to <a href="http://chat.efnet.org:9090">use EFNet's web client</a>.
-                    </li>
-                    <li>
-                        The official GBDev <a href="https://discord.gg/gpBxq85">Discord server</a>. Currently very active, newcomers often come here to lurk or ask help. Hardware-oriented guys and emulator developers are welcome as well, of course! It's also generally a nest of programmer humor.
-                    </li>
-                    <li>
-                        <a href="http://gbdev.gg8.se/forums/">The forums</a> aren't very active anymore, but the community still lives there, and will answer any questions you might have. It's also a go-to if you're releasing anything.
-                    </li>
-                </ul>
+                <p>
+                    Finally, I'd like to warn you: the reason I started this tutorial is because all other tutorials out there, except Duo's ASMSchool (at the time I'm writing, anyways), are filled with bad practice. I would recommend avoiding picking up habits from their code, even if it seems like the norm.
+                </p>
+
             </article>
 
             <aside>
@@ -66,8 +51,8 @@
                     <b id="index-title">
                         Navigation
                     </b>
-                    <br /><a href="extras.html">Previous: Extras</a>
-                    <br /><a href="instructions.html">Next: Instruction cheat sheet</a>
+                    <br /><a href="interrupts.html">Previous: Interrupts</a>
+                    <br /><a href="extras.html">Next: Extras</a>
 
                     <br /><br />
                     <small>
@@ -131,7 +116,7 @@
                         </li>
                         <li>
                             <a href="intermediate.html">Intermediate</a>
-                            <input type="checkbox" id="intermediate-navcheckbox">
+                            <input type="checkbox" id="intermediate-navcheckbox" checked>
                             <label for="intermediate-navcheckbox"></label>
                             <ol>
                                 <li>
@@ -147,17 +132,17 @@
                                     <a href="interrupts.html">Interrupts</a>
                                 </li>
                                 <li>
-                                    <a href="unfinished.html">Not finished...</a>
+                                    <a href="unfinished.html" class="current">Not finished...</a>
                                 </li>
                             </ol>
                         </li>
                         <li>
                             <a href="extras.html">Extras</a>
-                            <input type="checkbox" id="extras-navcheckbox" checked>
+                            <input type="checkbox" id="extras-navcheckbox">
                             <label for="extras-navcheckbox"></label>
                             <ol>
                                 <li>
-                                    <a href="resources.html" class="current">External resources</a>
+                                    <a href="resources.html">External resources</a>
                                 </li>
                                 <li>
                                     <a href="instructions.html">Instruction cheat sheet</a>

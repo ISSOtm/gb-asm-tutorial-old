@@ -36,7 +36,8 @@
                     { "leaf": true, "id": "memories" },
                     { "leaf": true, "id": "stack" },
                     { "leaf": true, "id": "calling" },
-                    { "leaf": true, "id": "interrupts"}
+                    { "leaf": true, "id": "interrupts" },
+                    { "leaf": true, "id": "unfinished" }
                 ]
             },
             {

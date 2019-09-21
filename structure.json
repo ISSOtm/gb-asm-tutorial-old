@@ -1,0 +1,58 @@
+{
+    "leaf": false,
+    "index": { "leaf": true, "id": "index", "title": "GB ASM Programming" },
+    "subpages": [
+        {
+            "leaf": false,
+            "index": { "leaf": true, "id": "introduction", "title": "Introduction" },
+            "subpages": [
+                { "leaf": true, "id": "what_is_gb", "title": "What is Game Boy?" },
+                { "leaf": true, "id": "concepts", "title": "Basic concepts" },
+                { "leaf": true, "id": "tools", "title": "Tools"}
+            ]
+        },
+        {
+            "leaf": false,
+            "index": { "leaf": true, "id": "basics", "title": "Basics" },
+            "subpages": [
+                { "leaf": true, "id": "syntax", "title": "ASM syntax" },
+                { "leaf": true, "id": "registers", "title": "Registers" },
+                { "leaf": true, "id": "memory", "title": "Memory" },
+                { "leaf": true, "id": "flags", "title": "Flags"},
+                { "leaf": true, "id": "arithmetics", "title": "Arithmetics &amp; boolean algebra"},
+                { "leaf": true, "id": "interlude", "title": "Interlude"},
+                { "leaf": true, "id": "jumping", "title": "Jumping around"},
+                { "leaf": true, "id": "displaying", "title": "Displaying"},
+                { "leaf": true, "id": "hello-world", "title": "Hello World!"}
+            ]
+        },
+        {
+            "leaf": false,
+            "index": { "leaf": true, "id": "intermediate", "title": "Intermediate" },
+            "subpages": [
+                { "leaf": true, "id": "memories", "title": "Memory types"},
+                { "leaf": true, "id": "stack", "title": "The Stack" },
+                { "leaf": true, "id": "calling", "title": "Call me" },
+                { "leaf": true, "id": "interrupts", "title": "Interrupts" },
+                { "leaf": true, "id": "unfinished", "title": "Not finished..." }
+            ]
+        },
+        {
+            "leaf": false,
+            "index": { "leaf": true, "id": "extras", "title": "Extras"},
+            "subpages": [
+                { "leaf": true, "id": "resources", "title": "External resources" },
+                {
+                    "leaf": false,
+                    "index": { "leaf": true, "id": "instructions", "title": "Instruction cheat sheet" },
+                    "subpages": [
+                        { "leaf": true, "id": "data_manip", "title": "Data manipulation" }
+                    ]
+                }
+            ]
+        }
+    ],
+    "special_pages": [
+        { "leaf": true, "id": "404", "title": "Resource not found" }
+    ]
+}
