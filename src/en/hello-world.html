@@ -114,7 +114,7 @@ Start:
     Let's explain the <code>ld a, b ; or c</code> lines (NB: it may be confusing, but when talking about multiple lines, they're often separarated by a semicolon). This sets the Z flag if and only if BC == 0. If BC == 0, then B = 0 and C = 0, which means that A == 0 after the <code>or c</code>. However, if BC != 0, then either B != 0 or C != 0, which means that at least one bit of <code>B or C</code> is set, and therefore A != 0 after the <code>or c</code>.
 </p>
 <p>
-    You may be worried that we haven't defined <code>Font</code> nor <code>FontEnd</code> yet, and that I didn't explain how tiles are encoded yet. Worry not, I will provide a ready-to-be-copied font later.
+    You may be worried that we haven't defined <code>FontTiles</code> nor <code>FontTilesEnd</code> yet, and that I didn't explain how tiles are encoded yet. Worry not, I will provide a ready-to-be-copied font later.
 </p>
 <p>
     Now that we have the font ready, we just need to write to the tilemap. Luckily, we will just have to copy the string, at least in this paticular setup.
