@@ -1,27 +1,140 @@
 
+/* Basic elements */
+
 body {
-    margin-top: 50px;
-    padding: 0 40px 40px 0;
-
-    background-color: #eee;
-
+    margin-top: 38pt;
+    padding: 0 16pt 16pt 0;
+    background-color: #dddddd;
     font-family: sans-serif;
-    font-size: 16px;
+    font-size: 12pt;
 }
 
+a {
+    color: #92394c;
+}
+
+a:hover {
+    color:#ad5872;
+}
+
+a.current {
+    font-weight: bold;
+}
+
+h1 {
+    color: #3f5991;
+}
+
+h2 {
+    color: #3f5991;
+}
+
+h3 {
+    color: #3f5991;
+}
+
+hr {
+    width: 90%;
+    border: 0;
+    border-top: 1pt dashed #444444;
+}
+
+/* Page body */
+
+main {
+    /* Make children position relative to this */
+    position: relative;
+    padding: 0 18pt;
+    display: flex;
+    flex-flow: row-reverse nowrap;
+}
+
+article {
+    flex-grow: 10;
+    /* Somehow this fixes horizontal overflow issues. Thanks @uki-nz ! */
+    min-width: 0;
+}
+
+article p {
+    text-align: justify;
+
+    /* Readability fixes */
+    line-height: 1.5;
+}
+
+article ol {
+    /* Readability fixes */
+    line-height: 1.5;
+}
+
+/* Table styling */
+
+/* Overall style */
+table {
+    border: 1pt dashed #444444;
+    border-collapse: collapse;
+}
+
+/* Even rows */
+tr:nth-child(2n) td, .invert-stripes > tbody > tr:nth-child(2n+1) td {
+    background-color: #dddddd;
+}
+
+/* Odd rows */
+tr:nth-child(2n+1) td, .invert-stripes > tbody > tr:nth-child(2n) td {
+    background-color: #cccccc;
+}
+
+th {
+    background-color: #cccccc;
+    border-bottom: 2pt solid #3f5991;
+    color: black;
+    padding: 5pt;
+}
+
+td {
+    padding: 8pt;
+
+    line-height: 1.4;
+}
+
+/* Code-related styles */
+
+pre {
+    overflow-x: auto;
+    background-color: #c9c8a9;
+    color:#444444;
+    text-shadow: 1pt 1pt #44444433;
+    border: 1pt dashed #444444;
+    border-radius: 4pt 4pt 12pt 4pt;
+    padding: 10pt;
+
+    /* Readability fixes */
+    line-height: 1.2;
+}
+
+code {
+    white-space: nowrap;
+    background-color: #c9c8a9;
+    color: #444444;
+    text-shadow: 1pt 1pt #44444433;
+    border: 1pt solid #444444;
+    border-radius: 3pt;
+    padding: 0pt 3pt;
+}
+
+/* Top navbar */
 
 #navbar {
-    /* Use two colors from the monochrome GB palette, but avoid it for the whole page - it's pretty ugly. */
-    background-color: #9bbc0f;
-    color: #0f380f;
-
-    padding: 10px 2% 13px 2%;
-    font-size: 18px;
-
+    /* Use two colors reminiscient of a DMG shell. */
+    background-color: #444444;
+    color: #d8d8d8;
+    padding: 10pt 2% 10pt 2%;
+    font-size: 14pt;
     position: fixed;
     top: 0;
-    height: 23px;
-    width: 96%;
+    height: 18pt;
+    width: 98%;
 }
 
 #navbar a {
@@ -34,93 +147,21 @@ body {
 }
 
 #site-name {
-    font-size: 20px;
+    font-size: 16pt;
     font-weight: bold;
 }
 
 #to-top {
     float: right;
-    background-color: #9bbc0f;
-    margin-right: 10px;
+    margin-right: 16pt;
+    background-color: #444444;
 }
 
-
-main {
-    /* Make children position relative to this */
-    position: relative;
-    padding: 0 20px;
-
-    display: flex;
-    flex-flow: row-reverse nowrap;
+#logo {
+    margin-right: 4pt;
 }
 
-@media screen and (max-width: 500px) {
-    main {
-        flex-flow: column-reverse nowrap;
-    }
-}
-
-main article {
-    flex-grow: 10;
-    /* Somehow this fixes horizontal overflow issues. Thanks @uki-nz ! */
-    min-width: 0;
-}
-
-main article p {
-    text-align: justify;
-}
-
-
-table {
-    border-collapse: collapse;
-}
-
-tr:nth-child(2n) td, .invert-stripes > tbody > tr:nth-child(2n+1) td {
-    background-color: #9bbc0f80;
-}
-
-tr:nth-child(2n+1) td, .invert-stripes > tbody > tr:nth-child(2n) td {
-    background-color: #30623080;
-}
-
-th {
-    background-color: #0f380f80;
-    padding: 5px;
-}
-
-td {
-    padding: 10px;
-}
-
-
-pre {
-    overflow-x: auto;
-
-    background-color: #ddd;
-    border-radius: 10px;
-    padding: 10px;
-}
-
-code {
-    white-space: nowrap;
-
-    background-color: #e0e0e0;
-    border-radius: 3px;
-    padding: 0 5px;
-}
-
-
-/* Bump up readability somewhat, keeping code blocks more condensed */
-p {
-    line-height: 1.4;
-}
-
-pre {
-    line-height: 1.2;
-}
-
-
-/* Sidebar */
+/* Navigation sidebar */
 
 #tutorial-index {
     flex-grow: 1;
@@ -128,23 +169,18 @@ pre {
     /* Fixed would work as well, I just want a tiny superfluous thingy */
     position: -webkit-sticky;
     position: sticky;
-    top: 50px;
+    top: 20pt;
 
-    border: 1px solid black;
-    margin-right: 30px;
-    margin-top: 20px;
-    padding: 10px;
-}
-
-@media print {
-    /* Hide the index if printing the page */
-    #tutorial-index {
-        display: none;
-    }
+    border: 1pt solid #444444;
+    border-radius: 5pt 5pt 12pt 5pt;
+    margin-right: 15pt;
+    margin-top: 20pt;
+    padding: 10pt;
+    line-height: 1.3;
 }
 
 #index-title {
-    font-size: 18px;
+    font-size: 15pt;
 }
 
 /* List number formatting */
@@ -183,29 +219,59 @@ pre {
 
 /* Dynamically alter displayed text (JS-less!) */
 #tutorial-index > ol :checked + label::after {
-    content: "[Collapse]";
+    content: "Collapse";
+    background-color: #cccccc;
+    color: black;
+    border: 1pt solid #444444;
+    border-radius: 4pt;
+    padding: 0pt 2pt
 }
 
 #tutorial-index > ol input[type="checkbox"]:not(:checked) + label::after {
-    content: "[Expand]";
+    content: "Expand";
+    background-color: #cccccc;
+    color: black;
+    border: 1pt solid #444444;
+    border-radius: 4pt;
+    padding: 0pt 2pt;
 }
 
 /* Root level has "Expand all" button */
 #tutorial-index > :checked + label::after {
-    content: "[Collapse all]";
+    content: "Collapse all";
+    background-color: #cccccc;
+    color: black;
+    border: 1pt solid #444444;
+    border-radius: 4pt;
+    padding: 0pt 2pt;
 }
 
 #tutorial-index > input[type="checkbox"]:not(:checked) + label::after {
-    content: "[Expand all]";
+    content: "Expand all";
+    background-color: #cccccc;
+    color: black;
+    border: 1pt solid #444444;
+    border-radius: 4pt;
+    padding: 0pt 2pt;
 }
 
 /* Eye-candy */
 #tutorial-index label {
     font-size: 80%;
     cursor: pointer;
-    text-decoration: underline;
 }
 
-a.current {
-    font-weight: bold;
+/* Other */
+
+@media print {
+    /* Hide the index if printing the page */
+    #tutorial-index {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    main {
+        flex-flow: column-reverse nowrap;
+    }
 }
