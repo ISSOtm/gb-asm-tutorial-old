@@ -1,6 +1,8 @@
 # gb-asm-tutorial
 
-An online Game Boy assembly programming tutorial, hosted at https://eldred.fr/gb-asm-tutorial.
+An online Game Boy assembly programming tutorial, **formerly** hosted at https://eldred.fr/gb-asm-tutorial.
+
+This tutorial has been obsoleted by [the v2](https://github.com/ISSOtm/gb-asm-tutorial); this is only kept for archival purposes, and **will not be updated anymore**.
 
 ## Structure
 
